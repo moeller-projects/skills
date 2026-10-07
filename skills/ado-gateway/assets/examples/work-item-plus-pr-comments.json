@@ -1,0 +1,72 @@
+{
+  "contract_version": "1.0.0",
+  "producer": "ado-gateway",
+  "consumer": "spec-engine",
+  "artifact_type": "ado-normalized",
+  "mode": "work-item-plus-pr-comments",
+  "source": {
+    "platform": "azure-devops",
+    "organization": "aveato",
+    "project": "Laekker.Kitchen",
+    "repository_id": "Laekkerai.Ordering",
+    "pull_request_id": 8123,
+    "work_item_id": 1234,
+    "read_only": true
+  },
+  "normalization": {
+    "status": "pass",
+    "missing_fields": [],
+    "warnings": [],
+    "html_stripped": true,
+    "secret_redactions_applied": true
+  },
+  "work_item": {
+    "id": 1234,
+    "type": "User Story",
+    "title": "Checkout supports discount codes",
+    "description": "Add discount code support to checkout.",
+    "acceptance_criteria": "Given a valid code, when checkout is submitted, then the discount is applied.",
+    "repro_steps": "",
+    "system_info": "",
+    "tags": "checkout;discount",
+    "state": "New"
+  },
+  "pull_request": {
+    "id": 8123,
+    "title": "Extract checkout validation helper",
+    "source_branch": "refs/heads/feature/checkout-validation",
+    "target_branch": "refs/heads/main",
+    "status": "active",
+    "creation_date": "2026-04-28T08:00:00Z",
+    "closed_date": null
+  },
+  "linked_work_items": [
+    {
+      "id": 1234,
+      "title": "Checkout supports discount codes",
+      "type": "User Story",
+      "state": "New",
+      "url": "https://dev.azure.com/aveato/Laekker.Kitchen/_apis/wit/workItems/1234"
+    }
+  ],
+  "pr_comments": [
+    {
+      "thread_id": 99,
+      "comment_id": 501,
+      "parent_comment_id": 0,
+      "author": "Reviewer",
+      "content": "Please extract this validation to a helper.",
+      "file_path": "/src/order.ts",
+      "side": "right",
+      "start_line": 44,
+      "end_line": 48,
+      "start_offset": 1,
+      "end_offset": 20,
+      "thread_status": "active",
+      "thread_is_deleted": false,
+      "comment_is_deleted": false,
+      "published_date": "2026-04-29T08:00:00Z",
+      "last_updated_date": "2026-04-29T08:00:00Z"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "ado-gateway",
+  "title": "ADO Gateway",
+  "version": "5.0.1",
+  "summary": "Read and safely write selected Azure DevOps work items and PR artifacts with deterministic dry-run, approval, and validation gates.",
+  "type": "hybrid",
+  "activation": {
+    "use_when": [
+      "Fetching Azure DevOps backlog items or work items",
+      "Fetching Azure DevOps pull request comments from a URL or explicit identifiers",
+      "Parsing Azure DevOps pull request URLs into concrete identifiers",
+      "Normalizing Azure DevOps data for another skill",
+      "Creating Azure DevOps work items with explicit approval",
+      "Creating Azure DevOps work item comments with explicit approval",
+      "Creating Azure DevOps pull requests with explicit approval",
+      "Creating or replying to Azure DevOps pull request comments with explicit approval"
+    ],
+    "avoid_when": [
+      "The task requires deleting Azure DevOps data",
+      "The task requires completing, abandoning, approving, or rejecting a pull request",
+      "The task is a GitHub pull request review",
+      "The task is generating or validating an OpenSpec file",
+      "The task is generic REST API work with no Azure DevOps context"
+    ]
+  },
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "allowed_tools": [
+    "read_file",
+    "shell"
+  ],
+  "risk_level": "high",
+  "requires_network": true,
+  "maintainer": "Lukas"
+}
