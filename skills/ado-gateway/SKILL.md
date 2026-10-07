@@ -5,7 +5,7 @@ allowed-tools:
   - read_file
   - shell
 title: ADO Gateway
-version: 1.0.1
+version: 1.1.0
 summary: Read and safely write selected Azure DevOps work items and PR artifacts with deterministic dry-run, approval, and validation gates.
 ---
 
@@ -39,8 +39,8 @@ Fetch Azure DevOps work item and pull request discussion data through read-only 
 
 1. Identify the source mode: `work-item`, `pr-comments`, or `work-item-plus-pr-comments`.
 2. Validate required identifiers and authentication. Accept either explicit Azure DevOps identifiers or a pull request URL.
-3. Fetch Azure DevOps data with GET requests only.
-4. Normalize HTML fields, comment threads, line anchors, and missing values into the shared contract.
+3. Fetch Azure DevOps data with GET-only scripts, including work-item comments, update history, current related-work links, and PR threads.
+4. Normalize work-item fields, comments, changed-field history, related-work links, PR threads, line anchors, and missing values into the shared contract.
 5. Emit contract JSON and stop. Do not draft specs or take write actions.
 
 ## Write Workflow

@@ -1,12 +1,12 @@
 # ADO Gateway
 
-Version: 1.0.1
+Version: 1.1.0
 
 Read Azure DevOps work items and pull request discussions, normalize them, and perform a small approved set of write actions through deterministic dry-run-first Python scripts.
 
 ## Includes
 
-- Read-only Azure DevOps work item retrieval
+- Read-only Azure DevOps work-item retrieval, including comments, changed-field history, and related-work links
 - Azure DevOps PR URL parsing, PR branch/work-item enrichment, and PR comment flattening
 - Normalized handoff contract for `spec-engine`
 - Guarded writes for work items, comments, PRs, and PR comments

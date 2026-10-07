@@ -33,7 +33,10 @@
     "repro_steps": "",
     "system_info": "",
     "tags": "<tag1;tag2>",
-    "state": "<state>"
+    "state": "<state>",
+    "comments": [],
+    "history": [],
+    "related_work": []
   },
   "pr_comments": [],
   "pull_request": {

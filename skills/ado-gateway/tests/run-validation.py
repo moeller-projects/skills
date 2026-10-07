@@ -139,8 +139,56 @@ def main() -> None:
 
         work_item_raw = {
             "id": 1234,
+            "comments": [
+                {
+                    "id": 9,
+                    "text": "<p>Steps tried: <b>restart</b></p>",
+                    "createdBy": {"displayName": "Test Author"},
+                    "createdDate": "2026-10-01T12:00:00Z",
+                    "modifiedDate": "2026-10-02T12:00:00Z",
+                }
+            ],
+            "updates": [
+                {
+                    "id": 11,
+                    "rev": 2,
+                    "revisedBy": {"displayName": "Casey Smith"},
+                    "revisedDate": "2026-10-01T12:00:00Z",
+                    "fields": {
+                        "System.State": {"oldValue": "New", "newValue": "Active"},
+                        "System.Description": {
+                            "oldValue": "<p>Old text</p>",
+                            "newValue": "<p>Updated text</p>",
+                        },
+                    },
+                },
+                {
+                    "id": 12,
+                    "rev": 2,
+                    "revisedBy": {"displayName": "Casey Smith"},
+                    "revisedDate": "2026-10-01T12:01:00Z",
+                    "fields": {},
+                },
+                {
+                    "id": 13,
+                    "rev": 3,
+                    "fields": {"System.Title": {"newValue": "New title"}},
+                },
+            ],
+            "relations": [
+                {
+                    "rel": "System.LinkTypes.Related",
+                    "url": "https://dev.azure.com/example-org/example-project/_apis/wit/workItems/5678",
+                    "attributes": {"name": "Related"},
+                },
+                {
+                    "rel": "System.LinkTypes.Hierarchy-Forward",
+                    "url": "https://dev.azure.com/example-org/example-project/_apis/wit/workItems/6789",
+                    "attributes": {"name": "Child"},
+                },
+            ],
             "fields": {
-                "System.WorkItemType": "User Story",
+                "System.WorkItemType": "Bug",
                 "System.Title": "Checkout supports discount codes",
                 "System.Description": "<p>Add <b>discount</b> code support.</p>",
                 "Microsoft.VSTS.Common.AcceptanceCriteria": "<ul><li>Apply valid code</li></ul>",
@@ -157,6 +205,30 @@ def main() -> None:
             fail("work_item.id must be numeric")
         if normalized_json["description"] != "Add discount code support.":
             fail("HTML description normalization failed")
+        comment = normalized_json["comments"][0]
+        if comment != {
+            "id": 9,
+            "author": "Test Author",
+            "content": "Steps tried: restart",
+            "created_date": "2026-10-01T12:00:00Z",
+            "modified_date": "2026-10-02T12:00:00Z",
+        }:
+            fail("work-item comment fields were not normalized")
+        history = normalized_json["history"]
+        if len(history) != 3 or history[0]["revision"] != history[1]["revision"]:
+            fail("work-item history must preserve distinct updates sharing a revision")
+        if history[0]["changed_fields"] != [
+            {"reference_name": "System.State", "old_value": "New", "new_value": "Active"},
+            {"reference_name": "System.Description", "old_value": "Old text", "new_value": "Updated text"},
+        ]:
+            fail("work-item history changed fields were not normalized")
+        if history[1]["changed_fields"] != []:
+            fail("work-item history must preserve updates with no field changes")
+        if "old_value" in history[2]["changed_fields"][0]:
+            fail("missing historical old values must remain absent")
+        related_work = normalized_json["related_work"]
+        if len(related_work) != 1 or related_work[0]["rel"] != "System.LinkTypes.Related":
+            fail("work-item related work must exclude other relation types")
         passed("work item normalization keeps numeric id and strips HTML")
 
         bad_example = json.loads(

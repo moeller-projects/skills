@@ -5,8 +5,8 @@
 1. Determine whether the request targets a work item, PR comments, or both.
 2. Resolve identifiers from explicit inputs first; parse any PR URL into organization, project, repository, and pull request ID.
 3. Require `AZURE_DEVOPS_PAT` for network calls.
-4. Fetch Azure DevOps data with GET-only Python scripts, including PR threads, PR branch metadata, and linked work item details when PR context is present.
-5. Normalize the work item payload with `scripts/normalize-work-item.py`.
+4. Fetch Azure DevOps work-item comments, paged update history, and current related-work relations with GET-only scripts, alongside PR threads and metadata.
+5. Normalize the work item payload, including comments, changed fields per update, and related-work links, with `scripts/normalize-work-item.py`.
 6. Emit the contract with `scripts/emit-handoff.py`, or run the full flow with `scripts/generate-handoff.py`.
 
 Run scripts using Python 3.9+ and its standard library: `python scripts/<name>.py`.

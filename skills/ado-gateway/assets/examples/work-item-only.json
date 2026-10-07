@@ -29,7 +29,30 @@
     "repro_steps": "",
     "system_info": "",
     "tags": "checkout;discount",
-    "state": "New"
+    "state": "New",
+    "comments": [],
+    "history": [
+      {
+        "update_id": 17,
+        "revision": 4,
+        "revised_by": "Casey Smith",
+        "revised_date": "2026-10-01T12:00:00Z",
+        "changed_fields": [
+          {
+            "reference_name": "System.State",
+            "old_value": "New",
+            "new_value": "Active"
+          }
+        ]
+      }
+    ],
+    "related_work": [
+      {
+        "rel": "System.LinkTypes.Related",
+        "url": "https://dev.azure.com/example-org/example-project/_apis/wit/workItems/5678",
+        "attributes": {"name": "Related"}
+      }
+    ]
   },
   "pr_comments": [],
   "pull_request": {},

@@ -157,6 +157,61 @@
         },
         "state": {
           "type": "string"
+        },
+        "comments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "author", "content", "created_date", "modified_date"],
+            "additionalProperties": false,
+            "properties": {
+              "id": {"type": ["integer", "null"]},
+              "author": {"type": "string"},
+              "content": {"type": "string"},
+              "created_date": {"type": ["string", "null"]},
+              "modified_date": {"type": ["string", "null"]}
+            }
+          }
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["update_id", "revision", "revised_by", "revised_date", "changed_fields"],
+            "additionalProperties": false,
+            "properties": {
+              "update_id": {"type": ["integer", "null"]},
+              "revision": {"type": ["integer", "null"]},
+              "revised_by": {"type": ["string", "null"]},
+              "revised_date": {"type": ["string", "null"]},
+              "changed_fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["reference_name"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "reference_name": {"type": "string"},
+                    "old_value": {},
+                    "new_value": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "related_work": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rel", "url", "attributes"],
+            "additionalProperties": false,
+            "properties": {
+              "rel": {"type": "string", "const": "System.LinkTypes.Related"},
+              "url": {"type": ["string", "null"]},
+              "attributes": {"type": "object", "additionalProperties": true}
+            }
+          }
         }
       }
     },

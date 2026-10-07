@@ -1,12 +1,12 @@
 {
   "name": "ado-gateway",
   "title": "ADO Gateway",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "summary": "Read and safely write selected Azure DevOps work items and PR artifacts with deterministic dry-run, approval, and validation gates.",
   "type": "hybrid",
   "activation": {
     "use_when": [
-      "Fetching Azure DevOps backlog items or work items",
+      "Fetching Azure DevOps backlog items or work items, including comments, changed-field history, and related-work links",
       "Fetching Azure DevOps pull request comments from a URL or explicit identifiers",
       "Parsing Azure DevOps pull request URLs into concrete identifiers",
       "Normalizing Azure DevOps data for another skill",

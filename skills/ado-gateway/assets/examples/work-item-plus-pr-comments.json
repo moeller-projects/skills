@@ -29,7 +29,10 @@
     "repro_steps": "",
     "system_info": "",
     "tags": "checkout;discount",
-    "state": "New"
+    "state": "New",
+    "comments": [],
+    "history": [],
+    "related_work": []
   },
   "pull_request": {
     "id": 8123,

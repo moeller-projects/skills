@@ -12,7 +12,7 @@ Reusable instructions for coding agents. Each skill's `SKILL.md` describes when 
 
 | Skill | Use it for |
 | --- | --- |
-| [ado-gateway](skills/ado-gateway/) | Azure DevOps work items and PR discussion; guarded, approved writes |
+| [ado-gateway](skills/ado-gateway/) | Azure DevOps work-item fields, comments, change history, related work, and PR discussion; guarded, approved writes |
 | [bluf](skills/bluf/) | Action-first, concise response style that preserves accuracy and safety |
 | [code-quality-engine](skills/code-quality-engine/) | Code review, refactoring, security, and evidence-backed performance |
 | [delivery-engine](skills/delivery-engine/) | Breaking confirmed scope into tasks, dependencies, and done criteria |

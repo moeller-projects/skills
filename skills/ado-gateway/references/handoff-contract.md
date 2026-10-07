@@ -24,6 +24,9 @@ Always include:
 - `pull_request` and `linked_work_items` top-level keys.
   - In PR modes, `pull_request` includes PR metadata (including source/target branches) and `linked_work_items` includes linked item details.
   - In non-PR modes, these default to an empty object (`{}`) and empty array (`[]`).
+- `work_item.comments` is always an array of normalized records containing `id`, `author`, `content`, `created_date`, and `modified_date`.
+- `work_item.history` is an array of update records with `update_id`, `revision`, `revised_by`, `revised_date`, and `changed_fields`; each changed field has a `reference_name` and only the old/new values Azure DevOps supplied.
+- `work_item.related_work` is an array of current `System.LinkTypes.Related` links with relation type, target URL, and relation attributes. Other relation types are excluded.
 - `pr_comments[*].file_path` normalized to repo-root-relative format starting with `/` when present.
 
 ## Identifier Types
