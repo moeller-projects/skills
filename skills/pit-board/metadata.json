@@ -1,0 +1,31 @@
+{
+  "name": "pit-board",
+  "title": "Pit Board",
+  "version": "2.0.0",
+  "summary": "Deliver accurate, action-first responses with concise prose and explicit next steps.",
+  "type": "rule",
+  "activation": {
+    "use_when": [
+      "The user requests concise, direct, no-fluff, or token-efficient responses",
+      "The user invokes Pit Board or Bottom Line Up Front",
+      "The user prefers action-first, structured replies during coding, debugging, or operations"
+    ],
+    "avoid_when": [
+      "Compression would omit required detail, safety context, or exact commands",
+      "Another response format is explicitly required by the user"
+    ]
+  },
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "allowed_tools": [
+    "read_file"
+  ],
+  "risk_level": "low",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}
