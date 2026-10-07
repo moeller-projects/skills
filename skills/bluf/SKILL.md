@@ -1,6 +1,11 @@
 ---
 name: bluf
 description: Output templating and interaction style skill — Bottom Line Up Front. Shapes every response to be action-first and filler-free. Lead with the answer or next action, number multi-step work, restate state across turns, compress prose (no articles, filler, hedging), cap lists, no preamble or closers. Use when the user wants concise, direct, no-fluff, ADHD-friendly, or token-efficient responses; during interactive coding, debugging, and devops work; when the user invokes "bluf", "bottom line up front", "be direct", "concise mode", "skip the filler", or asks for action-first answers; or as an always-on output style for users who prefer terse, structured replies.
+allowed-tools:
+  - read_file
+title: BLUF
+version: 1.0.1
+summary: Improve correctness, readability, maintainability, performance, and legacy modernization with minimal mutation.
 ---
 
 # BLUF — Bottom Line Up Front

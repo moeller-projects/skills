@@ -5,7 +5,7 @@ allowed-tools:
   - list_dir
   - read_file
 title: Repo Engine
-version: 5.0.1
+version: 1.0.1
 summary: Map repository architecture, entry points, conventions, hotspots, and onboarding artifacts for fast execution.
 ---
 

@@ -3,7 +3,7 @@ name: thinking-engine
 description: Use when the problem is vague, assumptions need pressure-testing, or options must be compared before commitment. Do not use when scope is fixed and the output must be an executable task breakdown with dependencies and done criteria.
 allowed-tools: []
 title: Thinking Engine
-version: 5.0.1
+version: 1.0.1
 summary: Explore ambiguous problems, test assumptions, compare options, and produce decision-ready plans.
 ---
 

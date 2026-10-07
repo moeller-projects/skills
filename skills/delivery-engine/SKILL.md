@@ -4,7 +4,7 @@ description: Use when confirmed scope must be broken into atomic tasks with depe
 allowed-tools:
   - read_file
 title: Delivery Engine
-version: 5.0.1
+version: 1.0.1
 summary: Break work into atomic, shippable tasks with explicit dependencies, critical path, estimates, and definitions of done.
 ---
 
