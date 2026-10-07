@@ -1,0 +1,34 @@
+{
+  "name": "code-quality-engine",
+  "title": "Code Quality Engine",
+  "version": "5.0.1",
+  "summary": "Improve correctness, readability, maintainability, performance, and legacy modernization with minimal mutation.",
+  "type": "rule",
+  "activation": {
+    "use_when": [
+      "Reviewing code for quality or safety",
+      "Refactoring for clarity or maintainability",
+      "Optimizing performance with real evidence",
+      "Reducing complexity in fragile areas",
+      "Modernizing legacy code with minimal mutation"
+    ],
+    "avoid_when": [
+      "Only documentation is requested",
+      "Test design is the primary task",
+      "Infrastructure or deployment is the primary task"
+    ]
+  },
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "allowed_tools": [
+    "read_file"
+  ],
+  "risk_level": "medium",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}
