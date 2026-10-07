@@ -1,0 +1,35 @@
+{
+  "name": "safety-car",
+  "title": "Safety Car",
+  "version": "2.0.0",
+  "summary": "Respond to live production incidents with mitigation-first triage, disciplined timelines, clear comms, and durable follow-ups.",
+  "type": "rule",
+  "activation": {
+    "use_when": [
+      "A production system is down, degraded, or corrupting data",
+      "Triaging an alert, user report, or suspected incident",
+      "Coordinating a mitigation, hotfix, or emergency rollback under time pressure",
+      "Running incident communication",
+      "Writing a postmortem or follow-up plan after an incident"
+    ],
+    "avoid_when": [
+      "Planned deployment, release, or rollback design — use pit-crew",
+      "Non-urgent code defects — use mechanic",
+      "Specifying permanent fixes before the incident is stable",
+      "Postmortem writing with no incident behind it — use press-officer"
+    ]
+  },
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "allowed_tools": [
+    "read_file"
+  ],
+  "risk_level": "high",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}
