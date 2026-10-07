@@ -1,0 +1,366 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-skillz.local/schemas/ado-openspec-handoff.schema.json",
+  "title": "ADO to OpenSpec handoff",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "producer",
+    "consumer",
+    "artifact_type",
+    "mode",
+    "source",
+    "normalization",
+    "work_item",
+    "pr_comments",
+    "pull_request",
+    "linked_work_items"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "producer": {
+      "type": "string",
+      "const": "radio"
+    },
+    "consumer": {
+      "type": "string"
+    },
+    "artifact_type": {
+      "type": "string",
+      "const": "ado-normalized"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "work-item",
+        "pr-comments",
+        "work-item-plus-pr-comments"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "platform",
+        "organization",
+        "project",
+        "repository_id",
+        "pull_request_id",
+        "work_item_id",
+        "read_only"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "platform": {
+          "type": "string",
+          "const": "azure-devops"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "project": {
+          "type": "string"
+        },
+        "repository_id": {
+          "type": "string"
+        },
+        "pull_request_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "work_item_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "read_only": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "normalization": {
+      "type": "object",
+      "required": [
+        "status",
+        "missing_fields",
+        "warnings",
+        "html_stripped",
+        "secret_redactions_applied"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "partial",
+            "fail"
+          ]
+        },
+        "missing_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "html_stripped": {
+          "type": "boolean"
+        },
+        "secret_redactions_applied": {
+          "type": "boolean"
+        }
+      }
+    },
+    "work_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "type": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "acceptance_criteria": {
+          "type": "string"
+        },
+        "repro_steps": {
+          "type": "string"
+        },
+        "system_info": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      }
+    },
+    "pr_comments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "thread_id",
+          "comment_id",
+          "parent_comment_id",
+          "author",
+          "content",
+          "file_path",
+          "side",
+          "start_line",
+          "end_line",
+          "start_offset",
+          "end_offset",
+          "thread_status",
+          "thread_is_deleted",
+          "comment_is_deleted",
+          "published_date",
+          "last_updated_date"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "thread_id": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "comment_id": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "parent_comment_id": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "author": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "content": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+            "file_path": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^\\/[^\\/].*"
+            },
+          "side": {
+            "type": "string",
+            "enum": [
+              "left",
+              "right",
+              "general"
+            ]
+          },
+          "start_line": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "end_line": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "start_offset": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "end_offset": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "thread_status": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "thread_is_deleted": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "comment_is_deleted": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "published_date": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "last_updated_date": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "pull_request": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "source_branch": {
+          "type": "string"
+        },
+        "target_branch": {
+          "type": "string"
+        },
+        "status": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "creation_date": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "closed_date": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "linked_work_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "type",
+          "state",
+          "url"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "url": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
