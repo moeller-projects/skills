@@ -1,6 +1,6 @@
 # ADO Gateway
 
-Version: 5.0.1
+Version: 1.0.1
 
 Read Azure DevOps work items and pull request discussions, normalize them, and perform a small approved set of write actions through deterministic dry-run-first Python scripts.
 

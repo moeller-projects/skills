@@ -1,7 +1,7 @@
 {
   "name": "thinking-engine",
   "title": "Thinking Engine",
-  "version": "5.0.1",
+  "version": "1.0.1",
   "summary": "Explore ambiguous problems, test assumptions, compare options, and produce decision-ready plans.",
   "type": "hybrid",
   "activation": {

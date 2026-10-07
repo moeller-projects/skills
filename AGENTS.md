@@ -1,15 +1,16 @@
-# AGENTS.md
+# Working on this repository
 
-This repo contains reusable agent skills.
+This repository contains reusable agent skills under `skills/<kebab-case-name>/`. The root [README](README.md) is the user-facing catalog; each skill's `SKILL.md` is its agent-facing entry point.
 
-## Rules
+## Skill layout
 
-- Skills live in `skills/{skill-name}/`
-- Use kebab-case for names
-- Every skill must contain:
-  - `SKILL.md`
-  - `README.md`
-  - `metadata.json`
-- Versions must match between files
-- Keep `SKILL.md` concise
-- Make minimal changes
+- A complete skill has `SKILL.md`, `README.md`, and `metadata.json` in its directory. Keep its name consistent across the directory, frontmatter, and metadata.
+- Keep the version in `SKILL.md` frontmatter, the `Version:` line in `README.md`, and `metadata.json` identical when changing a skill.
+- Keep `SKILL.md` concise. Put detailed workflows in `references/`, focused guidance in `rules/`, examples/templates in `assets/`, and executable helpers in `scripts/` where needed. Not every skill needs every supporting directory.
+- Make minimal, skill-scoped changes; update links and descriptions in the root README if the catalog or use cases change.
+
+## Change workflow
+
+1. Read the affected skill's `SKILL.md`, `README.md`, and `metadata.json`, plus the relevant supporting files, before editing.
+2. Update the skill's entry point, supporting material, and manifest together. Preserve accurate activation guidance (`use_when` and `avoid_when`) and output contracts.
+3. Review paths, commands, and versions against the files in the tree. Gateway and engine skills have `tests/run-validation.py`; from the affected skill directory, run `python tests/run-validation.py` when test execution is authorized. BLUF has no validation runner; check its manifest, links, and version manually. There is no root-level suite.

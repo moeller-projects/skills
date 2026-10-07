@@ -1,6 +1,6 @@
 # Code Quality Engine
 
-Version: 5.0.1
+Version: 1.0.1
 
 Improve correctness, readability, maintainability, performance, and legacy modernization with minimal mutation.
 

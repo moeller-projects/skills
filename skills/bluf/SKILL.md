@@ -5,7 +5,7 @@ allowed-tools:
   - read_file
 title: BLUF
 version: 1.0.1
-summary: Improve correctness, readability, maintainability, performance, and legacy modernization with minimal mutation.
+summary: Deliver accurate, action-first responses with concise prose and explicit next steps.
 ---
 
 # BLUF — Bottom Line Up Front
