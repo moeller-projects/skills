@@ -1,0 +1,35 @@
+{
+  "name": "scrutineer",
+  "title": "Scrutineer",
+  "version": "2.0.0",
+  "summary": "Review pull requests and changesets against the diff, deliver actionable author-facing findings, and issue a clear verdict.",
+  "type": "rule",
+  "activation": {
+    "use_when": [
+      "Reviewing a pull request or merge request",
+      "Reviewing a diff, patch, or staged changeset before merge",
+      "Writing review comments for an author",
+      "Deciding between approve, request-changes, and comment verdicts",
+      "Re-reviewing a changeset after feedback was addressed"
+    ],
+    "avoid_when": [
+      "Whole-codebase quality, refactoring, or security review — use mechanic",
+      "Test quality or coverage review — use test-driver",
+      "Infrastructure or deployment review — use pit-crew",
+      "Fetching Azure DevOps PR discussion data — use radio for the fetch"
+    ]
+  },
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "allowed_tools": [
+    "read_file"
+  ],
+  "risk_level": "low",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}
