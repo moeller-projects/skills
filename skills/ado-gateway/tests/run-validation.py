@@ -219,6 +219,25 @@ def main() -> None:
             fail("work-item dry-run method must be POST")
         if wi_plan_json["body"][0]["path"] != "/fields/System.Title":
             fail("work-item dry-run missing title patch")
+        bug_fields = {operation["path"]: operation["value"] for operation in wi_plan_json["body"]}
+        if bug_fields.get("/fields/Microsoft.VSTS.TCM.ReproSteps") != "Bug description":
+            fail("Bug description must populate repro steps")
+        if "/fields/System.Description" in bug_fields:
+            fail("Bug description must not populate System.Description")
+        task_plan = run_script(
+            "create-work-item.py",
+            "--organization", "example-org",
+            "--project", "example-project",
+            "--type", "Task",
+            "--title", "Task title",
+            "--description", "Task description",
+        )
+        expect_ok(task_plan, "create-work-item Task dry-run failed")
+        task_fields = {operation["path"]: operation["value"] for operation in json.loads(task_plan.stdout)["body"]}
+        if task_fields.get("/fields/System.Description") != "Task description":
+            fail("Task description must populate System.Description")
+        if "/fields/Microsoft.VSTS.TCM.ReproSteps" in task_fields:
+            fail("Task description must not populate repro steps")
         passed("create-work-item dry-run produces deterministic action plan")
 
         pr_plan = run_script(

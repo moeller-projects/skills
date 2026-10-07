@@ -27,4 +27,6 @@ python scripts/generate-handoff.py --pull-request-url https://dev.azure.com/exam
 python scripts/create-work-item.py --organization example-org --project example-project --type Bug --title "Checkout fails for invalid coupon" --description "Observed during checkout validation."
 ```
 
+For Bug work items, `--description` is written to the reproduction steps field (`Microsoft.VSTS.TCM.ReproSteps`); other work-item types use `System.Description`.
+
 Review the JSON plan. Add `--confirm` only when the write is explicitly approved. Python 3.9+; standard library only.

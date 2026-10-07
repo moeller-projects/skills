@@ -40,7 +40,9 @@ def main():
     if confirm: lib.require_pat()
     url=f'https://dev.azure.com/{organization}/{project}/_apis/wit/workitems/${quote(typ,safe="")}?api-version=7.1'
     body=[{'op':'add','path':'/fields/System.Title','value':title}]
-    if description: body.append({'op':'add','path':'/fields/System.Description','value':description})
+    if description:
+        field='Microsoft.VSTS.TCM.ReproSteps' if typ=='Bug' else 'System.Description'
+        body.append({'op':'add','path':'/fields/'+field,'value':description})
     body += [{'op':'add','path':'/fields/'+k,'value':v} for k,v in extra.items()]
     if not confirm:
         print(json.dumps({'action_type':'create-work-item','dry_run':True,'requires_confirmation':True,'risk':'high','method':'POST','url':url,'content_type':'application/json-patch+json','required_scopes':['Work Items: Read & write','OAuth: vso.work_write'],'body':body})); return 0

@@ -20,6 +20,8 @@ Endpoint: `POST /{organization}/{project}/_apis/wit/workitems/${type}?api-versio
 python scripts/create-work-item.py --organization example-org --project example-project --type Bug --title "Checkout fails" --description "Observed during checkout."
 ```
 
+For `--type Bug`, `--description` populates `Microsoft.VSTS.TCM.ReproSteps` (reproduction steps), not `System.Description`. For other types, it populates `System.Description`. The dry-run shows the exact field patch sent with `--confirm`.
+
 Optional fields can be supplied as a JSON object with `--fields-json`.
 
 ## Create Pull Request
