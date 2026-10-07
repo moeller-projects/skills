@@ -1,0 +1,33 @@
+{
+  "name": "ops-engine",
+  "title": "Ops Engine",
+  "version": "5.0.1",
+  "summary": "Plan safer delivery across CI/CD, containers, Kubernetes, reliability, threat modeling, and rollback decisions.",
+  "type": "hybrid",
+  "activation": {
+    "use_when": [
+      "Creating or reviewing CI/CD workflows",
+      "Working with Docker, containers, or Kubernetes",
+      "Threat modeling a service or deployment path",
+      "Designing resilience, rollback, or release safety plans",
+      "Analyzing operational or deployment risk"
+    ],
+    "avoid_when": [
+      "The task is pure application refactoring",
+      "The task is pure documentation"
+    ]
+  },
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "allowed_tools": [
+    "read_file"
+  ],
+  "risk_level": "high",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}
