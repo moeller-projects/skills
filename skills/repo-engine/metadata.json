@@ -1,0 +1,34 @@
+{
+  "name": "repo-engine",
+  "title": "Repo Engine",
+  "version": "5.0.1",
+  "summary": "Map repository architecture, entry points, conventions, hotspots, and onboarding artifacts for fast execution.",
+  "type": "hybrid",
+  "activation": {
+    "use_when": [
+      "Onboarding into a repository or monorepo",
+      "Understanding architecture before making changes",
+      "Mapping entry points and execution flows",
+      "Extracting conventions and development hotspots",
+      "Producing agent-ready onboarding artifacts"
+    ],
+    "avoid_when": [
+      "The user already provided exact files for a small patch",
+      "Only code quality review is needed"
+    ]
+  },
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "allowed_tools": [
+    "read_file",
+    "list_dir"
+  ],
+  "risk_level": "medium",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}
