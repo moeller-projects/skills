@@ -1,0 +1,32 @@
+{
+  "name": "thinking-engine",
+  "title": "Thinking Engine",
+  "version": "5.0.1",
+  "summary": "Explore ambiguous problems, test assumptions, compare options, and produce decision-ready plans.",
+  "type": "hybrid",
+  "activation": {
+    "use_when": [
+      "The problem is vague or underspecified",
+      "The user asks what they may be missing",
+      "Options are needed before implementation",
+      "A plan needs critique before commitment",
+      "MVP scope needs validation before execution"
+    ],
+    "avoid_when": [
+      "Implementation is already decided",
+      "The user wants direct execution only",
+      "A concise answer matters more than exploration"
+    ]
+  },
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "allowed_tools": [],
+  "risk_level": "medium",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}
