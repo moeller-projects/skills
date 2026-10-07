@@ -1,0 +1,33 @@
+{
+  "name": "test-engine",
+  "title": "Test Engine",
+  "version": "5.0.1",
+  "summary": "Design resilient test strategies and practical unit, integration, E2E, and Playwright coverage improvements.",
+  "type": "rule",
+  "activation": {
+    "use_when": [
+      "Writing tests for new or changed behavior",
+      "Reviewing test quality or coverage gaps",
+      "Designing E2E or Playwright workflows",
+      "Reducing flaky or brittle tests",
+      "Improving edge-case validation"
+    ],
+    "avoid_when": [
+      "The task is pure refactoring without tests",
+      "The user only wants documentation"
+    ]
+  },
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "allowed_tools": [
+    "read_file"
+  ],
+  "risk_level": "medium",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}
