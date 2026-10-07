@@ -1,0 +1,37 @@
+{
+  "name": "spec-engine",
+  "title": "Spec Engine",
+  "version": "5.1.1",
+  "summary": "Turn requests or ado-gateway handoffs into structured, version-aware specs with risk tiers, acceptance criteria, policy gates, and optional OpenSpec proposal output.",
+  "type": "hybrid",
+  "activation": {
+    "use_when": [
+      "Creating a freeform implementation-ready spec from user input, tickets, or research",
+      "Consuming a normalized ado-gateway handoff JSON to generate a spec from Azure DevOps work item data",
+      "Validating requirement quality or acceptance criteria",
+      "Diffing or versioning spec changes",
+      "Enforcing policy or governance around requirements",
+      "Producing implementation-ready artifacts from ambiguous requests",
+      "Emitting an OpenSpec proposal from a spec produced by this skill or a prior session"
+    ],
+    "avoid_when": [
+      "The user only wants code",
+      "The task has no requirement or spec component",
+      "The task is validating, scoring, or diffing an existing spec file with no new authoring step",
+      "The task is pure OpenSpec governance with no spec-authoring step"
+    ]
+  },
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "allowed_tools": [
+    "read_file"
+  ],
+  "risk_level": "medium",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}
