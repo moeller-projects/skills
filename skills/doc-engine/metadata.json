@@ -1,0 +1,37 @@
+{
+  "name": "doc-engine",
+  "title": "Doc Engine",
+  "version": "5.1.1",
+  "summary": "Create accurate technical docs, READMEs, AGENTS.md files, and developer guides with clear structure.",
+  "type": "rule",
+  "activation": {
+    "use_when": [
+      "Writing or improving a README",
+      "Writing or refining AGENTS.md guidance",
+      "Documenting architecture or developer workflows",
+      "Creating usage docs or technical notes",
+      "Explaining how a system should be used or maintained",
+      "Capturing an architectural decision, reusable pattern, or failure lesson as a durable decision record",
+      "Writing stakeholder-facing reports or review artifacts",
+      "Creating printable documentation deliverables",
+      "Creating standalone documentation files intended for sharing"
+    ],
+    "avoid_when": [
+      "The user wants implementation only",
+      "Documentation would duplicate obvious code"
+    ]
+  },
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "allowed_tools": [
+    "read_file"
+  ],
+  "risk_level": "medium",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}
