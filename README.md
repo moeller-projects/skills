@@ -12,22 +12,39 @@ Reusable instructions for coding agents. Each skill's `SKILL.md` describes when 
 
 | Skill | Use it for |
 | --- | --- |
-| [ado-gateway](skills/ado-gateway/) | Azure DevOps work-item fields, comments, change history, related work, and PR discussion; guarded, approved writes |
-| [bluf](skills/bluf/) | Action-first, concise response style that preserves accuracy and safety |
-| [code-quality-engine](skills/code-quality-engine/) | Code review, refactoring, security, and evidence-backed performance |
-| [delivery-engine](skills/delivery-engine/) | Breaking confirmed scope into tasks, dependencies, and done criteria |
-| [doc-engine](skills/doc-engine/) | READMEs, agent instructions, developer guides, and decision records |
-| [ops-engine](skills/ops-engine/) | CI/CD, infrastructure, rollout safety, and operational risk |
-| [repo-engine](skills/repo-engine/) | Repository discovery, conventions, entry points, and hotspots |
-| [spec-engine](skills/spec-engine/) | Requirements, acceptance criteria, and OpenSpec proposals |
-| [test-engine](skills/test-engine/) | Test strategy, coverage, E2E flows, and flaky-test reduction |
-| [thinking-engine](skills/thinking-engine/) | Clarifying vague problems and comparing options before commitment |
+| [azure-devops](skills/azure-devops/) | Azure DevOps work-item fields, comments, change history, related work, and PR discussion; guarded, approved writes |
+| [concise-output](skills/concise-output/) | Action-first, concise response style that preserves accuracy and safety |
+| [code-review](skills/code-review/) | Code review, refactoring, security, and evidence-backed performance |
+| [task-planning](skills/task-planning/) | Breaking confirmed scope into tasks, dependencies, and done criteria |
+| [technical-writing](skills/technical-writing/) | READMEs, agent instructions, developer guides, and decision records |
+| [operations](skills/operations/) | CI/CD, infrastructure, rollout safety, and operational risk |
+| [codebase-onboarding](skills/codebase-onboarding/) | Repository discovery, conventions, entry points, and hotspots |
+| [spec-writing](skills/spec-writing/) | Requirements, acceptance criteria, and OpenSpec proposals |
+| [test-strategy](skills/test-strategy/) | Test strategy, coverage, E2E flows, and flaky-test reduction |
+| [discovery](skills/discovery/) | Clarifying vague problems and comparing options before commitment |
+
+## Renames
+
+| Original | Production |
+| --- | --- |
+| `thinking-engine` | `discovery` |
+| `spec-engine` | `spec-writing` |
+| `delivery-engine` | `task-planning` |
+| `repo-engine` | `codebase-onboarding` |
+| `code-quality-engine` | `code-review` |
+| `test-engine` | `test-strategy` |
+| `doc-engine` | `technical-writing` |
+| `ops-engine` | `operations` |
+| `ado-gateway` | `azure-devops` |
+| `bluf` | `concise-output` |
+| `scrutineer` | `pr-review` |
+| `safety-car` | `incident-response` |
 
 `skills/caveman/` contains only partial supporting files and is not a usable skill directory yet.
 
 ## Contributing
 
-See [AGENTS.md](AGENTS.md) for the skill layout, version rules, and change workflow. Gateway and engine skills include a `tests/run-validation.py` script; run it from the skill directory when validating a change to that skill. BLUF has no validation runner. There is no repository-wide build or test command in this tree.
+See [AGENTS.md](AGENTS.md) for the skill layout, version rules, and change workflow. Skills with `tests/run-validation.py` include their own validation runner; run it from the skill directory when validating a change. Concise Output has no validation runner. There is no repository-wide build or test command in this tree.
 
 ## License
 
