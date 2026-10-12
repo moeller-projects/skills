@@ -41,7 +41,7 @@ root-cause:
 
 follow-ups:
 - Add EU edge validation to CDN deploy checks — owner: platform team
-- Add external synthetics for the mobile API path — owner: platform team (handed to pit-crew)
+- Add external synthetics for the mobile API path — owner: platform team (handed to `operations`)
 - Rework access rotation so on-call never loses read access — owner: security team
 
 comms:

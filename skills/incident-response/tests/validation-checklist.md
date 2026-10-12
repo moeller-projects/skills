@@ -5,7 +5,7 @@ Run this checklist before accepting an incident artifact as complete.
 ## Trigger Check
 
 - [ ] Task involves a live incident, incident triage, or a postmortem of a real incident.
-- [ ] Task is NOT a planned deployment (pit-crew), a non-urgent defect (mechanic), or pure documentation (press-officer).
+- [ ] Task is NOT a planned deployment (`operations`), a non-urgent defect (`code-review`), or pure documentation (`technical-writing`).
 
 ## Declaration Check
 
@@ -36,4 +36,4 @@ Run this checklist before accepting an incident artifact as complete.
 - [ ] Trigger, root cause, and contributing factors are stated separately.
 - [ ] Unknown root cause is admitted as unknown — never fabricated.
 - [ ] Every follow-up has an owner.
-- [ ] Permanent fixes are handed off to pit-crew (infrastructure) or mechanic (code).
+- [ ] Permanent fixes are handed off to `operations` (infrastructure) or `code-review` (code).

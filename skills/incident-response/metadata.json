@@ -13,10 +13,10 @@
       "Writing a postmortem or follow-up plan after an incident"
     ],
     "avoid_when": [
-      "Planned deployment, release, or rollback design — use pit-crew",
-      "Non-urgent code defects — use mechanic",
+      "Planned deployment, release, or rollback design — use operations",
+      "Non-urgent code defects — use code-review",
       "Specifying permanent fixes before the incident is stable",
-      "Postmortem writing with no incident behind it — use press-officer"
+      "Postmortem writing with no incident behind it — use technical-writing"
     ]
   },
   "compatibility": [

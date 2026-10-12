@@ -35,5 +35,5 @@
 
 - Resolution requires verified stable monitoring, not just an applied fix.
 - Convert root cause and contributing factors into follow-ups with owners.
-- Hand permanent fixes to pit-crew (infrastructure) or mechanic (code); hand the durable postmortem document to press-officer when a wider audience needs it.
+- Hand permanent fixes to `operations` (infrastructure) or `code-review` (code); hand the durable postmortem document to `technical-writing` when a wider audience needs it.
 - If root cause is unknown, close as `monitoring` with investigation follow-ups. Never fabricate a cause.

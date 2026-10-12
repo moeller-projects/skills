@@ -41,7 +41,7 @@ root-cause:
 follow-ups:
 - Add config-key validation to the deploy pipeline — owner: platform team
 - Audit staging/prod config drift — owner: platform team
-- Permanent fix for the 1f42c feature behind a flag — owner: checkout team (handed to mechanic)
+- Permanent fix for the 1f42c feature behind a flag — owner: checkout team (handed to `code-review`)
 
 comms:
 - Status page: "Elevated checkout errors 14:07–14:31Z, resolved by rollback. No payment data lost."

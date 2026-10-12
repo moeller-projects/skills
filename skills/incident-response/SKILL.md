@@ -1,11 +1,11 @@
 ---
 name: incident-response
-description: Use when responding to a live production incident — triage, mitigation-first stabilization, timeline capture, comms, and postmortem follow-ups. Do not use when the task is planned deployment or rollback design (use pit-crew), non-urgent code defects (use mechanic), or writing specs for permanent fixes before the incident is stable.
-allowed-tools:
-  - read_file
-title: Incident Response
-version: 2.0.0
-summary: Respond to live production incidents with mitigation-first triage, disciplined timelines, clear comms, and durable follow-ups.
+description: Use when responding to a live production incident — triage, mitigation-first stabilization, timeline capture, comms, and postmortem follow-ups. Do not use when the task is planned deployment or rollback design (use `operations`), non-urgent code defects (use `code-review`), or writing specs for permanent fixes before the incident is stable.
+allowed-tools: read_file
+metadata:
+  title: Incident Response
+  version: "2.0.0"
+  summary: Respond to live production incidents with mitigation-first triage, disciplined timelines, clear comms, and durable follow-ups.
 ---
 
 # Incident Response
@@ -24,10 +24,10 @@ Respond to live production incidents: stabilize first, capture a trustworthy tim
 
 ## Avoid When
 
-- The task is planned deployment, release, or rollback design — use `pit-crew`.
-- The task is a non-urgent code defect — use `mechanic`.
+- The task is planned deployment, release, or rollback design — use `operations`.
+- The task is a non-urgent code defect — use `code-review`.
 - The task is specifying the permanent fix in detail before the incident is stable — mitigate first, then hand off.
-- There is no incident and no incident artifact (postmortem request without an incident is a doc task — use `press-officer`).
+- There is no incident and no incident artifact (postmortem request without an incident is a documentation task — use `technical-writing`).
 
 ## Workflow
 
@@ -77,9 +77,9 @@ During live response, emit the contract after each status change. Post-incident,
 
 ## Handoffs
 
-- Hand off to `pit-crew` for permanent infrastructure, deployment, or reliability fixes once the incident is stable.
-- Hand off to `mechanic` for the permanent code fix once the fire is out.
-- Hand off to `press-officer` when the postmortem must become a durable document for a wider audience.
+- Hand off to `operations` for permanent infrastructure, deployment, or reliability fixes once the incident is stable.
+- Hand off to `code-review` for the permanent code fix once the fire is out.
+- Hand off to `technical-writing` when the postmortem must become a durable document for a wider audience.
 - Terminal skill during live response — nothing outranks stabilization.
 
 ## Error Handling

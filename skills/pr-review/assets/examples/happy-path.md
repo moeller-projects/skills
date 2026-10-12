@@ -29,7 +29,7 @@ findings:
   suggestion: consider `/reset` or document the naming choice
 
 out-of-scope:
-- `src/auth/password.ts` uses a deprecated hash work factor — pre-existing, hand to mechanic
+- `src/auth/password.ts` uses a deprecated hash work factor — pre-existing, hand to `code-review`
 
 risk:
 - Token expiry is 24h; even with replay fixed, a leaked link has a long window — consider shortening in a follow-up

@@ -15,7 +15,7 @@ An incident ends with owned follow-ups, not with silence. Separate trigger, root
 - Trigger, root cause, and contributing factors are stated separately.
 - Unknown root cause is admitted and tracked as a follow-up, never fabricated.
 - Every follow-up has a named owner.
-- Permanent fixes are handed off to pit-crew (infrastructure) or mechanic (code).
+- Permanent fixes are handed off to `operations` (infrastructure) or `code-review` (code).
 
 ## Anti-Pattern
 

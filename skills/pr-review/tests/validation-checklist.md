@@ -5,7 +5,7 @@ Run this checklist before accepting a pull request review as complete.
 ## Trigger Check
 
 - [ ] Task is reviewing a pull request, diff, patch, or changeset.
-- [ ] Task is NOT whole-codebase review (mechanic), test coverage review (test-driver), or infrastructure review (pit-crew).
+- [ ] Task is NOT whole-codebase review (`code-review`), test coverage review (`test-strategy`), or infrastructure review (`operations`).
 
 ## Diff Check
 

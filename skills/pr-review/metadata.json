@@ -13,10 +13,10 @@
       "Re-reviewing a changeset after feedback was addressed"
     ],
     "avoid_when": [
-      "Whole-codebase quality, refactoring, or security review — use mechanic",
-      "Test quality or coverage review — use test-driver",
-      "Infrastructure or deployment review — use pit-crew",
-      "Fetching Azure DevOps PR discussion data — use radio for the fetch"
+      "Whole-codebase quality, refactoring, or security review — use code-review",
+      "Test quality or coverage review — use test-strategy",
+      "Infrastructure or deployment review — use operations",
+      "Fetching Azure DevOps PR discussion data — use azure-devops for the fetch"
     ]
   },
   "compatibility": [

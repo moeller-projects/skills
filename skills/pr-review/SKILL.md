@@ -1,11 +1,11 @@
 ---
 name: pr-review
-description: Use when reviewing a pull request, diff, or changeset and producing author-facing review feedback with an approve / request-changes / comment verdict. Do not use when the task is whole-codebase quality or security review (use mechanic), test coverage review (use test-driver), or infrastructure review (use pit-crew).
-allowed-tools:
-  - read_file
-title: PR Review
-version: 2.0.0
-summary: Review pull requests and changesets against the diff, deliver actionable author-facing findings, and issue a clear verdict.
+description: Use when reviewing a pull request, diff, or changeset and producing author-facing review feedback with an approve / request-changes / comment verdict. Do not use when the task is whole-codebase quality or security review (use `code-review`), test coverage review (use `test-strategy`), or infrastructure review (use `operations`).
+allowed-tools: read_file
+metadata:
+  title: PR Review
+  version: "2.0.0"
+  summary: Review pull requests and changesets against the diff, deliver actionable author-facing findings, and issue a clear verdict.
 ---
 
 # PR Review
@@ -24,10 +24,10 @@ Review pull requests, diffs, and changesets. Inspect what actually changed, prod
 
 ## Avoid When
 
-- The task is whole-codebase quality, refactoring, or security review — use `mechanic`.
-- The task is test quality or coverage review — use `test-driver`.
-- The task is infrastructure or deployment review — use `pit-crew`.
-- The task is fetching Azure DevOps PR discussion data — use `radio` for the fetch, then return here for the review.
+- The task is whole-codebase quality, refactoring, or security review — use `code-review`.
+- The task is test quality or coverage review — use `test-strategy`.
+- The task is infrastructure or deployment review — use `operations`.
+- The task is fetching Azure DevOps PR discussion data — use `azure-devops` for the fetch, then return here for the review.
 
 ## Workflow
 
@@ -62,10 +62,10 @@ When the changeset is clean, `findings:` contains a single `- none` line instead
 
 ## Handoffs
 
-- Accepts work from `co-driver` once the changeset to review is identified.
-- Accepts GitHub or Azure DevOps pull request review requests routed from `radio`.
-- Hand off to `mechanic` when the review surfaces systemic code issues beyond the diff.
-- Hand off to `test-driver` when the changeset lacks meaningful coverage for its behavior.
+- Accepts work from `codebase-onboarding` once the changeset to review is identified.
+- Accepts GitHub or Azure DevOps pull request review requests routed from `azure-devops`.
+- Hand off to `code-review` when the review surfaces systemic code issues beyond the diff.
+- Hand off to `test-strategy` when the changeset lacks meaningful coverage for its behavior.
 - Terminal skill for the review artifact itself — the verdict and findings are the final output.
 
 ## Error Handling
