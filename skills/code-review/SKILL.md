@@ -1,10 +1,10 @@
 ---
 name: code-review
-description: Use when reviewing, refactoring, or modernizing application or library code for correctness, maintainability, security, or evidence-backed performance work. Covers code-level security — injection flaws, authorization gaps, secrets in source, and unsafe handling of untrusted input. Do not use when the request is test quality or coverage review, documentation, or infrastructure work.
+description: Use when reviewing a whole codebase or subsystem for systemic code quality, security, refactoring, or evidence-backed performance concerns. Inspect application and library code for correctness, maintainability, injection flaws, authorization gaps, secrets, unsafe input handling, complexity, legacy modernization, and measured bottlenecks. Do not use for pull request, diff, patch, changeset, or merge-request review or author-facing feedback; use `pr-review` instead. Do not use for test quality or coverage, documentation, or infrastructure or deployment review.
 allowed-tools: read_file
 metadata:
   title: Code Review
-  version: "1.0.1"
+  version: "1.1.0"
   summary: Improve correctness, readability, maintainability, performance, and legacy modernization with minimal mutation.
 ---
 
@@ -16,17 +16,18 @@ Improve code correctness, readability, maintainability, performance, and moderni
 
 ## Use When
 
-- Reviewing code for quality or safety.
-- Reviewing application or library code for security defects (injection, authorization gaps, secrets in source, unsafe input handling).
-- Refactoring for clarity or maintainability.
-- Optimizing performance with real evidence.
-- Reducing complexity in fragile areas.
+- Reviewing a whole codebase or subsystem for systemic code quality or safety issues.
+- Reviewing a whole codebase or subsystem for code-level security defects (injection, authorization gaps, secrets in source, unsafe input handling).
+- Refactoring a codebase or subsystem for clarity or maintainability.
+- Optimizing systemic performance with real evidence.
+- Reducing complexity in fragile areas across a codebase or subsystem.
 - Modernizing legacy code with minimal mutation.
 
 ## Avoid When
 
+- Reviewing a pull request, diff, patch, changeset, or merge request, or writing author-facing review feedback — use `pr-review`.
 - Only documentation is requested.
-- Test design is the primary task.
+- Test design or coverage is the primary task.
 - Infrastructure or deployment is the primary task.
 
 ## Workflow
@@ -83,6 +84,8 @@ See `tests/validation-checklist.md` for the full checklist.
 - `assets/examples/happy-path.md` — mixed bug/cleanup scenario
 - `assets/examples/edge-case.md` — performance request without profiling data
 - `scripts/validate-output.py` — validates output format
+- `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
+- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
 
 ## References
 

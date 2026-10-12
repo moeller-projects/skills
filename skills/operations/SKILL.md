@@ -4,7 +4,7 @@ description: Use when planning or reviewing CI/CD, infrastructure, containers, K
 allowed-tools: read_file
 metadata:
   title: Operations
-  version: "1.0.1"
+  version: "1.0.2"
   summary: Plan safer delivery across CI/CD, containers, Kubernetes, reliability, threat modeling, and rollback decisions.
 ---
 
@@ -92,6 +92,8 @@ See `tests/validation-checklist.md` for the full checklist.
 - `assets/examples/happy-path.md` — Kubernetes liveness probe scenario
 - `assets/examples/edge-case.md` — unacceptable risk abort scenario
 - `scripts/validate-output.py` — validates output structure
+- `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
+- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
 
 ## References
 

@@ -162,6 +162,7 @@ def check_description(desc):
 # ------------------------------------------------------------------- linting
 
 def lint_structure(skill_dir, metadata, body):
+    errors = []
     warnings = []
     lines = body.splitlines()
     if len(lines) > SKILL_MD_SOFT_LINE_LIMIT:
@@ -172,7 +173,7 @@ def lint_structure(skill_dir, metadata, body):
 
     extra = set(metadata) - ALLOWED_FIELDS
     if extra:
-        warnings.append(
+        errors.append(
             "Unexpected frontmatter fields: "
             + ", ".join(sorted(extra))
             + f" (allowed: {', '.join(sorted(ALLOWED_FIELDS))})"
@@ -231,7 +232,7 @@ def lint_structure(skill_dir, metadata, body):
             + ", ".join(sorted(set(abs_paths))[:3])
             + "); use paths relative to the skill root"
         )
-    return warnings
+    return errors, warnings
 
 
 # ---------------------------------------------------------------------- main
@@ -267,7 +268,11 @@ def validate_skill(skill_dir):
             errors.append(
                 f"Compatibility exceeds {MAX_COMPATIBILITY_LENGTH} chars ({len(c)})"
             )
-    warnings += lint_structure(skill_dir, metadata, body)
+    structure_errors, structure_warnings = lint_structure(
+        skill_dir, metadata, body
+    )
+    errors += structure_errors
+    warnings += structure_warnings
     return {"errors": errors, "warnings": warnings}
 
 

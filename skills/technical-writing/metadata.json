@@ -1,7 +1,7 @@
 {
   "name": "technical-writing",
   "title": "Technical Writing",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "summary": "Create accurate technical docs, READMEs, AGENTS.md files, and developer guides with clear structure.",
   "type": "rule",
   "activation": {
@@ -11,10 +11,7 @@
       "Documenting architecture or developer workflows",
       "Creating usage docs or technical notes",
       "Explaining how a system should be used or maintained",
-      "Capturing an architectural decision, reusable pattern, or failure lesson as a durable decision record",
-      "Writing stakeholder-facing reports or review artifacts",
-      "Creating printable documentation deliverables",
-      "Creating standalone documentation files intended for sharing"
+      "Capturing an architectural decision, reusable pattern, or failure lesson as a durable decision record"
     ],
     "avoid_when": [
       "The user wants implementation only",

@@ -4,7 +4,7 @@ description: Use when creating or improving README, AGENTS.md, architecture, wor
 allowed-tools: read_file
 metadata:
   title: Technical Writing
-  version: "1.0.1"
+  version: "1.0.2"
   summary: Create accurate technical docs, READMEs, AGENTS.md files, and developer guides with clear structure.
 ---
 
@@ -116,6 +116,8 @@ See `tests/validation-checklist.md` for the full checklist.
 - `assets/examples/decision-record.md` — decision record scenario and expected output
 - `assets/examples/mode-mixed.md` — multi-mode README with Diátaxis mode tags
 - `scripts/validate-output.py` — validates output structure
+- `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
+- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
 - `assets/examples/html-report.md` — HTML report output example; read when producing a standalone HTML artifact.
 - `assets/templates/html-document.html` — self-contained HTML document template; use when selecting HTML output.
 

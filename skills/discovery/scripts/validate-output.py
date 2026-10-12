@@ -28,10 +28,17 @@ def validate_text(input_text: str) -> list[str]:
         re.MULTILINE | re.DOTALL,
     )
     option_count = 0
+    options_body = ""
     if options_match is not None:
-        option_count = len(re.findall(r"^[0-9]+\.", options_match.group("body"), re.MULTILINE))
-    if option_count < 1:
-        errors.append("options must include at least one numbered option")
+        options_body = options_match.group("body")
+        option_count = len(re.findall(r"^[0-9]+\.", options_body, re.MULTILINE))
+    if option_count < 2:
+        ruled_out = re.search(
+            r"(?im)^\s*(?:ruled[- ]out alternatives?|alternatives ruled out)\s*:",
+            input_text,
+        )
+        if option_count != 1 or ruled_out is None:
+            errors.append("options must include at least two numbered options unless ruled-out alternatives are documented")
     return errors
 
 

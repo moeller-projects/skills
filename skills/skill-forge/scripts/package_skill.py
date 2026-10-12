@@ -26,7 +26,8 @@ EXCLUDE_DIRS = {".git", "__pycache__", "node_modules", ".pytest_cache"}
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     strict = "--strict" in sys.argv
-    if not args:
+    if not args or len(args) > 2:
+        print("Error: expected <skill-dir> [output-directory] [--strict]")
         print(__doc__)
         sys.exit(2)
     skill_dir = Path(args[0]).resolve()

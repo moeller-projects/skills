@@ -31,27 +31,30 @@ def validate_output(input_text: str) -> list[str]:
     elif severities[0] not in VALID_SEVERITIES:
         errors.append(f"invalid severity: {severities[0]} (must be SEV1, SEV2, or SEV3)")
 
+    sections: dict[str, str] = {}
+    section_matches = list(re.finditer(r"^(impact|timeline|mitigation|root-cause|follow-ups|comms):[ \t]*$", input_text, re.MULTILINE))
+    for index, match in enumerate(section_matches):
+        end = section_matches[index + 1].start() if index + 1 < len(section_matches) else len(input_text)
+        sections[match.group(1)] = input_text[match.end():end]
     for section in ("impact", "timeline", "mitigation", "root-cause", "follow-ups", "comms"):
-        if not re.search(rf"^{section}:", input_text, re.MULTILINE):
+        if section not in sections:
             errors.append(f"missing '{section}:' section")
+        elif not sections[section].strip():
+            errors.append(f"empty '{section}:' section")
 
-    timeline_block = re.search(r"^timeline:\n((?:- .*\n?)*)", input_text, re.MULTILINE)
-    if timeline_block and timeline_block.group(1).strip():
-        for line in timeline_block.group(1).strip().splitlines():
-            if not re.match(r"^- \d{2}:\d{2}Z\b", line):
-                errors.append(f"timeline entry missing UTC timestamp: {line.strip()}")
-                break
+    timeline_body = sections.get("timeline", "")
+    for line in timeline_body.splitlines():
+        if line.strip() and line.lstrip().startswith("- ") and not re.match(r"^\s*- \d{2}:\d{2}Z\b", line):
+            errors.append(f"timeline entry missing UTC timestamp: {line.strip()}")
 
-    followups_block = re.search(r"^follow-ups:\n((?:- .*\n?)*)", input_text, re.MULTILINE)
-    if followups_block and followups_block.group(1).strip():
-        for line in followups_block.group(1).strip().splitlines():
-            if "owner:" not in line:
-                errors.append(f"follow-up missing owner: {line.strip()}")
-                break
+    followups_body = sections.get("follow-ups", "")
+    for line in followups_body.splitlines():
+        if line.strip() and line.lstrip().startswith("- ") and "owner:" not in line:
+            errors.append(f"follow-up missing owner: {line.strip()}")
 
     if statuses and statuses[0] == "resolved":
-        root_block = re.search(r"^root-cause:\n((?:- .*\n?)*)", input_text, re.MULTILINE)
-        if not root_block or not root_block.group(1).strip():
+        root_body = sections.get("root-cause", "")
+        if not root_body.strip():
             errors.append("resolved incident must state a root cause or explicitly say unknown")
 
     return errors

@@ -2,6 +2,18 @@
 
 Read this when improving, auditing, or repairing an existing skill.
 
+## Contents
+
+- [Audit rubric](#audit-rubric)
+  - [1. Spec compliance](#1-spec-compliance-must-be-zero-errors)
+  - [2. Description](#2-description-triggering)
+  - [3. Context budget](#3-context-budget)
+  - [4. Structure](#4-structure)
+  - [5. Scripts](#5-scripts)
+  - [6. Anti-patterns to fix on sight](#6-anti-patterns-to-fix-on-sight)
+- [Evaluation-driven iteration](#evaluation-driven-iteration)
+- [Triggering optimization](#triggering-optimization-description-tuning)
+
 ## Audit rubric
 
 Work through these categories in order. Fix earlier categories first — a skill

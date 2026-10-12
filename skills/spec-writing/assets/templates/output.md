@@ -55,9 +55,9 @@ openspec_proposal:
   change_path: openspec/changes/<change-name>/
   metadata_file: .openspec.yaml
   proposal_file: proposal.md
+  skip_specs: true # omit delta_spec_files when no capability delta is needed
   delta_spec_files:
   - specs/<capability>/spec.md
-
 .openspec.yaml:
   schema: spec-driven
   created: YYYY-MM-DD

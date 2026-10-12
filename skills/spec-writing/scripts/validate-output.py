@@ -201,9 +201,12 @@ def validate_openspec(text: str, errors: list[str]) -> None:
     if not re.search(r"^openspec_proposal:$", text, re.MULTILINE):
         errors.append("OpenSpec output missing openspec_proposal")
     proposal = openspec_proposal_section(text)
-    for field in ("path", "change_path", "metadata_file", "proposal_file", "delta_spec_files"):
+    skip_specs = re.search(r"^  skip_specs:[ \t]*true[ \t]*$", proposal, re.MULTILINE) is not None
+    for field in ("path", "change_path", "metadata_file", "proposal_file"):
         if not re.search(rf"^  {field}:", proposal, re.MULTILINE):
             errors.append(f"OpenSpec output missing openspec_proposal.{field}")
+    if not skip_specs and not re.search(r"^  delta_spec_files:", proposal, re.MULTILINE):
+        errors.append("OpenSpec output missing openspec_proposal.delta_spec_files")
     if not re.search(r"^  metadata_file:[ \t]*\.openspec\.yaml$", proposal, re.MULTILINE):
         errors.append("OpenSpec output must use metadata_file: .openspec.yaml")
     if re.search(r"change\.yaml", proposal):
@@ -218,7 +221,7 @@ def validate_openspec(text: str, errors: list[str]) -> None:
                 if header not in block:
                     errors.append(f"OpenSpec {proposal_file} missing section: {header}")
     paths = delta_paths(proposal)
-    if not paths:
+    if not skip_specs and not paths:
         errors.append("OpenSpec output must include at least one openspec_proposal.delta_spec_files entry")
     for path in paths:
         block = named_block(text, path)

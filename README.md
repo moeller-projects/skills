@@ -24,6 +24,9 @@ Reusable instructions for coding agents. Each skill's `SKILL.md` describes when 
 | [discovery](skills/discovery/) | Clarifying vague problems and comparing options before commitment |
 | [incident-response](skills/incident-response/) | Mitigation-first response to live production incidents, timeline capture, and postmortem follow-ups |
 | [pr-review](skills/pr-review/) | Pull request and changeset reviews with actionable findings and a clear verdict |
+| [skill-forge](skills/skill-forge/) | Creating, auditing, refactoring, validating, and packaging Agent Skills |
+| [debugging](skills/debugging/) | Root-cause diagnosis of local failures: repro-first, hypothesis ranking, and bisection |
+| [git-workflow](skills/git-workflow/) | Conventional commits, branching, rebasing, stacked PRs, and safe history recovery |
 
 ## Renames
 

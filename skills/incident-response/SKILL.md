@@ -4,7 +4,7 @@ description: Use when responding to a live production incident — triage, mitig
 allowed-tools: read_file
 metadata:
   title: Incident Response
-  version: "2.0.0"
+  version: "2.0.2"
   summary: Respond to live production incidents with mitigation-first triage, disciplined timelines, clear comms, and durable follow-ups.
 ---
 
@@ -113,6 +113,8 @@ See `tests/validation-checklist.md` for the full checklist.
 - `assets/examples/happy-path.md` — SEV2 API outage end to end
 - `assets/examples/edge-case.md` — incident with observability blind spots
 - `scripts/validate-output.py` — validates output structure
+- `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
+- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
 
 ## References
 

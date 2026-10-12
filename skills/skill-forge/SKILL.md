@@ -3,7 +3,7 @@ name: skill-forge
 description: Create new Agent Skills and refactor existing ones to production grade, compliant with the agentskills.io open specification. Use when the user asks to create, build, scaffold, write, improve, refactor, audit, review, fix, validate, or package a skill (a directory containing SKILL.md with YAML frontmatter). Covers spec-compliant frontmatter (name/description limits), triggering-optimized descriptions, progressive disclosure structure, scripts/references/assets organization, validation, and .skill packaging — even when the user just says "make this skill better" or "check my skill".
 compatibility: Requires Python 3.8+ to run the bundled scripts (stdlib only; PyYAML optional). The guidance in SKILL.md and references/ works without it.
 metadata:
-  version: "1.1"
+  version: "1.2"
   spec: agentskills.io
 ---
 

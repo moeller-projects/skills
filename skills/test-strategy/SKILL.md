@@ -4,7 +4,7 @@ description: Use when designing or improving unit, integration, E2E, or flake-re
 allowed-tools: read_file
 metadata:
   title: Test Strategy
-  version: "1.0.1"
+  version: "1.0.2"
   summary: Design resilient test strategies and practical unit, integration, E2E, and Playwright coverage improvements.
 ---
 
@@ -82,6 +82,8 @@ See `tests/validation-checklist.md` for the full checklist.
 - `assets/examples/happy-path.md` — discount function test plan
 - `assets/examples/edge-case.md` — unavailable E2E environment scenario
 - `scripts/validate-output.py` — validates output structure
+- `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
+- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
 
 ## References
 

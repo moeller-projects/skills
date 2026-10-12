@@ -82,6 +82,13 @@ The system MUST deliver reset links to verified account emails.
 - **WHEN** a verified user requests password reset
 - **THEN** the system sends a reset email with a one-time link
 """
+SKIP_SPECS_OPENSPEC = VALID_OPENSPEC.replace(
+    "  delta_spec_files:\n  - specs/auth/spec.md\n",
+    "  skip_specs: true\n",
+).replace(
+    "\nspecs/auth/spec.md:\n## ADDED Requirements\n### Requirement: Password reset link delivery\nThe system MUST deliver reset links to verified account emails.\n\n#### Scenario: Reset link sent\n- **WHEN** a verified user requests password reset\n- **THEN** the system sends a reset email with a one-time link\n",
+    "",
+)
 
 
 def main() -> None:
@@ -138,6 +145,8 @@ def main() -> None:
 
     check(VALID_OPENSPEC, True, "valid openspec output unexpectedly failed")
     passed("valid openspec output passes")
+    check(SKIP_SPECS_OPENSPEC, True, "skip_specs OpenSpec output unexpectedly failed")
+    passed("skip_specs permits OpenSpec proposals without delta specs")
 
     scenario_only_normative = VALID_OPENSPEC.replace(
         "The system MUST deliver reset links to verified account emails.",

@@ -2,12 +2,12 @@
 
 ## Scenario
 
-A PR mixes a null-pointer bug fix with broad variable renaming across 15 files.
+A codebase has a null-pointer bug in `userService.ts` alongside broad variable renaming across 15 files.
 
 ## Input
 
 - `userService.ts:42` — `user.profile.name` accessed without null check; crashes when profile is absent.
-- PR also renames `userId` → `userID` in 15 files unrelated to the bug.
+- The same subsystem also renames `userId` → `userID` in 15 unrelated files.
 
 ## Expected Output
 
@@ -19,11 +19,11 @@ findings:
 
 - [low] 15 files — rename userId → userID
   why: style preference, no behavioral impact
-  fix: defer to a separate cleanup PR
+  fix: defer to a separate cleanup task
 
 patch-plan:
 1. userService.ts:42 — apply null guard (critical, isolated change)
-2. Defer rename — separate PR, zero risk, zero urgency
+2. Defer rename — separate cleanup task, zero risk, zero urgency
 
 risk:
 - None after patch; the guard uses existing optional-chaining support in the codebase

@@ -4,7 +4,7 @@ description: Use when reviewing a pull request, diff, or changeset and producing
 allowed-tools: read_file
 metadata:
   title: PR Review
-  version: "2.0.0"
+  version: "2.0.1"
   summary: Review pull requests and changesets against the diff, deliver actionable author-facing findings, and issue a clear verdict.
 ---
 

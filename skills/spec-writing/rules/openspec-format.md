@@ -18,6 +18,7 @@ When `output_format=openspec`, serialize the existing spec into an OpenSpec-comp
 - `proposal.md` includes: `## Why`, `## What Changes`, `## Capabilities`, `## Impact`.
 - Delta specs use OpenSpec section headers: `## ADDED Requirements`, `## MODIFIED Requirements`, `## REMOVED Requirements`, or `## RENAMED Requirements`.
 - Every ADDED/MODIFIED requirement uses `### Requirement:` and includes at least one `#### Scenario:` block.
+- Every ADDED/MODIFIED requirement body MUST include SHALL or MUST normative language.
 - Use `.openspec.yaml` metadata (`schema`, `created`) and do not emit `change.yaml`.
 - Do not create delta spec files when the change declares `skip_specs: true`.
 

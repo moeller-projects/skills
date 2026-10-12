@@ -4,7 +4,7 @@ description: Use when turning ambiguous requests, tickets, research, or normaliz
 allowed-tools: read_file
 metadata:
   title: Spec Writing
-  version: "1.0.1"
+  version: "1.1.1"
   summary: Turn requests or azure-devops handoffs into structured, version-aware specs with risk tiers, acceptance criteria, policy gates, and optional OpenSpec proposal output.
 ---
 
@@ -70,6 +70,7 @@ openspec_proposal:
   change_path: openspec/changes/<change-name>/
   metadata_file: .openspec.yaml
   proposal_file: proposal.md
+  skip_specs: true # omit delta_spec_files when no capability delta is needed
   delta_spec_files:
   - specs/<capability>/spec.md
   required_apply_files:
@@ -107,6 +108,8 @@ See `tests/validation-checklist.md` for the full checklist.
 - `assets/examples/happy-path.md` — password reset spec scenario
 - `assets/examples/edge-case.md` — conflicting requirements scenario
 - `scripts/validate-output.py` — validates output structure
+- `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
+- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
 
 ## References
 

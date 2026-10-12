@@ -1,7 +1,7 @@
 {
   "name": "discovery",
   "title": "Discovery",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "summary": "Explore ambiguous problems, test assumptions, compare options, and produce decision-ready plans.",
   "type": "hybrid",
   "activation": {

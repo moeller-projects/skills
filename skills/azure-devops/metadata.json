@@ -1,7 +1,7 @@
 {
   "name": "azure-devops",
   "title": "Azure DevOps",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "summary": "Read and safely write selected Azure DevOps work items and PR artifacts with deterministic dry-run, approval, and validation gates.",
   "type": "hybrid",
   "activation": {
@@ -17,7 +17,7 @@
     ],
     "avoid_when": [
       "The task requires deleting Azure DevOps data",
-      "The task requires completing, abandoning, approving, or rejecting a pull request",
+      "The task requires changing reviewer votes or branch policies",
       "The task is a GitHub pull request review",
       "The task is generating or validating an OpenSpec file",
       "The task is generic REST API work with no Azure DevOps context"

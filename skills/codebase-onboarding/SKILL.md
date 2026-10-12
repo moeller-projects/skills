@@ -4,7 +4,7 @@ description: Use when onboarding to a repository, mapping architecture, or extra
 allowed-tools: list_dir read_file
 metadata:
   title: Codebase Onboarding
-  version: "1.0.1"
+  version: "1.0.2"
   summary: Map repository architecture, entry points, conventions, hotspots, and onboarding artifacts for fast execution.
 ---
 
@@ -83,6 +83,8 @@ See `tests/validation-checklist.md` for the full checklist.
 - `assets/examples/happy-path.md` — monorepo onboarding scenario
 - `assets/examples/edge-case.md` — partial access / restricted paths scenario
 - `scripts/validate-output.py` — validates output structure
+- `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
+- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
 
 ## References
 

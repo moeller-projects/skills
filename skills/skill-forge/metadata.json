@@ -1,0 +1,28 @@
+{
+  "name": "skill-forge",
+  "title": "Skill Forge",
+  "version": "1.2",
+  "summary": "Create and refactor Agent Skills to production grade and validate them against the agentskills.io open specification.",
+  "type": "hybrid",
+  "activation": {
+    "use_when": [
+      "The user asks to create, build, or scaffold an Agent Skill",
+      "The user asks to write, improve, refactor, audit, review, or fix a skill",
+      "The user asks to validate or package a skill directory containing SKILL.md"
+    ],
+    "avoid_when": [
+      "The task is general coding work unrelated to creating or maintaining a skill"
+    ]
+  },
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "allowed_tools": [],
+  "risk_level": "medium",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}

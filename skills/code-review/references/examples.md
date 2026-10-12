@@ -2,7 +2,7 @@
 
 ## Example 1
 
-A pull request mixes a bug fix with broad cleanup. Use this skill to separate must-fix correctness issues from optional refactors and keep the patch small.
+A large codebase mixes a correctness bug with broad cleanup across a subsystem. Use this skill to separate must-fix correctness issues from optional refactors and keep the systemic patch small.
 
 ## Example 2
 

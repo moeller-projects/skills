@@ -89,6 +89,31 @@ def main() -> None:
     result = run_validator(validator, orphan_followup)
     if result.returncode == 0 or "missing owner" not in result.stdout:
         fail("ownerless follow-up not reported")
+    second_bad_timeline = VALID.replace(
+        "- 14:16Z on-call — rolled back deploy 1f42c",
+        "- 14:16Z on-call — rolled back deploy 1f42c\n- no timestamp — observed recovery",
+    )
+    result = run_validator(validator, second_bad_timeline)
+    if result.returncode == 0 or "observed recovery" not in result.stdout:
+        fail("invalid later timeline entry not reported")
+    passed("all timeline entries are checked")
+
+    second_ownerless_followup = VALID.replace(
+        "- add config validation — owner: platform team",
+        "- add config validation — owner: platform team\n- audit alerts",
+    )
+    result = run_validator(validator, second_ownerless_followup)
+    if result.returncode == 0 or "audit alerts" not in result.stdout:
+        fail("invalid later follow-up entry not reported")
+    passed("all follow-up entries are checked")
+
+    empty_sections = VALID.replace("- checkout 500s for 18% of requests, 14:07Z-14:31Z", "").replace(
+        "1. rolled back deploy 1f42c", ""
+    ).replace("- status page updated", "")
+    result = run_validator(validator, empty_sections)
+    if result.returncode == 0 or "empty 'impact:' section" not in result.stdout or "empty 'mitigation:' section" not in result.stdout or "empty 'comms:' section" not in result.stdout:
+        fail("empty required incident sections not reported")
+    passed("required incident sections cannot be empty")
     passed("follow-up ownership is enforced")
 
     print("\nIncident Response validation completed successfully.")

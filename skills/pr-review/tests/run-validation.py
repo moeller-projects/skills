@@ -63,6 +63,15 @@ risk:
     result = run_validator(validator, valid)
     if result.returncode != 0 or result.stdout.strip() != "OK":
         fail(f"valid review unexpectedly failed validation: {result.stdout}{result.stderr}")
+    label_outside_findings = valid.replace(
+        "summary: adds discount logic; division by zero unguarded",
+        "summary: [BLOCKER] adds discount logic; division by zero unguarded",
+    )
+    result = run_validator(validator, label_outside_findings)
+    if result.returncode != 0 or result.stdout.strip() != "OK":
+        fail("severity labels outside findings were incorrectly rejected")
+    passed("severity labels are scoped to findings")
+
     passed("valid review passes validation")
 
     unsorted = """verdict: request-changes
@@ -105,6 +114,27 @@ risk:
     if result.returncode == 0 or "verdict is approve but blocker or major findings exist" not in result.stdout:
         fail("verdict/findings inconsistency not reported")
     passed("verdict consistency is enforced")
+    empty_request_changes = """verdict: request-changes
+summary: no findings
+
+findings:
+
+out-of-scope:
+- none
+
+risk:
+- none
+"""
+    result = run_validator(validator, empty_request_changes)
+    if result.returncode == 0 or "no blocker or major finding exists" not in result.stdout:
+        fail("request-changes without findings not reported")
+    passed("request-changes requires a blocker or major finding")
+
+    incomplete_finding = valid.replace("  why: NaN totals\n", "").replace("  suggestion: guard itemCount\n", "")
+    result = run_validator(validator, incomplete_finding)
+    if result.returncode == 0 or "each finding must include why" not in result.stdout or "each finding must include suggestion" not in result.stdout:
+        fail("incomplete finding quality not reported")
+    passed("finding quality fields are enforced")
 
     print("\nPR Review validation completed successfully.")
 

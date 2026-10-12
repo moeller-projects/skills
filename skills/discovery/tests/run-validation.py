@@ -83,6 +83,21 @@ next:
     if validate_text(crlf_output):
         fail("valid CRLF thinking output unexpectedly failed")
     passed("validator accepts CRLF thinking output")
+    single_option = valid_output.replace(
+        "2. Use a managed push service.\n",
+        "",
+    ).replace(
+        "recommendation:\n",
+        "ruled-out alternatives:\n- Managed push service was rejected because the vendor cannot meet residency requirements.\n\nrecommendation:\n",
+    )
+    if validate_text(single_option):
+        fail("single viable option with ruled-out alternatives unexpectedly failed")
+    passed("single-option fast path requires and accepts ruled-out alternatives")
+
+    single_without_ruling_out = valid_output.replace("2. Use a managed push service.\n", "")
+    if not any("at least two numbered options" in error for error in validate_text(single_without_ruling_out)):
+        fail("single option without ruled-out alternatives not reported")
+    passed("single option without ruled-out alternatives is rejected")
 
     whitespace_heading_output = valid_output.replace("options:\n", "options:  \n")
     if validate_text(whitespace_heading_output):

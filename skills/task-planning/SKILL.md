@@ -4,7 +4,7 @@ description: Use when confirmed scope must be broken into atomic tasks with depe
 allowed-tools: read_file
 metadata:
   title: Task Planning
-  version: "1.0.1"
+  version: "1.0.2"
   summary: Break work into atomic, shippable tasks with explicit dependencies, critical path, estimates, and definitions of done.
 ---
 
@@ -96,6 +96,8 @@ See `tests/validation-checklist.md` for the full checklist.
 - `assets/examples/happy-path.md` — feature delivery planning scenario
 - `assets/examples/edge-case.md` — unknown-blocked plan scenario
 - `scripts/validate-output.py` — validates output structure
+- `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
+- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
 
 ## References
 

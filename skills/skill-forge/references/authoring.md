@@ -2,6 +2,18 @@
 
 Read this when creating a new skill or rewriting a skill's content.
 
+## Contents
+
+- [Ground the skill in real expertise](#ground-the-skill-in-real-expertise)
+- [Spend context wisely](#spend-context-wisely)
+- [Scope coherent units](#scope-coherent-units)
+- [Calibrate degrees of freedom per part](#calibrate-degrees-of-freedom-per-part)
+- [Descriptions that trigger](#descriptions-that-trigger)
+- [Instruction patterns](#instruction-patterns-use-what-fits)
+- [Progressive disclosure structure](#progressive-disclosure-structure)
+- [Bundled scripts](#bundled-scripts)
+- [What never belongs in a skill](#what-never-belongs-in-a-skill)
+
 ## Ground the skill in real expertise
 
 The top failure mode is a skill synthesized from generic knowledge — it produces

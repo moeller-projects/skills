@@ -20,6 +20,7 @@ import re
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from typing import Any
 
@@ -124,6 +125,33 @@ def parse_pull_request_url(url: str) -> dict[str, Any] | None:
     }
 
 
+def validate_ado_url(url: str, *, stage: str) -> None:
+    """Reject authenticated requests to hosts outside Azure DevOps.
+
+    vssps.dev.azure.com is the official Azure DevOps identity API host used by
+    resolve-ado-user.py and is intentionally included in this narrow allowlist.
+    """
+    try:
+        parsed = urllib.parse.urlsplit(url)
+        hostname = parsed.hostname
+        port = parsed.port
+    except ValueError:
+        parsed = None
+        hostname = None
+        port = None
+    allowed_host = hostname in ("dev.azure.com", "vssps.dev.azure.com") or (
+        hostname is not None and hostname.endswith(".visualstudio.com")
+    )
+    if parsed is None or parsed.scheme != "https" or not allowed_host or port not in (None, 443):
+        emit_error(
+            "INVALID_URL",
+            stage,
+            "Refusing authenticated request: URL must use HTTPS with host dev.azure.com, vssps.dev.azure.com, or *.visualstudio.com.",
+            "Provide an Azure DevOps HTTPS URL and retry.",
+        )
+
+
+
 def http_request(
     method: str,
     url: str,
@@ -141,6 +169,7 @@ def http_request(
     Mirrors the curl policy: up to 5 retries, 2s delay, 60s overall retry budget.
     On exhaustion, emits the structured ERROR shape and exits 1.
     """
+    validate_ado_url(url, stage=stage)
     pat = require_pat()
     auth_header = base64.b64encode(f":{pat}".encode("utf-8")).decode("ascii")
     headers = {

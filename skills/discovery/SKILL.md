@@ -3,7 +3,7 @@ name: discovery
 description: Use when the problem is vague, assumptions need pressure-testing, or options must be compared before commitment. Do not use when scope is fixed and the output must be an executable task breakdown with dependencies and done criteria.
 metadata:
   title: Discovery
-  version: "1.0.1"
+  version: "1.0.2"
   summary: Explore ambiguous problems, test assumptions, compare options, and produce decision-ready plans.
 ---
 
@@ -83,6 +83,8 @@ See `tests/validation-checklist.md` for the full checklist.
 - `assets/examples/happy-path.md` — real-time notifications design scenario
 - `assets/examples/edge-case.md` — single viable option scenario
 - `scripts/validate-output.py` — validates output structure
+- `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
+- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
 
 ## References
 
