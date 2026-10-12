@@ -1,11 +1,11 @@
 ---
 name: concise-output
 description: Output templating and interaction style skill — Bottom Line Up Front. Shapes every response to be action-first and filler-free. Lead with the answer or next action, number multi-step work, restate state across turns, compress prose (no articles, filler, hedging), cap lists, no preamble or closers. Use when the user wants concise, direct, no-fluff, ADHD-friendly, or token-efficient responses; during interactive coding, debugging, and devops work; when the user invokes "bluf", "concise-output", "bottom line up front", "be direct", "concise mode", "skip the filler", or asks for action-first answers; or as an always-on output style for users who prefer terse, structured replies.
-allowed-tools:
-  - read_file
-title: Concise Output
-version: 1.0.1
-summary: Deliver accurate, action-first responses with concise prose and explicit next steps.
+allowed-tools: read_file
+metadata:
+  title: Concise Output
+  version: "1.0.1"
+  summary: Deliver accurate, action-first responses with concise prose and explicit next steps.
 ---
 
 # Concise Output — Bottom Line Up Front

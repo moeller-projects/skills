@@ -1,11 +1,11 @@
 ---
 name: spec-writing
 description: Use when turning ambiguous requests, tickets, research, or normalized azure-devops handoffs into an implementation-ready spec or OpenSpec proposal. Do not use when the task is pure code implementation or governance review with no new spec-authoring step.
-allowed-tools:
-  - read_file
-title: Spec Writing
-version: 1.0.1
-summary: Turn requests or azure-devops handoffs into structured, version-aware specs with risk tiers, acceptance criteria, policy gates, and optional OpenSpec proposal output.
+allowed-tools: read_file
+metadata:
+  title: Spec Writing
+  version: "1.0.1"
+  summary: Turn requests or azure-devops handoffs into structured, version-aware specs with risk tiers, acceptance criteria, policy gates, and optional OpenSpec proposal output.
 ---
 
 # Spec Writing

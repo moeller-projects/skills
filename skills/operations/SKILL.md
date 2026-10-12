@@ -1,11 +1,11 @@
 ---
 name: operations
 description: Use when planning or reviewing CI/CD, infrastructure, containers, Kubernetes, rollout safety, or operational risk. Do not use when the task is pure application refactoring or documentation-only work.
-allowed-tools:
-  - read_file
-title: Operations
-version: 1.0.1
-summary: Plan safer delivery across CI/CD, containers, Kubernetes, reliability, threat modeling, and rollback decisions.
+allowed-tools: read_file
+metadata:
+  title: Operations
+  version: "1.0.1"
+  summary: Plan safer delivery across CI/CD, containers, Kubernetes, reliability, threat modeling, and rollback decisions.
 ---
 
 # Operations

@@ -1,11 +1,11 @@
 ---
 name: test-strategy
 description: Use when designing or improving unit, integration, E2E, or flake-reduction test coverage. Do not use when the request is broader code review or refactoring quality work, or when the task is documentation-only.
-allowed-tools:
-  - read_file
-title: Test Strategy
-version: 1.0.1
-summary: Design resilient test strategies and practical unit, integration, E2E, and Playwright coverage improvements.
+allowed-tools: read_file
+metadata:
+  title: Test Strategy
+  version: "1.0.1"
+  summary: Design resilient test strategies and practical unit, integration, E2E, and Playwright coverage improvements.
 ---
 
 # Test Strategy

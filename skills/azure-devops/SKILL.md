@@ -1,12 +1,11 @@
 ---
 name: azure-devops
 description: Use when fetching, parsing, normalizing, or narrowly creating approved Azure DevOps work items and pull request artifacts. Do not use when the task targets GitHub PR review, destructive Azure DevOps actions, or OpenSpec authoring.
-allowed-tools:
-  - read_file
-  - shell
-title: Azure DevOps
-version: 1.1.0
-summary: Read and safely write selected Azure DevOps work items and PR artifacts with deterministic dry-run, approval, and validation gates.
+allowed-tools: read_file shell
+metadata:
+  title: Azure DevOps
+  version: "1.1.0"
+  summary: Read and safely write selected Azure DevOps work items and PR artifacts with deterministic dry-run, approval, and validation gates.
 ---
 
 # Azure DevOps
@@ -133,6 +132,25 @@ Request explicit approval before:
 - `references/end-to-end.md` — Python walkthrough from Azure DevOps input to OpenSpec handoff
 - `references/rule-order.md` — required read/write stage ordering
 
+## Scripts
+
+- `scripts/generate-handoff.py` — fetch, normalize, and emit the complete handoff; use for normal end-to-end reads.
+- `scripts/fetch-work-item.py` and `scripts/fetch-pr-comments.py` — GET-only primitive fetches used when a staged workflow is needed.
+- `scripts/parse-pr-url.py` — parse a PR URL into identifiers without fetching.
+- `scripts/normalize-work-item.py` — normalize a fetched work-item payload.
+- `scripts/emit-handoff.py` — assemble and validate already-fetched/normalized inputs.
+- `scripts/validate-handoff.py` — validate a handoff JSON contract.
+- `scripts/ensure-env.py` — check PAT availability before a network operation.
+- `scripts/format-work-item-mention.py` and `scripts/resolve-ado-user.py` — format a mention or resolve an Azure DevOps identity.
+- `scripts/create-work-item.py`, `scripts/create-work-item-comment.py`, `scripts/create-pull-request.py`, and `scripts/create-pr-comment.py` — guarded dry-run-first write operations.
+- `scripts/_ado_lib.py` — shared internal helpers imported by the scripts above; do not run directly.
+
+## Example Inputs and Schema
+
+- `assets/examples/work-item-only.json` — normalized work-item example.
+- `assets/examples/pr-comments-only.json` — normalized PR-comments example.
+- `assets/examples/work-item-plus-pr-comments.json` — combined normalized example.
+- `assets/schemas/ado-openspec-handoff.schema.json` — JSON Schema for the handoff contract.
 ## Rules
 
 - `rules/read-only-boundary.md`

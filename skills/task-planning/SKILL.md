@@ -1,11 +1,11 @@
 ---
 name: task-planning
 description: Use when confirmed scope must be broken into atomic tasks with dependencies, estimates, and done criteria. Do not use when requirements are still being written or the user wants option comparison or plan critique before scope is fixed.
-allowed-tools:
-  - read_file
-title: Task Planning
-version: 1.0.1
-summary: Break work into atomic, shippable tasks with explicit dependencies, critical path, estimates, and definitions of done.
+allowed-tools: read_file
+metadata:
+  title: Task Planning
+  version: "1.0.1"
+  summary: Break work into atomic, shippable tasks with explicit dependencies, critical path, estimates, and definitions of done.
 ---
 
 # Task Planning

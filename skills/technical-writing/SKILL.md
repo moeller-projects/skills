@@ -1,11 +1,11 @@
 ---
 name: technical-writing
 description: Use when creating or improving README, AGENTS.md, architecture, workflow, or decision-record docs. Do not use when the primary need is repository discovery or architecture mapping before authoring docs, or when the request is pure code implementation.
-allowed-tools:
-  - read_file
-title: Technical Writing
-version: 1.0.1
-summary: Create accurate technical docs, READMEs, AGENTS.md files, and developer guides with clear structure.
+allowed-tools: read_file
+metadata:
+  title: Technical Writing
+  version: "1.0.1"
+  summary: Create accurate technical docs, READMEs, AGENTS.md files, and developer guides with clear structure.
 ---
 
 # Technical Writing
@@ -116,6 +116,8 @@ See `tests/validation-checklist.md` for the full checklist.
 - `assets/examples/decision-record.md` — decision record scenario and expected output
 - `assets/examples/mode-mixed.md` — multi-mode README with Diátaxis mode tags
 - `scripts/validate-output.py` — validates output structure
+- `assets/examples/html-report.md` — HTML report output example; read when producing a standalone HTML artifact.
+- `assets/templates/html-document.html` — self-contained HTML document template; use when selecting HTML output.
 
 ## References
 

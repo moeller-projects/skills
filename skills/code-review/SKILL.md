@@ -1,11 +1,11 @@
 ---
 name: code-review
 description: Use when reviewing, refactoring, or modernizing application or library code for correctness, maintainability, security, or evidence-backed performance work. Covers code-level security — injection flaws, authorization gaps, secrets in source, and unsafe handling of untrusted input. Do not use when the request is test quality or coverage review, documentation, or infrastructure work.
-allowed-tools:
-  - read_file
-title: Code Review
-version: 1.0.1
-summary: Improve correctness, readability, maintainability, performance, and legacy modernization with minimal mutation.
+allowed-tools: read_file
+metadata:
+  title: Code Review
+  version: "1.0.1"
+  summary: Improve correctness, readability, maintainability, performance, and legacy modernization with minimal mutation.
 ---
 
 # Code Review

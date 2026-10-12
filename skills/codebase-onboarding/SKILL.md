@@ -1,12 +1,11 @@
 ---
 name: codebase-onboarding
 description: Use when onboarding to a repository, mapping architecture, or extracting entry points, conventions, hotspots, and agent artifacts. Do not use when exact files are already known, the question is strategic rather than repository-specific, or the request is to author onboarding or AGENTS.md docs.
-allowed-tools:
-  - list_dir
-  - read_file
-title: Codebase Onboarding
-version: 1.0.1
-summary: Map repository architecture, entry points, conventions, hotspots, and onboarding artifacts for fast execution.
+allowed-tools: list_dir read_file
+metadata:
+  title: Codebase Onboarding
+  version: "1.0.1"
+  summary: Map repository architecture, entry points, conventions, hotspots, and onboarding artifacts for fast execution.
 ---
 
 # Codebase Onboarding
