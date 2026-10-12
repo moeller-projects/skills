@@ -22,6 +22,8 @@ Reusable instructions for coding agents. Each skill's `SKILL.md` describes when 
 | [spec-writing](skills/spec-writing/) | Requirements, acceptance criteria, and OpenSpec proposals |
 | [test-strategy](skills/test-strategy/) | Test strategy, coverage, E2E flows, and flaky-test reduction |
 | [discovery](skills/discovery/) | Clarifying vague problems and comparing options before commitment |
+| [incident-response](skills/incident-response/) | Mitigation-first response to live production incidents, timeline capture, and postmortem follow-ups |
+| [pr-review](skills/pr-review/) | Pull request and changeset reviews with actionable findings and a clear verdict |
 
 ## Renames
 
