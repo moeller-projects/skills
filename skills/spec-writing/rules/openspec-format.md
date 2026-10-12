@@ -14,10 +14,16 @@ When `output_format=openspec`, serialize the existing spec into an OpenSpec-comp
 
 - Output declares `output_format: openspec`.
 - Output declares an OpenSpec proposal directory with `proposal.md`, `.openspec.yaml`, and one or more `specs/<capability>/spec.md` delta files.
+- When the `openspec` CLI is available, artifact structure comes from `openspec instructions <artifact-id> --change <name> --json` (`template`, `rules`, `resolvedOutputPath`); the hardcoded checks below are the fallback for the default `spec-driven` schema only.
 - `proposal.md` includes: `## Why`, `## What Changes`, `## Capabilities`, `## Impact`.
 - Delta specs use OpenSpec section headers: `## ADDED Requirements`, `## MODIFIED Requirements`, `## REMOVED Requirements`, or `## RENAMED Requirements`.
 - Every ADDED/MODIFIED requirement uses `### Requirement:` and includes at least one `#### Scenario:` block.
-- Use `.openspec.yaml` metadata (`schema`, `created`) and do not emit `change.yaml` for OpenSpec v1.3.1.
+- Use `.openspec.yaml` metadata (`schema`, `created`) and do not emit `change.yaml`.
+- Do not create delta spec files when the change declares `skip_specs: true`.
+
+## Deferral
+
+- Lifecycle operations (continue, apply, verify, sync, archive, validation runs) belong to the official `openspec-*` skills from `Fission-AI/OpenSpec`; hand off instead of reimplementing them here.
 
 ## Anti-Pattern
 

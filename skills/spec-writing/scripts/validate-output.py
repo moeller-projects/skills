@@ -207,7 +207,7 @@ def validate_openspec(text: str, errors: list[str]) -> None:
     if not re.search(r"^  metadata_file:[ \t]*\.openspec\.yaml$", proposal, re.MULTILINE):
         errors.append("OpenSpec output must use metadata_file: .openspec.yaml")
     if re.search(r"change\.yaml", proposal):
-        errors.append("OpenSpec output must not emit change.yaml for v1.3.1")
+        errors.append("OpenSpec output must not emit change.yaml")
     proposal_file = field_value(proposal, "proposal_file")
     if proposal_file:
         block = named_block(text, proposal_file)

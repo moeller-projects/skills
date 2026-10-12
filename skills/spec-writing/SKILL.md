@@ -82,6 +82,7 @@ openspec_proposal:
 
 - Accept normalized `azure-devops` handoff JSON when Azure DevOps context must be converted into a spec or OpenSpec proposal.
 - Hand off to `task-planning` when the spec is stable and the next output must be an executable task breakdown with dependencies and done criteria.
+- Hand off OpenSpec lifecycle work (continue, apply, verify, sync, archive) to the official `openspec-*` skills from `Fission-AI/OpenSpec`; this skill only authors the spec and serializes it into proposal shape.
 
 ## Error Handling
 

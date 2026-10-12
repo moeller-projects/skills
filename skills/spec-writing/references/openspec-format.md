@@ -3,9 +3,16 @@
 ## Source of Truth
 
 - Upstream project: `Fission-AI/OpenSpec`
-- Stable version referenced: `v1.3.1`
-- Annotated tag object SHA: `c95caf063c834b9c1d3bfb59bd94911d7c44c92b`
-- Tagged commit SHA (stable source snapshot): `3c7a05c5dc88b2397c478805890b55ed392b19e8`
+- Stable version referenced: `v1.14.1`
+- Tag type: lightweight (no annotated tag object since the v1.3.1 pin)
+- Tagged commit SHA (stable source snapshot): `87c3595ace6a2e22957f39ebe5b74c2f2316e0cb`
+
+## Authority and Deferral
+
+- This document is the offline fallback for the stable delta-spec core (directory shape, delta headers, requirement/scenario syntax, validation rules). It is not the authority for schema-specific artifact layout.
+- When the `openspec` CLI is available, the CLI is authoritative: run `openspec instructions <artifact-id> --change <name> --json` and use its `template`, `rules`, and `resolvedOutputPath` instead of the hardcoded section lists below. Schemas other than the default `spec-driven` may define different artifacts and sections.
+- Do not assume repo-local paths: resolve the change location from `openspec status --change <name> --json` (`planningHome`, `changeRoot`, `artifactPaths`).
+- Lifecycle operations (continue, apply, verify, sync, archive) are owned by the official `openspec-*` skills from `Fission-AI/OpenSpec`; this skill only serializes a spec into proposal shape.
 
 ## Proposal Directory Layout
 
@@ -30,7 +37,7 @@ openspec/changes/archive/YYYY-MM-DD-<change-name>/
 
 ## Proposal Content Requirements
 
-`proposal.md` sections for spec-driven workflow:
+`proposal.md` sections for the default `spec-driven` schema (fallback when the CLI template is unavailable; other schemas may differ):
 
 - `## Why`
 - `## What Changes`
@@ -58,12 +65,12 @@ Requirement/scenario structure:
 
 ## Change Metadata (`.openspec.yaml`)
 
-For OpenSpec v1.3.1, the per-change metadata file is `.openspec.yaml` with keys:
+For the `spec-driven` schema, the per-change metadata file is `.openspec.yaml` with keys:
 
 - `schema` (for example `spec-driven`)
 - `created` (`YYYY-MM-DD`)
 
-`change.yaml` is not used by the v1.3.1 spec-driven workflow.
+`change.yaml` is not used by the spec-driven workflow. A change may also declare `skip_specs: true` in `.openspec.yaml`, in which case delta spec files must NOT be created.
 
 ## Lifecycle States
 
