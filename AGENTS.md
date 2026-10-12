@@ -13,4 +13,4 @@ This repository contains reusable agent skills under `skills/<kebab-case-name>/`
 
 1. Read the affected skill's `SKILL.md`, `README.md`, and `metadata.json`, plus the relevant supporting files, before editing.
 2. Update the skill's entry point, supporting material, and manifest together. Preserve accurate activation guidance (`use_when` and `avoid_when`) and output contracts.
-3. Review paths, commands, and versions against the files in the tree. Gateway and engine skills have `tests/run-validation.py`; from the affected skill directory, run `python tests/run-validation.py` when test execution is authorized. BLUF has no validation runner; check its manifest, links, and version manually. There is no root-level suite.
+3. Review paths, commands, and versions against the files in the tree. Gateway and engine skills have `tests/run-validation.py`; from the affected skill directory, run `python tests/run-validation.py` when test execution is authorized. Concise Output has no validation runner; check its manifest, links, and version manually. There is no root-level suite.
