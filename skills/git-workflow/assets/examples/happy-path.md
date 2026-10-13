@@ -36,11 +36,11 @@ operations:
   rollback: not_applicable
 - id: O-02
   command: git branch rescue/parser-before-rewrite HEAD
-  rationale: preserve a named recovery point before rewriting private commits
+  rationale: preserve a named recovery point before rewriting private commits; retain it through verified completion
   risk: cautious
   confirmation: not_required
   blast_radius: creates local rescue reference only
-  rollback: git branch -D rescue/parser-before-rewrite
+  rollback: preserve rescue/parser-before-rewrite; remove it only as a separately confirmed cleanup after verified recovery
 - id: O-03
   command: git rebase -i main
   rationale: reorder and split the two private commits into atomic changes

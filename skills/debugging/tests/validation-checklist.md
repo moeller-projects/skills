@@ -10,18 +10,18 @@ Run this checklist before accepting a diagnosis as complete. Execute automated v
 ## Evidence Check
 
 - [ ] Exact command, inputs, environment, state, expected behavior, and observed output are recorded.
-- [ ] Minimal deterministic reproduction is attempted first.
+- [ ] Minimal deterministic reproduction is attempted first when authorized and runnable; otherwise the supplied evidence and missing prerequisite are recorded.
 - [ ] Stack trace is read bottom-up; symptom and cause are distinguished.
-- [ ] Hypotheses are ranked and variables isolated one at a time.
+- [ ] Hypotheses are ranked and variables isolated one at a time; static source/trace hypotheses name their missing experiment.
 - [ ] Bisect or binary search is used when practical.
 
 ## Root Cause and Fix Check
 
-- [ ] Root cause includes concrete evidence and a falsifiable confirmation experiment.
+- [ ] Root cause includes non-empty `finding` and `evidence`; confirmation requires a falsifiable experiment.
 - [ ] Fix is narrow and does not claim unsupported behavior.
-- [ ] Original reproduction is rerun after the fix.
-- [ ] Relevant nearby behavior is checked.
-- [ ] Regression check fails before the fix or its limitation is documented.
+- [ ] Original reproduction is rerun after the fix when reproduction execution is explicitly authorized; otherwise supplied evidence is retained and verification is reported as unrun.
+- [ ] Relevant nearby behavior is checked when the relevant execution is explicitly authorized.
+- [ ] Regression check fails before the fix or its limitation is documented; run the check only when test execution is explicitly authorized.
 
 ## Output Mechanics
 

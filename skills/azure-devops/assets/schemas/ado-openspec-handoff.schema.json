@@ -59,13 +59,16 @@
           "const": "azure-devops"
         },
         "organization": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^[^/\\\\\\s]+$"
         },
         "project": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^[^/\\\\\\s]+$"
         },
         "repository_id": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^(?:$|[^/\\\\\\s]+)$"
         },
         "pull_request_id": {
           "type": [
@@ -274,7 +277,7 @@
                 "string",
                 "null"
               ],
-              "pattern": "^\\/[^\\/].*"
+              "pattern": "^/(?!.*(?:^|/)\\.\\.(?:/|$))[^\\r\\n]+$"
             },
           "side": {
             "type": "string",

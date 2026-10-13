@@ -10,6 +10,7 @@ Requires Python 3.9+, standard library only. Run with: python tests/run-validati
 """
 
 import subprocess
+import json
 import sys
 from pathlib import Path
 
@@ -51,13 +52,14 @@ checks:
 - kubectl apply --dry-run=server -f k8s/ingress.yaml
 
 rollback:
-- Reapply the previous ingress manifest from release artifact ingress-prev.yaml
+- Reapply the previous ingress manifest in cluster prod-eu/context-a from release artifact ingress-prev.yaml; verify recovery with kubectl rollout status -n production
 
 security:
 - human approval required before production rollout
 """
     result = run_validator(valid_output)
-    if result.returncode != 0 or result.stdout.strip() != "OK":
+    validation = json.loads(result.stdout)
+    if result.returncode != 0 or not validation["valid"] or validation["errors"] or result.stderr:
         fail(f"valid ops output unexpectedly failed: {result.stdout}{result.stderr}")
     passed("valid ops output passes")
 
@@ -71,19 +73,35 @@ checks:
 - kubectl apply --dry-run=server -f k8s/ingress.yaml
 
 rollback:
-- Reapply the previous ingress manifest from release artifact ingress-prev.yaml
+- Reapply the previous ingress manifest in namespace production/context-a from release artifact ingress-prev.yaml; verify recovery with rollout status
 
 security:
 - verify TLS secret exists
 """
     result = run_validator(invalid_output)
-    if result.returncode == 0:
-        fail("production plan without approval unexpectedly passed")
-    if "human approval gate" not in result.stderr.lower():
-        fail("production approval failure not reported")
+    validation = json.loads(result.stdout)
+    if result.returncode == 0 or validation["valid"] or not validation["errors"] or result.stderr:
+        fail("production step without its own approval was accepted")
     passed("validator rejects production steps without approval")
-
-    print("\nOperations validation completed successfully.")
+    destructive_without_gate = valid_output.replace(
+        "1. Apply the ingress manifest in staging.",
+        "1. Delete the staging deployment without human approval."
+    )
+    result = run_validator(destructive_without_gate)
+    if result.returncode == 0 or json.loads(result.stdout)["valid"]:
+        fail("destructive step without its own approval was accepted")
+    passed("destructive approval is checked per step")
+    missing_rollback = valid_output.replace(
+        "1. Apply the ingress manifest in staging.",
+        "1. Delete the staging deployment — human approval required."
+    ).replace(
+        "- Reapply the previous ingress manifest in cluster prod-eu/context-a from release artifact ingress-prev.yaml; verify recovery with kubectl rollout status -n production",
+        "- none"
+    )
+    result = run_validator(missing_rollback)
+    if result.returncode == 0 or json.loads(result.stdout)["valid"]:
+        fail("approved destructive step without rollback safeguards was accepted")
+    passed("approved destructive steps require rollback safeguards")
 
 
 if __name__ == "__main__":

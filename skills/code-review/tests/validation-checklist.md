@@ -10,9 +10,10 @@ Run this checklist before accepting a code quality review as complete.
 ## Findings Check
 
 - [ ] Findings are sorted by severity: critical → high → medium → low.
-- [ ] Each finding includes file and line number.
-- [ ] Each finding states the issue clearly and why it matters.
-- [ ] Each finding has an exact, actionable fix.
+- [ ] Each finding includes a precise file:line location.
+- [ ] Each finding states the issue, why it matters, and an exact actionable fix.
+- [ ] A clean review uses an explicit `- none` finding marker.
+- [ ] Performance concerns without profiling, benchmarks, or production metrics are evidence gaps, not severity-ranked defects.
 
 ## Patch Plan Check
 

@@ -1,7 +1,7 @@
 {
   "name": "operations",
   "title": "Operations",
-  "version": "1.0.2",
+  "version": "1.0.6",
   "summary": "Plan safer delivery across CI/CD, containers, Kubernetes, reliability, threat modeling, and rollback decisions.",
   "type": "hybrid",
   "activation": {
@@ -24,9 +24,6 @@
     "claude-code",
     "cursor",
     "opencode"
-  ],
-  "allowed_tools": [
-    "read_file"
   ],
   "risk_level": "high",
   "requires_network": false,

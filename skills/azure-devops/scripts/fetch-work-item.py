@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import sys
+from urllib.parse import quote
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -17,6 +18,9 @@ import _ado_lib as lib
 
 
 def main() -> None:
+    if "--help" in sys.argv[1:]:
+        print("usage: fetch-work-item.py ORG PROJECT WORK_ITEM_ID [BASE_URL]")
+        return
     args = sys.argv[1:]
     if len(args) < 3:
         missing = ["org", "project", "work item id"][len(args):]
@@ -61,15 +65,25 @@ def main() -> None:
             break
         skip += len(page)
     payload["updates"] = updates
-    comments_url = f"{base_url}/{org}/{project}/_apis/wit/workItems/{work_item_id}/comments?api-version=7.1-preview.4"
-    comments_payload = lib.http_get_json(
-        comments_url,
-        label=f"comments for work item {work_item_id} from {org}/{project}",
-        error_code="FETCH_FAILED",
-        error_message=f"Failed to fetch comments for work item {work_item_id} from {org}/{project} after bounded retries.",
-        error_recovery="Check AZURE_DEVOPS_PAT, organization, project, and network connectivity.",
-    )
-    payload["comments"] = comments_payload.get("comments", []) if isinstance(comments_payload, dict) else []
+    comments: list[dict] = []
+    continuation: str | None = None
+    while True:
+        suffix = "&$top=200" + (f"&continuationToken={quote(continuation, safe='')}" if continuation else "")
+        comments_url = f"{base_url}/{org}/{project}/_apis/wit/workItems/{work_item_id}/comments?api-version=7.1-preview.4{suffix}"
+        comments_payload = lib.http_get_json(
+            comments_url,
+            label=f"comments for work item {work_item_id} from {org}/{project}",
+            error_code="FETCH_FAILED",
+            error_message=f"Failed to fetch comments for work item {work_item_id} from {org}/{project} after bounded retries.",
+            error_recovery="Check AZURE_DEVOPS_PAT, organization, project, and network connectivity.",
+        )
+        if not isinstance(comments_payload, dict) or "comments" not in comments_payload or not isinstance(comments_payload["comments"], list):
+            lib.emit_error("PARSE_FAILED", "parse", "Unexpected comments response: comments must be a list.", "Check the comments endpoint response and retry.")
+        comments.extend(comments_payload["comments"])
+        continuation = comments_payload.get("continuationToken") or comments_payload.get("nextPageToken")
+        if not continuation:
+            break
+    payload["comments"] = comments
     print(json.dumps(payload), end="")
 
 

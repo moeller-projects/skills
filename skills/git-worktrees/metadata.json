@@ -1,0 +1,23 @@
+{
+  "name": "git-worktrees",
+  "title": "Git Worktrees",
+  "version": "1.0.3",
+  "summary": "Establish an isolated, verified-clean workspace before starting implementation work.",
+  "type": "hybrid",
+  "activation": {
+    "use_when": [
+      "Starting feature work that should not touch the user's current checkout",
+      "Setting up before executing an implementation plan",
+      "The user asks for a worktree or isolated workspace"
+    ],
+    "avoid_when": [
+      "Branch, commit, rebase, or history planning — use git-workflow",
+      "Stacked or dependent PRs — use gh-stack",
+      "Deciding how finished work is integrated or cleaning up afterwards — use branch-integration"
+    ]
+  },
+  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
+  "risk_level": "medium",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}

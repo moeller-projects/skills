@@ -11,6 +11,9 @@ Requires Python 3.9+, standard library only. Run with: python tests/run-validati
 
 from __future__ import annotations
 
+import contextlib
+import importlib.util
+import io
 import json
 import os
 import subprocess
@@ -21,6 +24,7 @@ from pathlib import Path
 SKILL_DIR = Path(__file__).resolve().parents[1]
 SCRIPTS_DIR = SKILL_DIR / "scripts"
 EXAMPLES_DIR = SKILL_DIR / "assets" / "examples"
+sys.path.insert(0, str(SCRIPTS_DIR))
 
 NO_PAT_ENV = {k: v for k, v in os.environ.items() if k != "AZURE_DEVOPS_PAT"}
 
@@ -242,6 +246,11 @@ def main() -> None:
             "schema accepted string work_item.id",
         )
         passed("schema rejects stringified work_item.id")
+        bad_path = json.loads((EXAMPLES_DIR / "work-item-only.json").read_text(encoding="utf-8"))
+        bad_path["source"]["repository_id"] = "repo/with-traversal"
+        rejected_path = run_validator(json.dumps(bad_path))
+        expect_fail_with(rejected_path, "pattern", "schema accepted unsafe repository identifier")
+        passed("schema rejects unsafe repository identifiers")
 
         work_item_file = tmp_dir / "work-item-normalized.json"
         work_item_file.write_text(normalized.stdout, encoding="utf-8")
@@ -557,9 +566,171 @@ def main() -> None:
             "code: MISSING_AUTH",
             "write execution without PAT unexpectedly succeeded",
         )
-        passed("write execution requires --confirm and AZURE_DEVOPS_PAT")
-
-    print("\nAzure DevOps validation completed successfully.")
+        import _ado_lib as ado_lib
+        class _Response:
+            def __enter__(self): return self
+            def __exit__(self, *_): return False
+            def read(self): return b"{}"
+        class _Opener:
+            def __init__(self): self.calls = 0
+            def open(self, request, timeout):
+                self.calls += 1
+                if request.method == "POST":
+                    raise urllib.error.URLError("ambiguous")
+                if self.calls == 1:
+                    raise urllib.error.URLError("transient")
+                return _Response()
+        import urllib.error
+        opener = _Opener()
+        old_opener, old_pat, old_sleep = ado_lib._HTTP_OPENER, ado_lib.require_pat, ado_lib.time.sleep
+        ado_lib._HTTP_OPENER = opener
+        ado_lib.require_pat = lambda: "test-current-pat"
+        ado_lib.time.sleep = lambda _: None
+        try:
+            ado_lib.http_get_json("https://dev.azure.com/org/project/_apis/test", label="test", error_code="FETCH_FAILED", error_message="failed", error_recovery="retry")
+            if opener.calls != 2:
+                fail("GET retry did not retry transient transport failure")
+            post_before = opener.calls
+            try:
+                ado_lib.http_write_json("POST", "application/json", "https://dev.azure.com/org/project/_apis/test", b"{}", label="test")
+            except SystemExit:
+                pass
+            else:
+                fail("ambiguous POST transport failure unexpectedly succeeded")
+            if opener.calls - post_before != 1:
+                fail("ambiguous POST transport failure was replayed")
+        finally:
+            ado_lib._HTTP_OPENER, ado_lib.require_pat, ado_lib.time.sleep = old_opener, old_pat, old_sleep
+        passed("mocked GET retry and non-replayed ambiguous POST transport paths")
+        os.environ["AZURE_DEVOPS_PAT"] = "test-current-pat"
+        redacted = ado_lib.redact_value({"title": "test-current-pat", "nested": ["Bearer abc.def"]})
+        if redacted["title"] != "[REDACTED]" or "[REDACTED]" not in redacted["nested"][0]:
+            fail("recursive credential redaction regression")
+        passed("recursive current PAT and bearer redaction")
+        old_pat = os.environ.get("AZURE_DEVOPS_PAT")
+        os.environ["AZURE_DEVOPS_PAT"] = "ordinary-current-pat"
+        old_format = "A" * 52
+        new_format = "B" * 75 + "AZDO" + "C" * 5
+        ordinary_84 = "D" * 84
+        plain = ado_lib.redact_text(f"{old_format} {new_format} {ordinary_84} ordinary-identifier")
+        if plain != f"[REDACTED] [REDACTED] {ordinary_84} ordinary-identifier":
+            fail("plain Azure PAT format redaction regression")
+        if old_pat is None:
+            os.environ.pop("AZURE_DEVOPS_PAT", None)
+        else:
+            os.environ["AZURE_DEVOPS_PAT"] = old_pat
+        passed("52- and 84-character Azure PAT redaction preserves ordinary identifiers")
+        spec = importlib.util.spec_from_file_location("fetch_work_item_regression", SCRIPTS_DIR / "fetch-work-item.py")
+        fetch_module = importlib.util.module_from_spec(spec)
+        assert spec.loader is not None
+        spec.loader.exec_module(fetch_module)
+        responses = iter([
+            {"id": 7, "fields": {}},
+            {"value": []},
+            {"comments": [{"id": 1, "text": "first"}], "continuationToken": "next"},
+            {"comments": [{"id": 2, "text": "second"}]},
+        ])
+        old_fetch = fetch_module.lib.http_get_json
+        old_require = fetch_module.lib.require_pat
+        fetch_module.lib.http_get_json = lambda *args, **kwargs: next(responses)
+        fetch_module.lib.require_pat = lambda: "test"
+        captured = io.StringIO()
+        old_argv = sys.argv
+        try:
+            sys.argv = ["fetch-work-item.py", "org", "project", "7"]
+            with contextlib.redirect_stdout(captured):
+                fetch_module.main()
+        finally:
+            sys.argv = old_argv
+            fetch_module.lib.http_get_json = old_fetch
+            fetch_module.lib.require_pat = old_require
+        fetched = json.loads(captured.getvalue())
+        if [item["id"] for item in fetched["comments"]] != [1, 2]:
+            fail("work-item comment continuation pagination regression")
+        passed("mocked work-item fetch preserves two comment pages")
+        malformed = iter([{"id": 7, "fields": {}}, {"value": []}, {}])
+        fetch_module.lib.http_get_json = lambda *args, **kwargs: next(malformed)
+        try:
+            sys.argv = ["fetch-work-item.py", "org", "project", "7"]
+            fetch_module.main()
+        except SystemExit:
+            pass
+        else:
+            fail("malformed comments page was accepted as complete")
+        finally:
+            sys.argv = old_argv
+            fetch_module.lib.http_get_json = old_fetch
+        passed("mocked work-item fetch rejects malformed comments pages")
+        gen_spec = importlib.util.spec_from_file_location("generate_handoff_regression", SCRIPTS_DIR / "generate-handoff.py")
+        gen_module = importlib.util.module_from_spec(gen_spec)
+        assert gen_spec.loader is not None
+        gen_spec.loader.exec_module(gen_module)
+        old_run = gen_module.subprocess.run
+        emitted: list[dict] = []
+        direction = "work"
+        def fake_run(command, **kwargs):
+            name = Path(command[1]).name
+            if name == "fetch-work-item.py":
+                if direction == "auth":
+                    return subprocess.CompletedProcess(command, 1, stderr="BLOCKER:\ncode: MISSING_AUTH")
+                if direction in {"pr", "both"}:
+                    return subprocess.CompletedProcess(command, 1, stderr="ERROR: transient")
+                kwargs["stdout"].write('{"id": 7, "fields": {"System.WorkItemType": "Task", "System.Title": "ok", "System.Description": "description"}}')
+                return subprocess.CompletedProcess(command, 0, stderr="")
+            if name == "normalize-work-item.py":
+                return old_run(command, **kwargs)
+            if name == "fetch-pr-comments.py":
+                if direction == "pr":
+                    kwargs["stdout"].write('{"comments": [], "pull_request": {"source_branch": "s", "target_branch": "t"}, "linked_work_items": []}')
+                    return subprocess.CompletedProcess(command, 0, stderr="")
+                return subprocess.CompletedProcess(command, 1, stderr="ERROR: transient")
+            if name == "emit-handoff.py":
+                result = old_run(command, capture_output=True, text=True)
+                if result.stdout:
+                    emitted.append(json.loads(result.stdout))
+                return result
+        gen_module.subprocess.run = fake_run
+        try:
+            if gen_module.main(["--organization", "org", "--project", "project", "--repository-id", "repo", "--work-item-id", "7", "--pull-request-id", "9", "--mode", "work-item-plus-pr-comments"]) != 0:
+                fail("combined generator did not preserve successful work-item source")
+        finally:
+            gen_module.subprocess.run = old_run
+        if not emitted or emitted[-1]["work_item"]["title"] != "ok" or emitted[-1]["normalization"]["status"] != "partial":
+            fail("partial work-item handoff did not preserve source data and status")
+        if "pr_comments" not in emitted[-1]["normalization"]["missing_fields"] or not emitted[-1]["normalization"]["warnings"]:
+            fail("partial work-item handoff omitted missing-source metadata")
+        passed("mocked generator preserves work-item when PR source fails")
+        direction = "pr"
+        gen_module.subprocess.run = fake_run
+        try:
+            if gen_module.main(["--organization", "org", "--project", "project", "--repository-id", "repo", "--work-item-id", "7", "--pull-request-id", "9", "--mode", "work-item-plus-pr-comments"]) != 0:
+                fail("combined generator did not preserve successful PR source")
+        finally:
+            gen_module.subprocess.run = old_run
+        if not emitted or emitted[-1]["pull_request"]["source_branch"] != "s" or emitted[-1]["normalization"]["status"] != "partial":
+            fail("partial PR handoff did not preserve source data and status")
+        if "work_item" not in emitted[-1]["normalization"]["missing_fields"] or not emitted[-1]["normalization"]["warnings"]:
+            fail("partial PR handoff omitted missing-source metadata")
+        direction = "both"
+        gen_module.subprocess.run = fake_run
+        try:
+            try:
+                gen_module.main(["--organization", "org", "--project", "project", "--repository-id", "repo", "--work-item-id", "7", "--pull-request-id", "9", "--mode", "work-item-plus-pr-comments"])
+            except SystemExit:
+                pass
+            else:
+                fail("combined generator fabricated success when both sources failed")
+        finally:
+            gen_module.subprocess.run = old_run
+        passed("mocked generator rejects combined all-source failure")
+        direction = "auth"
+        gen_module.subprocess.run = fake_run
+        try:
+            if gen_module.main(["--organization", "org", "--project", "project", "--repository-id", "repo", "--work-item-id", "7", "--pull-request-id", "9", "--mode", "work-item-plus-pr-comments"]) == 0:
+                fail("authentication blocker was incorrectly treated as recoverable")
+        finally:
+            gen_module.subprocess.run = old_run
+        passed("mocked generator keeps authentication blockers fatal")
 
 
 if __name__ == "__main__":

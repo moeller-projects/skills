@@ -1,0 +1,22 @@
+{
+  "name": "guided-learning",
+  "title": "Guided Learning",
+  "version": "1.0.2",
+  "summary": "Teach a topic across sessions with a stateful workspace of lessons, references, practice, and learning records.",
+  "invocation": "user",
+  "activation": {
+    "use_when": [
+      "The user wants to learn a topic over multiple sessions",
+      "The current directory can hold the teaching state"
+    ],
+    "avoid_when": [
+      "A one-off question — answer it inline",
+      "Project documentation — use technical-writing",
+      "Training agents — use skill-forge"
+    ]
+  },
+  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
+  "risk_level": "low",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}

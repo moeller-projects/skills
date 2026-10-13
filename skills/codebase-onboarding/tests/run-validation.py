@@ -59,13 +59,13 @@ entrypoints:
 - package.json scripts — validate, build, and pack commands
 
 conventions:
-- Skills keep matching versions across metadata and SKILL frontmatter
+- Versioning — Skills keep matching versions across metadata and SKILL frontmatter
 
 hotspots:
 - skills/INDEX.md — generated output changes whenever skill metadata changes
 
 agent_artifacts:
-- onboarding summary for future agents
+- onboarding summary — use it to orient future agents
 """
     result = run_validator(validator, valid_contract)
     if result.returncode != 0 or result.stdout.strip() != "OK":
@@ -76,19 +76,19 @@ agent_artifacts:
 - packages/skill-build
 
 entrypoints:
-- package.json scripts
+- package.json scripts — validate commands
 
 conventions:
-- Skills keep matching versions across metadata and SKILL frontmatter
+- Skills keep matching versions across metadata
 
 hotspots:
-- skills/INDEX.md
+- skills/INDEX.md — generated metadata output
 
 agent_artifacts:
-- onboarding summary for future agents
+- onboarding summary — use it for orientation
 """
     result = run_validator(validator, invalid_contract)
-    if result.returncode == 0 or "repo_map entries must include a one-line description" not in result.stdout:
+    if result.returncode == 0 or "repo_map entries must include area" not in result.stderr:
         fail("invalid repo output unexpectedly passed")
     passed("validator rejects incomplete repo output")
 

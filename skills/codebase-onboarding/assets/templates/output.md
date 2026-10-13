@@ -4,16 +4,16 @@
 
 ```text
 repo_map:
-- <domain or package> — <one-line description of responsibility>
+- <domain or package> — <one-line description of responsibility and observed scope>
 
 entrypoints:
-- <file or command> — <what it starts or exposes>
+- <file or command> — <why it matters and kind>
 
 conventions:
-- <area> — <rule or pattern observed>
+- <area> — <observed rule or pattern with concrete source>
 
 hotspots:
-- <file or area> — <reason it is high-change or high-risk>
+- <file or area> — <concrete reason it is high-change or high-risk>
 
 agent_artifacts:
 - <artifact name> — <what it contains and how to use it>

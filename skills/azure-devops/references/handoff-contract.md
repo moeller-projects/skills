@@ -7,9 +7,10 @@
 1. Emit the exact envelope shape from `assets/schemas/ado-openspec-handoff.schema.json`.
 2. Set `producer` to `azure-devops` and `consumer` to `spec-writing`.
 3. Set `source.read_only` to `true`.
-4. Use `normalization.status = pass` only when required fields for the selected mode are present.
-5. Use `partial` when one requested source is unavailable but a usable contract can still be produced.
-6. Use `fail` only with matching blocker or error output.
+4. Use `normalization.status = pass` only when required fields for the selected mode are present and paginated sources have no continuation token remaining.
+5. Use `partial` when one requested source is unavailable but a usable contract can still be produced; preserve the available source and list missing fields/warnings.
+6. Redact credentials recursively in all emitted strings, including titles, authors, linked items, history, attributes, and requested raw threads.
+7. Use `fail` only with matching blocker or error output.
 
 `consumer` should default to `spec-writing`, but the schema remains reusable for other future consumers.
 

@@ -7,7 +7,7 @@ A codebase has a null-pointer bug in `userService.ts` alongside broad variable r
 ## Input
 
 - `userService.ts:42` — `user.profile.name` accessed without null check; crashes when profile is absent.
-- The same subsystem also renames `userId` → `userID` in 15 unrelated files.
+- `userService.ts:9` — a `userId` → `userID` rename propagates into 15 unrelated files.
 
 ## Expected Output
 
@@ -17,7 +17,7 @@ findings:
   why: profile can be absent for OAuth users; causes uncaught TypeError in prod
   fix: guard with `user.profile?.name ?? ''` before access
 
-- [low] 15 files — rename userId → userID
+- [low] userService.ts:9 — rename userId → userID propagates into 15 unrelated files
   why: style preference, no behavioral impact
   fix: defer to a separate cleanup task
 

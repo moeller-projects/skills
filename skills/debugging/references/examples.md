@@ -19,9 +19,26 @@ open_risks:
 - environment parsing and missing secret are not yet distinguished
 ```
 
-## Hypothesized After a Missing Prerequisite
+## Hypothesized From Static Evidence
 
-Use `status: hypothesized` when the failure cannot be reproduced because required state, credentials, or data is unavailable. Preserve the attempted repro and state exactly what must be obtained.
+When no authorized or runnable loop exists, static source/trace analysis MAY produce a hypothesis, but it MUST name the missing experiment and avoid causal confirmation:
+
+```text
+status: hypothesized
+root_cause:
+- finding: parser reads a field that the source fixture no longer emits
+- evidence: bottom trace frame and source inspection support the mismatch; execution is unavailable
+repro_steps:
+- not run: required local fixture is unavailable
+fix:
+- not applied
+verification:
+- not run: no authorized runnable environment
+regression_check:
+- not run: no executable seam
+open_risks:
+- hypothesis remains unconfirmed until the fixture and command are available
+```
 
 ## Fixed
 

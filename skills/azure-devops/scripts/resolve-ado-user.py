@@ -19,6 +19,9 @@ import _ado_lib as lib
 
 
 def main() -> None:
+    if "--help" in sys.argv[1:]:
+        print("usage: resolve-ado-user.py [--organization ORG] --email EMAIL")
+        return
     organization = __import__("os").environ.get("ADO_ORGANIZATION", "")
     email = ""
     args = sys.argv[1:]

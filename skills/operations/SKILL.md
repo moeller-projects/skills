@@ -1,10 +1,9 @@
 ---
 name: operations
-description: Use when planning or reviewing CI/CD, infrastructure, containers, Kubernetes, rollout safety, or operational risk. Do not use when the task is pure application refactoring or documentation-only work.
-allowed-tools: read_file
+description: Use when planning or reviewing CI/CD, infrastructure, containers, Kubernetes, rollout safety, or operational risk. Do not use when the task is pure application refactoring or documentation-only work, or when reviewing application/library security (use `code-review`; operations covers infrastructure, deployment, and cluster security).
 metadata:
   title: Operations
-  version: "1.0.2"
+  version: "1.0.6"
   summary: Plan safer delivery across CI/CD, containers, Kubernetes, reliability, threat modeling, and rollback decisions.
 ---
 
@@ -14,27 +13,14 @@ metadata:
 
 Handle DevOps, CI/CD, containers, Kubernetes, reliability, threat modeling, deployment safety, and operational risk with explicit safeguards.
 
-## Use When
-
-- Creating or reviewing CI/CD workflows.
-- Working with Docker, containers, or Kubernetes.
-- Threat modeling a service or deployment path.
-- Designing resilience, rollback, or release safety plans.
-- Analyzing operational or deployment risk.
-
-## Avoid When
-
-- The task is pure application refactoring.
-- The task is pure documentation.
-- Security review of application or library code is needed — that belongs to `code-review`; operations covers infrastructure, deployment, and cluster security only.
-
 ## Workflow
-
 1. MUST define the system boundary, change surface, and operational risk; if scope is unclear, stop until confirmed.
 2. MUST identify delivery, security, and runtime failure modes.
 3. MUST design the safest plan for build, release, runtime, and rollback.
 4. MUST verify reproducibility, least privilege, and observability needs.
-5. MUST deliver the plan with checks, rollback, and security notes; MUST stop for human approval before any irreversible production step.
+5. MUST deliver the plan with checks, rollback, and security notes. Each destructive step MUST carry its own explicit human approval; approval for another step or the word production MUST NOT substitute for it.
+6. MUST stop with an explicit `BLOCKED`/`ABORT` representation when prerequisites are absent; do not present executable steps after the abort.
+7. MUST preserve the production artifact before destructive work and tie rollback to its exact namespace, cluster/context, and environment. Rollback MUST include a recovery check.
 
 ## Output Contract
 
@@ -71,10 +57,10 @@ security:
 
 ## Human-in-the-Loop
 
-Stop and request explicit human approval before:
-- Executing any production deployment or migration.
+Stop and request explicit human approval before each affected step:
+- Executing any production deployment or migration; approval MUST be recorded on that step.
 - Running destructive operations (delete, overwrite, drain, scale to zero).
-- Finalizing a rollback that cannot be reversed.
+- Finalizing a rollback that cannot be reversed; preserve artifact and recovery context.
 
 ## Validation Checklist
 
@@ -88,23 +74,22 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Assets
 
-- `assets/templates/output.md` — concrete output template
-- `assets/examples/happy-path.md` — Kubernetes liveness probe scenario
-- `assets/examples/edge-case.md` — unacceptable risk abort scenario
-- `scripts/validate-output.py` — validates output structure
+- `assets/templates/output.md` — read when formatting the operational plan.
+- `assets/examples/happy-path.md` — read for a Kubernetes liveness-probe scenario.
+- `assets/examples/edge-case.md` — read when an unacceptable risk must abort the plan.
+- `scripts/validate-output.py` — run when validating an operational plan.
 - `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
-- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
+- `tests/validation-checklist.md` — read when checking the skill's validation requirements.
 
 ## References
 
-- See `references/workflow.md` for the detailed workflow.
-- See `references/examples.md` for sample operational plans.
+- `references/examples.md` — read for sample operational plans.
 
 ## Rules
 
-- `rules/_sections.md`
-- `rules/deployment-safety.md`
-- `rules/ci-cd-reproducibility.md`
-- `rules/kubernetes-safety.md`
-- `rules/threat-model-boundaries.md`
-- `rules/resilience-rollback.md`
+- `rules/_sections.md` — read when structuring rule content.
+- `rules/deployment-safety.md` — read when planning deployment safeguards.
+- `rules/ci-cd-reproducibility.md` — read when reviewing reproducibility.
+- `rules/kubernetes-safety.md` — read when changing Kubernetes resources.
+- `rules/threat-model-boundaries.md` — read when defining security boundaries.
+- `rules/resilience-rollback.md` — read when planning resilience or rollback.

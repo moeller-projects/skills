@@ -35,6 +35,10 @@ def parse_json_arg(value: str) -> Any:
 
 
 def main(argv: list[str]) -> int:
+    if "--help" in argv:
+        print("usage: emit-handoff.py [--work-item-file FILE] [--pr-comments-file FILE] [--mode MODE] [--organization ORG] [--project PROJECT] [--repository-id ID] [--pull-request-id ID] [--work-item-id ID]")
+        return 0
+    warnings: list[str] = []
     work_item_file = ""
     pr_comments_file = ""
     mode = ""
@@ -46,7 +50,7 @@ def main(argv: list[str]) -> int:
     i = 0
     while i < len(argv):
         arg = argv[i]
-        if arg in {"--work-item-file", "--pr-comments-file", "--mode", "--organization", "--project", "--repository-id", "--pull-request-id", "--work-item-id"}:
+        if arg in {"--work-item-file", "--pr-comments-file", "--mode", "--organization", "--project", "--repository-id", "--pull-request-id", "--work-item-id", "--warning"}:
             if i + 1 >= len(argv):
                 print(f"Unknown argument: {arg}", file=sys.stderr)
                 return 1
@@ -58,6 +62,7 @@ def main(argv: list[str]) -> int:
             elif arg == "--project": project = value
             elif arg == "--repository-id": repository_id = value
             elif arg == "--pull-request-id": pull_request_id = value
+            elif arg == "--warning": warnings.append(value)
             else: work_item_id = value
             i += 2
         else:
@@ -85,7 +90,6 @@ def main(argv: list[str]) -> int:
         linked_work_items = jq_or(source.get("linked_work_items") if isinstance(source, dict) else None, [])
 
     missing: list[str] = []
-    warnings: list[str] = []
     status = "pass"
     if mode in {"work-item", "work-item-plus-pr-comments"} and not work_item_file:
         missing.append("work_item")
@@ -112,9 +116,6 @@ def main(argv: list[str]) -> int:
         status = "partial"
     if mode in {"work-item", "work-item-plus-pr-comments"} and not (work_item.get("acceptance_criteria") or ""):
         warnings.append("acceptance criteria missing")
-    if mode in {"pr-comments", "work-item-plus-pr-comments"} and (not isinstance(pr_comments, list) or len(pr_comments) == 0):
-        if "pr_comments" not in missing: missing.append("pr_comments")
-        status = "partial"
     if mode in {"pr-comments", "work-item-plus-pr-comments"} and not (pull_request.get("source_branch") if isinstance(pull_request, dict) else ""):
         if "pull_request.source_branch" not in missing: missing.append("pull_request.source_branch")
         status = "partial"

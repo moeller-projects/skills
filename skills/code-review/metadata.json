@@ -1,7 +1,7 @@
 {
   "name": "code-review",
   "title": "Code Review",
-  "version": "1.1.0",
+  "version": "1.2.3",
   "summary": "Improve correctness, readability, maintainability, performance, and legacy modernization with minimal mutation.",
   "type": "rule",
   "activation": {
@@ -26,9 +26,6 @@
     "claude-code",
     "cursor",
     "opencode"
-  ],
-  "allowed_tools": [
-    "read_file"
   ],
   "risk_level": "medium",
   "requires_network": false,

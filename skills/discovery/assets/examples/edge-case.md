@@ -35,6 +35,10 @@ options:
    cons: adds load to the primary DB; may not scale past higher job volume
    cost: low
 
+ruled-out alternatives:
+- Redis: rejected because no Redis instance exists and the $0 additional infrastructure budget forbids provisioning one.
+- Hosted queue: rejected because introducing a paid external service violates the budget and cannot be validated within the 3-day timeline.
+
 recommendation:
 - choice: Postgres-backed queue
 - reason: Redis and hosted queue options are ruled out by hard budget and timeline constraints

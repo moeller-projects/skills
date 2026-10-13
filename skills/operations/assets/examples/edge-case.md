@@ -17,22 +17,23 @@ risk:
 - No canary or blue/green strategy configured — high / critical
 - Rollback requires manual DB migration reversal; no script exists — high / critical
 
+
+plan:
+status: blocked
 ABORT: deploying without mitigation paths for critical risks is not safe.
-
-Required before proceeding:
-1. Charge flow integration tests must pass in staging.
-2. A canary or feature-flag strategy must be in place to limit blast radius.
-3. A tested rollback script for the DB migration must exist and be verified.
-4. Human approval required for the next production deployment after this block is lifted.
-
-plan: BLOCKED — reopen when the three items above are resolved.
+Required before reopening the plan:
+- Charge-flow integration checks pass in staging after separately authorized test execution.
+- A canary or feature-flag strategy limits blast radius.
+- A rollback script exists and its staging verification is separately authorized.
+- The next production deployment has explicit human approval.
 
 checks:
 - [ ] Integration tests pass in CI for payments-service
 - [ ] Canary strategy documented and reviewed
 - [ ] Rollback script tested against a staging DB snapshot
 
-rollback: N/A — plan is blocked; no steps will be executed.
+rollback:
+- none — plan is blocked; no deployment or mutation will execute.
 
 security:
 - Payment data in transit must use TLS 1.2+; confirm before unblocking.

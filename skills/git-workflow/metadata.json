@@ -1,7 +1,7 @@
 {
   "name": "git-workflow",
   "title": "Git Workflow",
-  "version": "1.0.0",
+  "version": "1.3.2",
   "summary": "Plan safe, disciplined Git history, branching, commit, rebase, recovery, and stacked PR operations.",
   "type": "hybrid",
   "activation": {
@@ -15,11 +15,17 @@
     "avoid_when": [
       "Reviewing PR content or findings — use `pr-review`",
       "CI/CD pipeline or deployment configuration — use `operations`",
-      "A live production incident — use `incident-response`"
+      "A live production incident — use `incident-response`",
+      "Operating stacked PRs with the `gh stack` CLI extension — use `gh-stack`"
     ]
   },
-  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
-  "allowed_tools": ["read_file"],
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
   "risk_level": "high",
   "requires_network": false,
   "maintainer": "Lukas"

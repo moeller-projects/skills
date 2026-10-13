@@ -2,8 +2,7 @@
 """run-validation.py
 
 Purpose: Validate required Discovery files and output contract behavior.
-Inputs: Repository working tree containing the Discovery skill directory.
-Outputs: PASS lines to stdout; FAIL to stderr with exit code 1 on the first failure.
+Outputs: PASS lines to stdout; FAIL diagnostics to stderr with exit code 1 on the first failure.
 Side effects: None.
 
 Requires Python 3.9+, standard library only. Run with: python tests/run-validation.py
@@ -13,6 +12,12 @@ import sys
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
+
+HELP = """Usage: python tests/run-validation.py
+
+Validate the Discovery skill files and output contract. This command executes
+the validation checks; use --help to print this usage without executing them.
+"""
 
 
 def passed(message: str) -> None:
@@ -30,6 +35,9 @@ def require_file(path: Path) -> None:
 
 
 def main() -> None:
+    if "--help" in sys.argv[1:]:
+        print(HELP, end="")
+        return
     validator_path = SKILL_DIR / "scripts" / "validate-output.py"
     for required in [
         validator_path,
@@ -88,7 +96,7 @@ next:
         "",
     ).replace(
         "recommendation:\n",
-        "ruled-out alternatives:\n- Managed push service was rejected because the vendor cannot meet residency requirements.\n\nrecommendation:\n",
+        "ruled-out alternatives:\n- Managed push service — rejected because the vendor cannot meet residency requirements.\n\nrecommendation:\n",
     )
     if validate_text(single_option):
         fail("single viable option with ruled-out alternatives unexpectedly failed")
@@ -98,6 +106,14 @@ next:
     if not any("at least two numbered options" in error for error in validate_text(single_without_ruling_out)):
         fail("single option without ruled-out alternatives not reported")
     passed("single option without ruled-out alternatives is rejected")
+
+    bare_alternative = single_option.replace(
+        "Managed push service — rejected because the vendor cannot meet residency requirements.",
+        "Managed push service",
+    )
+    if not any("at least two numbered options" in error for error in validate_text(bare_alternative)):
+        fail("bare ruled-out alternative without explanation not reported")
+    passed("single-option ruling requires a separated explanation")
 
     whitespace_heading_output = valid_output.replace("options:\n", "options:  \n")
     if validate_text(whitespace_heading_output):

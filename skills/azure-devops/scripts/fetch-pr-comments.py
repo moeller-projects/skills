@@ -67,12 +67,12 @@ def _flatten(threads: list, organization: str, project: str, repository_id: str,
             if not isinstance(comment, dict):
                 continue
             author = comment.get("author") or {}
-            comments.append({
+            comments.append(lib.redact_value({
                 "thread_id": thread.get("id"),
                 "comment_id": comment.get("id"),
                 "parent_comment_id": comment.get("parentCommentId"),
                 "author": author.get("displayName") if isinstance(author, dict) else None,
-                "content": lib.redact_text(comment.get("content")),
+                "content": comment.get("content"),
                 "file_path": file_path,
                 "side": side,
                 "start_line": start.get("line"),
@@ -84,26 +84,26 @@ def _flatten(threads: list, organization: str, project: str, repository_id: str,
                 "comment_is_deleted": comment.get("isDeleted") or False,
                 "published_date": comment.get("publishedDate"),
                 "last_updated_date": comment.get("lastUpdatedDate"),
-            })
+            }))
     linked = []
     for item in work_items:
         if not isinstance(item, dict):
             continue
         fields = item.get("fields") or {}
-        linked.append({
+        linked.append(lib.redact_value({
             "id": _number(item.get("id")),
             "title": fields.get("System.Title") or "",
             "type": fields.get("System.WorkItemType") or "",
             "state": fields.get("System.State") or "",
             "url": item.get("url"),
-        })
+        }))
     pull = pr if isinstance(pr, dict) else {}
     result = {
         "organization": organization,
         "project": project,
         "repository_id": repository_id,
         "pull_request_id": pull_request_id,
-        "pull_request": {
+        "pull_request": lib.redact_value({
             "id": pull.get("pullRequestId") if pull.get("pullRequestId") is not None else None,
             "title": pull.get("title") or "",
             "source_branch": pull.get("sourceRefName") or "",
@@ -111,17 +111,20 @@ def _flatten(threads: list, organization: str, project: str, repository_id: str,
             "status": pull.get("status") if pull.get("status") is not None else None,
             "creation_date": pull.get("creationDate") if pull.get("creationDate") is not None else None,
             "closed_date": pull.get("closedDate") if pull.get("closedDate") is not None else None,
-        },
+        }),
         "linked_work_items": linked,
         "thread_count": len(threads),
         "comment_count": sum(len(t.get("comments") or []) for t in threads if isinstance(t, dict)),
         "comments": comments,
-        "raw_threads": threads if include_raw else None,
+        "raw_threads": lib.redact_value(threads) if include_raw else None,
     }
     return result
 
 
 def main(argv: list[str]) -> int:
+    if "--help" in argv:
+        print("usage: fetch-pr-comments.py [--pull-request-url URL] [--organization ORG] [--project PROJECT] [--repository-id ID] [--pull-request-id ID] [--include-raw-threads]")
+        return 0
     pull_request_url = ""
     organization = ""
     project = ""

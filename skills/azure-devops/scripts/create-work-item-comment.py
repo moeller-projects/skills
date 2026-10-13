@@ -13,6 +13,9 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 import _ado_lib as lib
 
 def main():
+    if "--help" in sys.argv[1:]:
+        print("usage: create-work-item-comment.py [--organization ORG] [--project PROJECT] --work-item-id ID --text TEXT [--confirm]")
+        return 0
     organization=os.environ.get('ADO_ORGANIZATION',''); project=os.environ.get('ADO_PROJECT',''); wid=''; text=''; confirm=False
     args=sys.argv[1:]; i=0; names={'--organization':'o','--project':'p','--work-item-id':'w','--text':'t'}
     while i<len(args):

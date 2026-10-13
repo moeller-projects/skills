@@ -1,7 +1,7 @@
 {
   "name": "azure-devops",
   "title": "Azure DevOps",
-  "version": "1.1.1",
+  "version": "1.1.4",
   "summary": "Read and safely write selected Azure DevOps work items and PR artifacts with deterministic dry-run, approval, and validation gates.",
   "type": "hybrid",
   "activation": {
@@ -29,10 +29,6 @@
     "claude-code",
     "cursor",
     "opencode"
-  ],
-  "allowed_tools": [
-    "read_file",
-    "shell"
   ],
   "risk_level": "high",
   "requires_network": true,

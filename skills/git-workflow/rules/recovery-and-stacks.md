@@ -16,6 +16,7 @@ Make interrupted operations and dependent branch updates reversible, observable,
 - Abort paths use the matching `git rebase --abort` or `git merge --abort` command.
 - Reflog recovery identifies the lost tip and creates a rescue branch before further cleanup.
 - Stacks are rebased bottom-up, and each child PR is retargeted or force-pushed only when its branch is private and authorized.
+- Stack operations performed with the `gh stack` CLI extension are handed off to the `gh-stack` skill rather than planned as raw git commands.
 
 ## Anti-Pattern
 

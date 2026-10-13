@@ -19,6 +19,9 @@ _HINT = "Azure DevOps URL in the form https://dev.azure.com/<org>/<project>/_git
 
 
 def main() -> None:
+    if "--help" in sys.argv[1:]:
+        print("usage: parse-pr-url.py URL")
+        return
     url = sys.argv[1] if len(sys.argv) > 1 else ""
     if not url:
         lib.emit_blocker("MISSING_INPUT", [_HINT], "Provide an Azure DevOps pull request URL or explicit identifiers.")

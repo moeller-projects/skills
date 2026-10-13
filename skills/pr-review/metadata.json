@@ -1,7 +1,7 @@
 {
   "name": "pr-review",
   "title": "PR Review",
-  "version": "2.0.1",
+  "version": "2.1.2",
   "summary": "Review pull requests and changesets against the diff, deliver actionable author-facing findings, and issue a clear verdict.",
   "type": "rule",
   "activation": {
@@ -16,7 +16,7 @@
       "Whole-codebase quality, refactoring, or security review — use code-review",
       "Test quality or coverage review — use test-strategy",
       "Infrastructure or deployment review — use operations",
-      "Fetching Azure DevOps PR discussion data — use azure-devops for the fetch"
+      "Fetching Azure DevOps PR discussion data — use azure-devops for the fetch, then return here for the review"
     ]
   },
   "compatibility": [

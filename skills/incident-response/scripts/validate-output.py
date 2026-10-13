@@ -2,8 +2,8 @@
 """validate-output.py
 
 Purpose: Validate Incident Response output against the status/severity/impact/timeline/mitigation/root-cause/follow-ups/comms contract.
-Inputs: Contract text on stdin.
-Outputs: "OK" on stdout when valid; validation errors on stdout when invalid.
+Inputs: Contract text on stdin. Use --help for the stdin contract and exit behavior.
+Outputs: "OK" on stdout when valid; diagnostics on stderr and exit status 1 when invalid.
 Side effects: None.
 
 Requires Python 3.9+, standard library only. Run with: python scripts/validate-output.py
@@ -52,21 +52,32 @@ def validate_output(input_text: str) -> list[str]:
         if line.strip() and line.lstrip().startswith("- ") and "owner:" not in line:
             errors.append(f"follow-up missing owner: {line.strip()}")
 
-    if statuses and statuses[0] == "resolved":
-        root_body = sections.get("root-cause", "")
-        if not root_body.strip():
-            errors.append("resolved incident must state a root cause or explicitly say unknown")
-
+    root_body = sections.get("root-cause", "")
+    if statuses and statuses[0] == "resolved" and not root_body.strip():
+        errors.append("resolved incident must state a root cause or explicitly say unknown")
+    if statuses and statuses[0] == "resolved" and re.search(r"\bunknown\b", root_body, re.IGNORECASE):
+        errors.append("unknown root cause cannot be marked resolved; use monitoring")
+    if statuses and statuses[0] == "monitoring" and re.search(r"\bunknown\b", root_body, re.IGNORECASE):
+        if not re.search(r"(?i)\bmonitor(?:ing)?\b.*\b(?:until|baseline|threshold|alert|symptom)\b|\b(?:until|baseline|threshold|alert|symptom)\b.*\bmonitor(?:ing)?\b", input_text):
+            errors.append("monitoring status must state the monitoring rule")
+        if not re.search(r"\binvestigat\w*.*\b(owner|team|on-call)\b|\b(owner|team|on-call)\b.*\binvestigat\w*", followups_body, re.IGNORECASE):
+            errors.append("unknown root cause requires an owned investigation follow-up")
     return errors
 
 
 def main() -> None:
+    if "--help" in sys.argv[1:]:
+        print("Usage: python scripts/validate-output.py < incident-artifact.txt")
+        print("Reads the status, severity, impact, timeline, mitigation, root-cause, follow-ups, and comms sections from stdin.")
+        print("On valid input prints OK and exits 0; invalid-input diagnostics go to stderr and exit 1.")
+        return
+
     errors = validate_output(sys.stdin.read())
     if errors:
-        sys.stdout.reconfigure(encoding="utf-8")
-        print("INVALID output:")
+        sys.stderr.reconfigure(encoding="utf-8")
+        print("INVALID output:", file=sys.stderr)
         for error in errors:
-            print(f"  - {error}")
+            print(f"  - {error}", file=sys.stderr)
         sys.exit(1)
     print("OK")
 

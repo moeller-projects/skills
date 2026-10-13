@@ -16,6 +16,9 @@ import _ado_lib as lib
 
 
 def main() -> None:
+    if "--help" in sys.argv[1:]:
+        print("usage: ensure-env.py [--require-pat]")
+        return
     if "--require-pat" in sys.argv[1:]:
         lib.require_pat()
 

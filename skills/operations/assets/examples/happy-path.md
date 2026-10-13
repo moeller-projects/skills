@@ -22,7 +22,8 @@ plan:
 2. Set initialDelaySeconds=30, periodSeconds=10, failureThreshold=3 — engineer
 3. Apply to staging first: kubectl apply -f deploy/api.yaml -n staging — engineer
 4. Verify pod stays Running for 5 minutes: kubectl get pods -n staging -w — engineer
-5. Apply to production with same manifest — engineer (human approval required)
+5. Preserve production before applying: kubectl get deploy api -n production --context prod-eu -o yaml > api-backup.yaml — engineer (human approval required for production access)
+6. After the backup succeeds, apply to production: kubectl apply -f deploy/api.yaml -n production --context prod-eu — engineer (human approval required)
 
 checks:
 - [ ] kubectl describe pod <api-pod> -n staging shows livenessProbe configured
@@ -30,8 +31,8 @@ checks:
 - [ ] GET /healthz returns 200 from inside the pod: kubectl exec <pod> -- curl -s localhost:8080/healthz
 
 rollback:
-- Remove livenessProbe block and reapply manifest: kubectl apply -f deploy/api.yaml
-- artifact: save current manifest before change: kubectl get deploy api -n production -o yaml > api-backup.yaml
+- Restore preserved manifest artifact: `kubectl apply -f api-backup.yaml -n production --context prod-eu` — deployment `api`, cluster context `prod-eu`, namespace `production`.
+- Recovery check: `kubectl rollout status deploy/api -n production --context prod-eu` and verify `/healthz` remains 200.
 
 security:
 - Probe endpoint /healthz must not expose internal state or secrets

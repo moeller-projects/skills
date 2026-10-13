@@ -1,10 +1,10 @@
 ---
 name: pr-review
-description: Use when reviewing a pull request, diff, or changeset and producing author-facing review feedback with an approve / request-changes / comment verdict. Do not use when the task is whole-codebase quality or security review (use `code-review`), test coverage review (use `test-strategy`), or infrastructure review (use `operations`).
+description: Use when reviewing a pull request, diff, or changeset and producing author-facing review feedback with an approve / request-changes / comment verdict. Do not use for whole-codebase quality or security review (use `code-review`), test coverage review (use `test-strategy`), infrastructure review (use `operations`), or fetching Azure DevOps PR discussion data (use `azure-devops` for the fetch, then return here for the review).
 allowed-tools: read_file
 metadata:
   title: PR Review
-  version: "2.0.1"
+  version: "2.1.2"
   summary: Review pull requests and changesets against the diff, deliver actionable author-facing findings, and issue a clear verdict.
 ---
 
@@ -14,20 +14,6 @@ metadata:
 
 Review pull requests, diffs, and changesets. Inspect what actually changed, produce author-facing findings that are specific and actionable, and close with a verdict the author can act on.
 
-## Use When
-
-- Reviewing a pull request or merge request.
-- Reviewing a diff, patch, or staged changeset before merge.
-- Writing review comments for an author.
-- Deciding between approve, request-changes, and comment verdicts.
-- Re-reviewing a changeset after the author addressed feedback.
-
-## Avoid When
-
-- The task is whole-codebase quality, refactoring, or security review — use `code-review`.
-- The task is test quality or coverage review — use `test-strategy`.
-- The task is infrastructure or deployment review — use `operations`.
-- The task is fetching Azure DevOps PR discussion data — use `azure-devops` for the fetch, then return here for the review.
 
 ## Workflow
 
@@ -35,7 +21,7 @@ Review pull requests, diffs, and changesets. Inspect what actually changed, prod
 2. MUST verify each finding against the actual code before reporting it; if a finding cannot be confirmed from the available context, mark it as a question, not a defect.
 3. MUST sort findings by severity: blocker → major → minor → nit.
 4. MUST keep pre-existing, untouched code out of findings; list it under out-of-scope instead.
-5. MUST issue exactly one verdict: `approve` only when no blocker or major findings remain; `request-changes` when any blocker or major finding exists; `comment` for informational reviews.
+5. MUST issue exactly one verdict: `approve` only when no blocker or major findings remain; `request-changes` whenever any blocker or major finding exists; `comment` only for informational reviews with no blocker or major finding. A clean review MUST use `findings: - none` and still provide a substantive summary and residual-risk statement.
 6. MUST state residual risk that remains even if the changeset merges as-is.
 
 ## Output Contract
@@ -66,6 +52,7 @@ When the changeset is clean, `findings:` contains a single `- none` line instead
 - Accepts GitHub or Azure DevOps pull request review requests routed from `azure-devops`.
 - Hand off to `code-review` when the review surfaces systemic code issues beyond the diff.
 - Hand off to `test-strategy` when the changeset lacks meaningful coverage for its behavior.
+- Hand off to `review-response` when the author asks you to act on review feedback received from others.
 - Terminal skill for the review artifact itself — the verdict and findings are the final output.
 
 ## Error Handling
@@ -81,32 +68,21 @@ Request explicit approval before:
 - Posting review comments or a verdict to an external system (GitHub, Azure DevOps).
 - Approving a changeset that touches authentication, authorization, payments, or data deletion paths.
 
-## Validation Checklist
+## Validation
 
-- [ ] Every finding references a file and line inside the changeset.
-- [ ] Findings sorted by severity: blocker → major → minor → nit.
-- [ ] Verdict is consistent with the findings (no approve with open blockers).
-- [ ] Pre-existing issues live under out-of-scope, not findings.
-- [ ] Residual risk is stated.
+Apply the operating rules above when finalizing every review. For the detailed checklist, read `tests/validation-checklist.md` only when validating a completed review; run `tests/run-validation.py` only when the user explicitly requests test execution.
 
-See `tests/validation-checklist.md` for the full checklist.
+## Bundled resources
 
-## Assets
-
-- `assets/templates/output.md` — concrete output template
-- `assets/examples/happy-path.md` — feature PR with blocker and nit findings
-- `assets/examples/edge-case.md` — oversized diff reviewed in stated passes
-- `scripts/validate-output.py` — validates output structure
-
-## References
-
-- See `references/workflow.md` for the detailed workflow.
-- See `references/examples.md` for sample reviews.
-
-## Rules
-
-- `rules/_sections.md`
-- `rules/diff-first.md`
-- `rules/verdict-discipline.md`
-- `rules/comment-quality.md`
-- `rules/scope-guard.md`
+- Read `assets/templates/output.md` when formatting the review artifact.
+- Read `assets/examples/happy-path.md` when a concrete standard review example is useful.
+- Read `assets/examples/edge-case.md` when reviewing an oversized diff.
+- Run `scripts/validate-output.py` when checking a generated review against the output contract.
+- Read `references/workflow.md` when the review needs detailed step-by-step workflow guidance.
+- Read `references/examples.md` when sample reviews beyond the templates are needed.
+- Read `rules/_sections.md` when checking the required output sections.
+- Read `rules/diff-first.md` when applying detailed diff-scope guidance.
+- Read `rules/verdict-discipline.md` when resolving verdict consistency.
+- Read `rules/comment-quality.md` when drafting or revising findings.
+- Read `rules/scope-guard.md` when separating changed code from out-of-scope observations.
+- Run `tests/run-validation.py` only when the user explicitly requests test execution; it validates the bundled output validator.

@@ -14,6 +14,11 @@
 - [x] Write actions are isolated to dedicated scripts.
 - [x] Write actions default to dry-run.
 - [x] Write execution requires `--confirm`.
+- [x] GET retries do not replay writes; ambiguous write failures provide unknown-outcome recovery.
+- [x] Literal current PAT and supported plain/bearer PAT forms are recursively redacted from emitted fields.
+- [x] Work-item comments follow continuation tokens and retain all pages.
+- [x] Combined mode preserves a successful source when the other source has a recoverable failure and marks the handoff partial; blockers remain fatal.
+- [x] Schema string patterns reject unsafe repository identifiers and traversal paths.
 
 ## Edge Cases
 

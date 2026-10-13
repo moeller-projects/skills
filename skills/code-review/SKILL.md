@@ -1,10 +1,9 @@
 ---
 name: code-review
 description: Use when reviewing a whole codebase or subsystem for systemic code quality, security, refactoring, or evidence-backed performance concerns. Inspect application and library code for correctness, maintainability, injection flaws, authorization gaps, secrets, unsafe input handling, complexity, legacy modernization, and measured bottlenecks. Do not use for pull request, diff, patch, changeset, or merge-request review or author-facing feedback; use `pr-review` instead. Do not use for test quality or coverage, documentation, or infrastructure or deployment review.
-allowed-tools: read_file
 metadata:
   title: Code Review
-  version: "1.1.0"
+  version: "1.2.3"
   summary: Improve correctness, readability, maintainability, performance, and legacy modernization with minimal mutation.
 ---
 
@@ -14,24 +13,7 @@ metadata:
 
 Improve code correctness, readability, maintainability, performance, and modernization safety with the smallest reasonable change set.
 
-## Use When
-
-- Reviewing a whole codebase or subsystem for systemic code quality or safety issues.
-- Reviewing a whole codebase or subsystem for code-level security defects (injection, authorization gaps, secrets in source, unsafe input handling).
-- Refactoring a codebase or subsystem for clarity or maintainability.
-- Optimizing systemic performance with real evidence.
-- Reducing complexity in fragile areas across a codebase or subsystem.
-- Modernizing legacy code with minimal mutation.
-
-## Avoid When
-
-- Reviewing a pull request, diff, patch, changeset, or merge request, or writing author-facing review feedback — use `pr-review`.
-- Only documentation is requested.
-- Test design or coverage is the primary task.
-- Infrastructure or deployment is the primary task.
-
 ## Workflow
-
 1. MUST confirm current behavior, constraints, and failure risks; if behavior is unclear, ask one question before proceeding.
 2. MUST find the highest-value correctness and maintainability issues first.
 3. Prefer the smallest safe change; when the change touches critical paths, MUST verify behavior before applying.
@@ -45,15 +27,17 @@ Default:
 ```text
 findings:
 - [severity] file:line — issue
-  why:
-  fix:
+  why: why it matters, grounded in observed behavior or evidence
+  fix: exact actionable change
 
 patch-plan:
-1. ...
+1. ordered step naming the file/surface and action
 
 risk:
-- ...
+- residual risk, or none
 ```
+
+Each finding MUST include a precise location, issue, why, and fix. If no supported finding exists, write `- none` rather than inventing one. The patch plan MUST be ordered and substantive even for a clean review (for example, record the checks performed). Risk MUST state residual risk or explicit `none`. A performance concern without profiling, benchmark, or production measurements is an evidence gap and MUST NOT be presented as a severity-ranked defect.
 
 ## Handoffs
 
@@ -61,6 +45,7 @@ risk:
 - Accepts work from `discovery` when analysis resolves into a concrete code quality or security concern.
 - Hand off to `test-strategy` when fixes require new or updated test coverage.
 - Hand off to `task-planning` when the patch plan needs an executable task breakdown with dependencies and done criteria.
+- Consult `codebase-design` for module-shape findings (depth, seams, interfaces) — use its vocabulary in the finding.
 
 ## Error Handling
 
@@ -80,26 +65,25 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Assets
 
-- `assets/templates/output.md` — concrete output template
-- `assets/examples/happy-path.md` — mixed bug/cleanup scenario
-- `assets/examples/edge-case.md` — performance request without profiling data
-- `scripts/validate-output.py` — validates output format
+- `assets/templates/output.md` — read when formatting the review output.
+- `assets/examples/happy-path.md` — read for a mixed bug/cleanup review example.
+- `assets/examples/edge-case.md` — read when performance is requested without profiling data.
+- `scripts/validate-output.py` — run when validating a generated review output.
 - `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
-- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
+- `tests/validation-checklist.md` — read when checking the skill's validation requirements.
 
 ## References
 
-- See `references/workflow.md` for the detailed workflow.
-- See `references/examples.md` for sample findings and patch plans.
+- `references/examples.md` — read for sample findings and patch plans.
 
 ## Rules
 
-- `rules/_sections.md`
-- `rules/correctness-first.md`
-- `rules/minimal-mutation.md`
-- `rules/complexity-reduction.md`
-- `rules/performance-when-real.md`
-- `rules/legacy-safety.md`
-- `rules/injection-safety.md`
-- `rules/secrets-in-source.md`
-- `rules/authz-checks.md`
+- `rules/_sections.md` — read when structuring rule content.
+- `rules/correctness-first.md` — read when assessing correctness.
+- `rules/minimal-mutation.md` — read when selecting the smallest safe patch.
+- `rules/complexity-reduction.md` — read when evaluating complexity.
+- `rules/performance-when-real.md` — read for evidence-based performance concerns.
+- `rules/legacy-safety.md` — read when reviewing legacy modernization.
+- `rules/injection-safety.md` — read when assessing injection risks.
+- `rules/secrets-in-source.md` — read when checking for exposed secrets.
+- `rules/authz-checks.md` — read when checking authorization boundaries.

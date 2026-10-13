@@ -46,6 +46,9 @@ recommendation:
 - reason: <why alternatives were ruled out>
 - blind-spots: <what still needs watching>
 
+ruled-out alternatives:
+- <alternative>: <why it is not viable under the stated constraints>
+
 next:
 - <first action>
 - open: <one open question if any>

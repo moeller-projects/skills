@@ -6,13 +6,13 @@ root_cause:
 - finding: <cause or best current hypothesis>
 - evidence: <specific observation, trace frame, bisect result, or experiment>
 repro_steps:
-- <exact command/input/state/environment step>
+- <exact command/input/state/environment step, or "not run: <missing prerequisite and attempted evidence>">
 fix:
 - <narrow fix, or "not applied">
 verification:
-- <original repro result and relevant nearby checks>
+- <authorized original repro result, or "not run: authorization/prerequisite unavailable">
 regression_check:
-- <test/check added and result, or blocker>
+- <authorized check and result, or blocker/missing seam>
 open_risks:
 - <remaining uncertainty or none>
 ```

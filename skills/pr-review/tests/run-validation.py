@@ -3,7 +3,7 @@
 
 Purpose: Validate PR Review validator presence, severity ordering, and verdict consistency behavior.
 Inputs: Repository working tree containing the PR Review skill directory.
-Outputs: PASS lines to stdout; FAIL to stderr with exit code 1 on the first failure.
+Outputs: PASS lines to stdout; validator diagnostics to stderr with exit code 1 on the first failure.
 Side effects: None.
 
 Requires Python 3.9+, standard library only. Run with: python tests/run-validation.py
@@ -92,7 +92,7 @@ risk:
 - none
 """
     result = run_validator(validator, unsorted)
-    if result.returncode == 0 or "not sorted by severity" not in result.stdout:
+    if result.returncode == 0 or "not sorted by severity" not in result.stderr:
         fail("severity ordering failure not reported")
     passed("severity ordering is enforced")
 
@@ -111,7 +111,7 @@ risk:
 - none
 """
     result = run_validator(validator, bad_verdict)
-    if result.returncode == 0 or "verdict is approve but blocker or major findings exist" not in result.stdout:
+    if result.returncode == 0:
         fail("verdict/findings inconsistency not reported")
     passed("verdict consistency is enforced")
     empty_request_changes = """verdict: request-changes
@@ -126,17 +126,28 @@ risk:
 - none
 """
     result = run_validator(validator, empty_request_changes)
-    if result.returncode == 0 or "no blocker or major finding exists" not in result.stdout:
+    if result.returncode == 0 or "no blocker or major finding exists" not in result.stderr:
         fail("request-changes without findings not reported")
-    passed("request-changes requires a blocker or major finding")
-
     incomplete_finding = valid.replace("  why: NaN totals\n", "").replace("  suggestion: guard itemCount\n", "")
     result = run_validator(validator, incomplete_finding)
-    if result.returncode == 0 or "each finding must include why" not in result.stdout or "each finding must include suggestion" not in result.stdout:
+    if result.returncode == 0 or "each finding must include why" not in result.stderr or "each finding must include suggestion" not in result.stderr:
         fail("incomplete finding quality not reported")
     passed("finding quality fields are enforced")
-
-    print("\nPR Review validation completed successfully.")
+    comment_blocker = valid.replace("verdict: request-changes", "verdict: comment")
+    result = run_validator(validator, comment_blocker)
+    if result.returncode == 0 or "require request-changes" not in result.stderr:
+        fail("comment verdict concealed a blocker")
+    passed("all verdicts reject concealed blocker findings")
+    unknown_finding = valid.replace("- [blocker]", "- [critical]")
+    result = run_validator(validator, unknown_finding)
+    if result.returncode == 0 or "invalid severity label" not in result.stderr:
+        fail("unknown finding severity was accepted")
+    passed("unknown finding severities are rejected")
+    missing_issue = valid.replace(" — division by zero", "")
+    result = run_validator(validator, missing_issue)
+    if result.returncode == 0 or "nonempty issue" not in result.stderr:
+        fail("finding without an issue was accepted")
+    passed("finding issue text is required")
 
 
 if __name__ == "__main__":

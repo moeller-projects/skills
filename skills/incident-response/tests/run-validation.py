@@ -75,26 +75,26 @@ def main() -> None:
 
     bad_status = VALID.replace("status: resolved", "status: fixed")
     result = run_validator(validator, bad_status)
-    if result.returncode == 0 or "invalid status" not in result.stdout:
+    if result.returncode == 0 or "invalid status" not in result.stderr:
         fail("invalid status not reported")
     passed("invalid status is rejected")
 
     bad_timeline = VALID.replace("- 14:07Z alerts — elevated 5xx", "- just now alerts — elevated 5xx")
     result = run_validator(validator, bad_timeline)
-    if result.returncode == 0 or "missing UTC timestamp" not in result.stdout:
+    if result.returncode == 0 or "missing UTC timestamp" not in result.stderr:
         fail("timeline timestamp failure not reported")
     passed("timeline timestamps are enforced")
 
     orphan_followup = VALID.replace("add config validation — owner: platform team", "add config validation")
     result = run_validator(validator, orphan_followup)
-    if result.returncode == 0 or "missing owner" not in result.stdout:
+    if result.returncode == 0 or "missing owner" not in result.stderr:
         fail("ownerless follow-up not reported")
     second_bad_timeline = VALID.replace(
         "- 14:16Z on-call — rolled back deploy 1f42c",
         "- 14:16Z on-call — rolled back deploy 1f42c\n- no timestamp — observed recovery",
     )
     result = run_validator(validator, second_bad_timeline)
-    if result.returncode == 0 or "observed recovery" not in result.stdout:
+    if result.returncode == 0 or "observed recovery" not in result.stderr:
         fail("invalid later timeline entry not reported")
     passed("all timeline entries are checked")
 
@@ -103,7 +103,7 @@ def main() -> None:
         "- add config validation — owner: platform team\n- audit alerts",
     )
     result = run_validator(validator, second_ownerless_followup)
-    if result.returncode == 0 or "audit alerts" not in result.stdout:
+    if result.returncode == 0 or "audit alerts" not in result.stderr:
         fail("invalid later follow-up entry not reported")
     passed("all follow-up entries are checked")
 
@@ -111,10 +111,14 @@ def main() -> None:
         "1. rolled back deploy 1f42c", ""
     ).replace("- status page updated", "")
     result = run_validator(validator, empty_sections)
-    if result.returncode == 0 or "empty 'impact:' section" not in result.stdout or "empty 'mitigation:' section" not in result.stdout or "empty 'comms:' section" not in result.stdout:
+    if result.returncode == 0 or "empty 'impact:' section" not in result.stderr or "empty 'mitigation:' section" not in result.stderr or "empty 'comms:' section" not in result.stderr:
         fail("empty required incident sections not reported")
     passed("required incident sections cannot be empty")
-    passed("follow-up ownership is enforced")
+    unknown_resolved = VALID.replace("root cause: pipeline does not validate config keys", "root cause: unknown")
+    result = run_validator(validator, unknown_resolved)
+    if result.returncode == 0 or "cannot be marked resolved" not in result.stderr:
+        fail("unknown root cause was allowed to resolve")
+    passed("unknown root cause requires monitoring")
 
     print("\nIncident Response validation completed successfully.")
 

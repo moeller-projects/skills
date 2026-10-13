@@ -14,6 +14,9 @@ import _ado_lib as lib
 
 def err(msg,recovery): lib.emit_error('PARSE_FAILED','parse',msg,recovery)
 def main():
+    if "--help" in sys.argv[1:]:
+        print("usage: create-pr-comment.py [--mode thread|reply] [--pull-request-url URL] [--organization ORG] [--project PROJECT] [--repository-id ID] [--pull-request-id ID] --content TEXT [--confirm]")
+        return 0
     mode='thread'; pr_url=''; org=os.environ.get('ADO_ORGANIZATION',''); project=os.environ.get('ADO_PROJECT',''); repo=os.environ.get('ADO_REPOSITORY_ID',''); pr=os.environ.get('ADO_PULL_REQUEST_ID',''); thread=''; content=''; path=''; side='right'; line=''; end=''; confirm=False
     args=sys.argv[1:]; i=0; mapping={'--mode':'mode','--pull-request-url':'pr_url','--organization':'org','--project':'project','--repository-id':'repo','--pull-request-id':'pr','--thread-id':'thread','--content':'content','--file-path':'path','--side':'side','--line':'line','--end-line':'end'}
     while i<len(args):

@@ -18,25 +18,22 @@ repo_map:
 - src/infra: INACCESSIBLE — permission denied
 
 entrypoints:
-- src/api/server.ts: Express app entry (confirmed from available files)
-- src/infra/: UNKNOWN — directory inaccessible
+- src/api/server.ts — Express app entry (runtime; confirmed from available files)
+- src/infra/ — UNKNOWN; directory inaccessible and requires access before use
 
 conventions:
-- ESLint: .eslintrc.js present at root with airbnb-base config
-- Imports: barrel files (index.ts) in each subdirectory
-- NOTE: conventions in src/infra not verified due to access restriction
+- ESLint — .eslintrc.js at root uses airbnb-base config
+- Imports — barrel files (index.ts) in each subdirectory
+- Access gap — conventions in src/infra are not verified due to restriction
 
 hotspots:
-- src/shared/errors.ts: referenced by 14 files; change here has wide blast radius
-- src/api/routes/: high churn based on git log (shallow clone; history limited)
+- src/shared/errors.ts — referenced by 14 files; changes have wide blast radius
+- src/api/routes/ — high churn based on limited shallow-clone history
 
 agent_artifacts:
-- PARTIAL MAP: gaps in src/infra must be filled before making infrastructure changes
-- Re-run scan with full repo access to complete the map
-
-GAPS:
-- src/infra/: inaccessible — do not make infrastructure changes without full scan
-- git history truncated (shallow clone) — hotspot churn counts are estimates only
+- PARTIAL MAP — fill src/infra gaps before infrastructure changes
+- Re-run scan — obtain full repository access to complete the map
+- History caveat — shallow clone limits confidence in churn estimates
 ```
 
 ## Why This Is Correct

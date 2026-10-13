@@ -48,6 +48,7 @@ def main() -> None:
   why: crashes request handling
   fix: guard missing token before access
 - [high] src/cache.ts:88 — stale entry can leak data
+  why: stale data can be served after mutation
   fix: invalidate cache on write
 
 patch-plan:
@@ -76,9 +77,36 @@ risk:
 - minor churn
 """
     result = run_validator(validator, invalid)
-    if result.returncode == 0 or "findings are not sorted by severity" not in result.stdout:
+    if result.returncode == 0 or "findings are not sorted by severity" not in result.stderr:
         fail("severity ordering failure not reported")
     passed("severity ordering is enforced")
+    missing_fields = valid.replace("  why: crashes request handling\n", "").replace("  fix: guard missing token before access\n", "")
+    result = run_validator(validator, missing_fields)
+    if result.returncode == 0 or "meaningful why" not in result.stderr or "meaningful fix" not in result.stderr:
+        fail("finding without why/fix unexpectedly passed")
+    passed("finding-local fields are enforced")
+    malformed_second = valid.replace(
+        "- [high] src/cache.ts:88 — stale entry can leak data",
+        "- [high] src/cache.ts:88 — stale entry can leak data\n- [medium] malformed finding"
+    )
+    result = run_validator(validator, malformed_second)
+    if result.returncode == 0 or "valid header" not in result.stderr:
+        fail("malformed second finding unexpectedly passed")
+    passed("malformed finding entries are rejected")
+
+    clean = """findings:
+- none
+
+patch-plan:
+1. Record the reviewed files and evidence checked
+
+risk:
+- none
+"""
+    result = run_validator(validator, clean)
+    if result.returncode != 0:
+        fail(f"explicit clean review unexpectedly failed: {result.stdout}{result.stderr}")
+    passed("explicit clean review passes")
 
     print("\nCode Review validation completed successfully.")
 

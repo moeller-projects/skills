@@ -1,7 +1,7 @@
 {
   "name": "codebase-onboarding",
   "title": "Codebase Onboarding",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "summary": "Map repository architecture, entry points, conventions, hotspots, and onboarding artifacts for fast execution.",
   "type": "hybrid",
   "activation": {
@@ -14,7 +14,9 @@
     ],
     "avoid_when": [
       "The user already provided exact files for a small patch",
-      "Only code quality review is needed"
+      "Only code quality review is needed",
+      "The question is strategic rather than repository-specific",
+      "The request is to author onboarding or AGENTS.md docs"
     ]
   },
   "compatibility": [
@@ -23,10 +25,6 @@
     "claude-code",
     "cursor",
     "opencode"
-  ],
-  "allowed_tools": [
-    "read_file",
-    "list_dir"
   ],
   "risk_level": "medium",
   "requires_network": false,

@@ -6,7 +6,7 @@
 2. Inspect status, staged and unstaged diffs, recent log, and likely secrets or generated files.
 3. Define atomic commits and Conventional Commit subjects. Use `BREAKING CHANGE:` for incompatible behavior.
 4. Pick rebase for private linear cleanup; pick merge when preserving shared topology or published ancestry matters; pick revert to undo published changes.
-5. Add a rescue branch before any reset, interactive rebase, or force-push. Require confirmation at the destructive step.
+5. Apply `rules/history-safety.md` before any reset, interactive rebase, or force-push; require confirmation at the destructive step.
 6. Resolve conflicts explicitly, verify the resulting diff, and update stacked branches bottom-up.
 7. Publish only after diff hygiene and branch-target checks.
 
@@ -19,4 +19,4 @@
 
 ## Recovery
 
-Use `git reflog --date=local` to locate the prior tip, then create `git branch rescue/<name> <hash>` before attempting another repair. For an active rebase use `git rebase --abort`; for an active merge use `git merge --abort`. A rescue branch is a recovery aid, not permission to delete the original reference.
+For reflog, rescue-branch, and abort-command procedures, follow `rules/history-safety.md` and `rules/recovery-and-stacks.md`.

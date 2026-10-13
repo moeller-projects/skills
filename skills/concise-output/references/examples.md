@@ -12,10 +12,11 @@ Before/after pairs per response shape. Use to calibrate tone and compression.
 
 > Update `jsonwebtoken`, then rewrite `verifyToken`:
 >
-> 1. `npm install jsonwebtoken@latest`
+> 1. If the user explicitly requests dependency installation, run `npm install jsonwebtoken@latest`;
+>    otherwise do not run it and report dependency installation as not run.
 > 2. Replace `verifyToken` (`src/auth.ts:42–58`) with the snippet below
-> 3. `npm test -- auth.spec.ts`
->
+> 3. If the user explicitly requests test execution, run `npm test -- auth.spec.ts`; otherwise do
+>    not run it and report tests as not run.
 > [snippet]
 >
 > Next: paste the first failing line if any test fails.

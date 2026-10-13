@@ -13,6 +13,9 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 import _ado_lib as lib
 
 def main():
+    if "--help" in sys.argv[1:]:
+        print("usage: create-pull-request.py [--organization ORG] [--project PROJECT] [--repository-id ID] --source-branch BRANCH --target-branch BRANCH --title TITLE [--description TEXT] [--reviewers-json JSON] [--confirm]")
+        return 0
     organization=os.environ.get('ADO_ORGANIZATION',''); project=os.environ.get('ADO_PROJECT',''); repo=os.environ.get('ADO_REPOSITORY_ID',''); source=''; target='main'; title=''; description=''; reviewers='[]'; confirm=False
     args=sys.argv[1:]; i=0
     while i<len(args):

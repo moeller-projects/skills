@@ -30,10 +30,14 @@ RETRY_DELAY_SECONDS = 2
 RETRY_MAX_SECONDS = 60
 REQUEST_TIMEOUT_SECONDS = 30
 
-_BEARER_PATTERN = re.compile(r"(?i)(Bearer\s+)[A-Za-z0-9._-]+")
+_BEARER_PATTERN = re.compile(r"(?i)(Bearer\s+)[A-Za-z0-9._~+/=-]+")
 _TOKEN_PATTERN = re.compile(
-    r"\b(?:ghp_[A-Za-z0-9]+|AZURE_DEVOPS_PAT|[A-Za-z0-9]{20,}\.[A-Za-z0-9._-]{10,})\b"
+    r"\b(?:ghp_[A-Za-z0-9]+|github_pat_[A-Za-z0-9_]+|pat_[A-Za-z0-9]+|AZURE_DEVOPS_PAT|[A-Za-z0-9]{20,}\.[A-Za-z0-9._-]{10,}|[A-Za-z0-9]{52}|[A-Za-z0-9]{75}AZDO[A-Za-z0-9]{5})\b"
 )
+
+def _current_secret_patterns() -> list[str]:
+    pat = os.environ.get("AZURE_DEVOPS_PAT", "")
+    return [pat] if pat else []
 
 class _NoRedirectHandler(urllib.request.HTTPRedirectHandler):
     """Prevent urllib from forwarding the PAT Authorization header on redirects."""
@@ -89,11 +93,22 @@ def require_pat() -> str:
 
 
 def redact_text(text: str | None) -> str | None:
-    """Redact credential-shaped values; mirrors the redact_stdin/jq redact_text rules."""
+    """Redact bearer tokens, supported PAT forms, and the current PAT recursively."""
     if text is None:
         return None
+    for secret in _current_secret_patterns():
+        text = text.replace(secret, "[REDACTED]")
     text = _BEARER_PATTERN.sub(r"\1[REDACTED]", text)
     return _TOKEN_PATTERN.sub("[REDACTED]", text)
+
+def redact_value(value: Any) -> Any:
+    if isinstance(value, str):
+        return redact_text(value)
+    if isinstance(value, list):
+        return [redact_value(item) for item in value]
+    if isinstance(value, dict):
+        return {key: redact_value(item) for key, item in value.items()}
+    return value
 
 
 def normalize_repo_root_path(path: str | None) -> str | None:
@@ -164,10 +179,10 @@ def http_request(
     error_message: str,
     error_recovery: str,
 ) -> bytes:
-    """Execute an authenticated ADO HTTP request with bounded retries.
+    """Execute an authenticated ADO HTTP request.
 
-    Mirrors the curl policy: up to 5 retries, 2s delay, 60s overall retry budget.
-    On exhaustion, emits the structured ERROR shape and exits 1.
+    GET requests have bounded retries. Writes are attempted once: a timeout or
+    server failure is reported as an unknown outcome and never replayed.
     """
     validate_ado_url(url, stage=stage)
     pat = require_pat()
@@ -188,13 +203,39 @@ def http_request(
             with _HTTP_OPENER.open(request, timeout=REQUEST_TIMEOUT_SECONDS) as response:
                 return response.read()
         except urllib.error.HTTPError as exc:
-            # 4xx (except 408/429) is not transient; fail without retrying.
+            if exc.code in (401, 403):
+                emit_blocker(
+                    "MISSING_AUTH",
+                    ["AZURE_DEVOPS_PAT permissions"],
+                    "Provide a PAT with the required Azure DevOps scope and retry.",
+                )
             if exc.code < 500 and exc.code not in (408, 429):
                 emit_error(error_code, stage, error_message, error_recovery)
+            if method != "GET":
+                emit_error(
+                    error_code,
+                    stage,
+                    f"{error_message} Outcome is unknown; the request may have been accepted.",
+                    "Check Azure DevOps for the resulting artifact before retrying manually.",
+                )
             last_error: BaseException = exc
         except (http.client.IncompleteRead, urllib.error.URLError, TimeoutError, ConnectionError, OSError) as exc:
+            if method != "GET":
+                emit_error(
+                    error_code,
+                    stage,
+                    f"{error_message} Outcome is unknown; the request may have been accepted.",
+                    "Check Azure DevOps for the resulting artifact before retrying manually.",
+                )
             last_error = exc
 
+        if method != "GET":
+            emit_error(
+                error_code,
+                stage,
+                f"{error_message} Outcome is unknown; the request may have been accepted.",
+                "Check Azure DevOps for the resulting artifact before retrying manually.",
+            )
         if attempt > MAX_RETRIES or (time.monotonic() - started) > RETRY_MAX_SECONDS:
             _ = last_error
             emit_error(error_code, stage, error_message, error_recovery)
@@ -231,7 +272,7 @@ def http_write_json(
     *,
     label: str,
 ) -> str:
-    """Execute a guarded write call and return the redacted response text."""
+    """Execute a guarded write call once and return the redacted response text."""
     raw = http_request(
         method,
         url,
@@ -240,8 +281,8 @@ def http_write_json(
         label=label,
         stage="write",
         error_code="WRITE_FAILED",
-        error_message=f"Failed to execute {label} after retries.",
-        error_recovery="Check AZURE_DEVOPS_PAT permissions, identifiers, request body, and network connectivity.",
+        error_message=f"Failed to execute {label}; outcome may be unknown.",
+        error_recovery="Check Azure DevOps for the resulting artifact before retrying manually.",
     )
     redacted = redact_text(raw.decode("utf-8", errors="replace"))
     return redacted if redacted is not None else ""

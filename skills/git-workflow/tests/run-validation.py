@@ -26,6 +26,9 @@ commit_plan:
 - commit: implementation
   message: feat(parser): add quoted token support
   breaking_footer: none
+- commit: parser tests
+  message: test(parser): cover quoted token support
+  breaking_footer: none
 operations:
 - id: O-01
   command: git status --short
@@ -71,6 +74,29 @@ def main() -> None:
     if not any("destructive operation requires an exact rollback" in error for error in errors):
         fail("destructive rollback failure not reported")
     print("PASS: destructive safety is enforced")
+
+    malformed_commit = VALID.replace(
+        "  message: test(parser): cover quoted token support\n  breaking_footer: none",
+        "  message: malformed message\n  breaking_footer: none",
+        1,
+    )
+    if malformed_commit == VALID:
+        fail("later commit fixture mutation did not apply")
+    if not any("commit 2 message must use" in error for error in validate(malformed_commit)):
+        fail("malformed later commit message was accepted")
+    unknown_id = VALID.replace("- id: O-02", "- id: XYZ")
+    if not any("unknown or out-of-order operation id" in error for error in validate(unknown_id)):
+        fail("unknown operation id was accepted")
+    missing_id = VALID.replace("- id: O-02", "- command: git status --short")
+    if not any("malformed or unparseable items" in error for error in validate(missing_id)):
+        fail("missing operation id was accepted")
+    empty_safety = VALID.replace("safety_notes:\n- never rewrite shared history", "safety_notes:\nrollback:")
+    if not any("empty section: safety_notes:" in error for error in validate(empty_safety)):
+        fail("empty safety section was accepted")
+    heading_only_plan = VALID.replace("commit_plan:\n- commit: implementation\n  message: feat(parser): add quoted token support\n  breaking_footer: none\n- commit: parser tests\n  message: test(parser): cover quoted token support\n  breaking_footer: none", "commit_plan:\n")
+    if not any("empty section: commit_plan:" in error for error in validate(heading_only_plan)):
+        fail("heading-only commit plan was accepted")
+    print("PASS: commit and operation item validation is enforced")
     print("Git Workflow validation completed successfully.")
 
 

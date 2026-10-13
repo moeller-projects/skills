@@ -16,23 +16,26 @@ risk:
 - <residual risk after applying patch>
 ```
 
-## Fast-Path (single finding, same contract)
+## Fast-Path (single finding or clean review, same contract)
 
 ```text
 findings:
 - [<severity>] <file>:<line> — <issue>
+  why: <why this matters, based on evidence>
   fix: <exact change>
 
 patch-plan:
-1. <single safest change>
+1. <single safest change, or checks recorded for a clean review>
 
 risk:
-- <residual risk>
+- <residual risk, or none>
 ```
+
+For a clean review, use `findings: - none`; never invent a severity-ranked performance defect without measurements.
 
 ## Rules
 
 - Sort findings by severity: critical → high → medium → low.
-- Include `why` only when the reason is non-obvious.
+- Every finding requires location, issue, why, and fix.
 - List patch steps in safe application order (least risky first).
-- Omit `risk` only when the patch has no residual risk.
+- State residual risk explicitly, including `none`.

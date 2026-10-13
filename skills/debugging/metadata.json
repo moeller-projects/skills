@@ -1,7 +1,7 @@
 {
   "name": "debugging",
   "title": "Debugging",
-  "version": "1.0.0",
+  "version": "1.1.5",
   "summary": "Find and verify root causes of local development failures through deterministic reproduction and evidence.",
   "type": "hybrid",
   "activation": {
@@ -18,8 +18,13 @@
       "The request is a pull-request review; use pr-review."
     ]
   },
-  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
-  "allowed_tools": ["read_file"],
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
   "risk_level": "medium",
   "requires_network": false,
   "maintainer": "Lukas"

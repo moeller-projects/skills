@@ -14,7 +14,7 @@ Change one variable at a time: input, environment, configuration, dependency, or
 
 ## 4. Confirm, Fix, Verify
 
-Design a falsifiable experiment: the suspected cause must disappear when removed or must recreate the failure when reintroduced. Apply the narrowest fix, rerun the original repro, check adjacent behavior, and add a regression check that captures the causal contract.
+Design a falsifiable experiment: the suspected cause must disappear when removed or must recreate the failure when reintroduced. Apply the narrowest fix; rerun the original repro, check adjacent behavior, and add a regression check that captures the causal contract only when reproduction or test execution is explicitly authorized. Otherwise report verification as unrun and retain the supplied evidence.
 
 ## 5. Stop and Escalate
 

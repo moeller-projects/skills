@@ -9,6 +9,7 @@ Pull request: "Upgrade ORM and migrate all models". 4,800 changed lines across 9
 1. Diff is too large for one responsible pass — split explicitly and state the split.
 2. Pass 1: the 3 handwritten query rewrites (full scrutiny).
 3. Pass 2: a stratified sample of the 88 mechanical migrations (every distinct migration pattern, one file each).
+   Pattern B is represented by `src/migrations/renameBilling.ts:31`.
 4. Pass 3: generated snapshots — verify generator config only, not the output.
 
 ## Output
@@ -24,7 +25,7 @@ findings:
 - [major] src/billing/history.ts:102 — hand-rolled pagination reads unbounded rows into memory
   why: the old ORM lazy cursor was replaced by `findAll()`; history tables are large
   suggestion: use the new ORM's streaming cursor API
-- [minor] migration pattern B renames columns without `down()` reversal
+- [minor] src/migrations/renameBilling.ts:31 — migration pattern B renames columns without `down()` reversal
   why: rollback of this PR would leave the schema ahead of the code
   suggestion: add `down()` migrations for the pattern-B files (14 files, listed in review comment)
 

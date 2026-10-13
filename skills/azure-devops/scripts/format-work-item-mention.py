@@ -17,6 +17,9 @@ import _ado_lib as lib
 
 
 def main() -> None:
+    if "--help" in sys.argv[1:]:
+        print("usage: format-work-item-mention.py --mention-id ID --display-name NAME")
+        return
     mention_id = ""
     display_name = ""
     args = sys.argv[1:]

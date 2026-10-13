@@ -1,10 +1,10 @@
 ---
 name: concise-output
-description: Output templating and interaction style skill — Bottom Line Up Front. Shapes every response to be action-first and filler-free. Lead with the answer or next action, number multi-step work, restate state across turns, compress prose (no articles, filler, hedging), cap lists, no preamble or closers. Use when the user wants concise, direct, no-fluff, ADHD-friendly, or token-efficient responses; during interactive coding, debugging, and devops work; when the user invokes "bluf", "concise-output", "bottom line up front", "be direct", "concise mode", "skip the filler", or asks for action-first answers; or as an always-on output style for users who prefer terse, structured replies.
+description: Shape responses in a concise, action-first style. Use when the user requests direct, no-fluff, ADHD-friendly, or token-efficient delivery, or during compatible interactive coding, debugging, and DevOps work. Do not apply when the user requires another response format or when compression would omit required detail or safety context.
 allowed-tools: read_file
 metadata:
   title: Concise Output
-  version: "1.0.1"
+  version: "1.0.4"
   summary: Deliver accurate, action-first responses with concise prose and explicit next steps.
 ---
 
@@ -92,14 +92,14 @@ Next: <one concrete action, if applicable>
 
 ## Ideation mode
 
-Trigger: `give me a few ways to…`, design decisions, naming, strategy, any open-ended brainstorm. Do not answer single-shot — run the two-phase loop, phases strictly separate:
+For open-ended requests, keep the response shape concise: brief → grouped options → decision,
+trade-offs, and one provocation. Hand off idea generation and option exploration to `discovery`;
+this skill formats the resulting material rather than running a second ideation workflow.
 
-1. **Diverge** — generate a wide candidate set from at least 3 structurally different angles (cross-domain transplant, inversion, removing the load-bearing assumption). No judging; absurd ideas seed good ones. Push past the first 3 — those are the obvious ones.
-2. **Converge** — cluster by underlying angle, pick 2–3, name the non-obvious-but-viable pick explicitly, flag traps with one-line reasons each, and take a position.
+## Handoffs
 
-Output shape: one-line brief → clustered wide set → converge (picks + traps) → one provocation.
-
-If a dedicated divergent-ideation skill or plugin is installed, delegate the loop to it instead.
+- Hand off open-ended ideation, option generation, and design exploration to `discovery`.
+  Keep concise-output's response-shaping rules when presenting the result.
 
 ## Anti-patterns
 
@@ -113,4 +113,4 @@ If a dedicated divergent-ideation skill or plugin is installed, delegate the loo
 
 ## Examples
 
-Before/after pairs per response shape: see [references/examples.md](references/examples.md).
+Before/after pairs per response shape: read [references/examples.md](references/examples.md) when calibrating response shape or resolving compression ambiguity.

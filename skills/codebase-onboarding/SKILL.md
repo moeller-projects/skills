@@ -1,10 +1,9 @@
 ---
 name: codebase-onboarding
 description: Use when onboarding to a repository, mapping architecture, or extracting entry points, conventions, hotspots, and agent artifacts. Do not use when exact files are already known, the question is strategic rather than repository-specific, or the request is to author onboarding or AGENTS.md docs.
-allowed-tools: list_dir read_file
 metadata:
   title: Codebase Onboarding
-  version: "1.0.2"
+  version: "1.0.5"
   summary: Map repository architecture, entry points, conventions, hotspots, and onboarding artifacts for fast execution.
 ---
 
@@ -14,21 +13,7 @@ metadata:
 
 Scan repositories, infer architecture, detect entry points, extract conventions, identify hotspots, and produce onboarding artifacts that accelerate future work.
 
-## Use When
-
-- Onboarding into a repository or monorepo.
-- Understanding architecture before making changes.
-- Mapping entry points and execution flows.
-- Extracting conventions and development hotspots.
-- Producing agent-ready onboarding artifacts.
-
-## Avoid When
-
-- The user already provided exact files for a small patch.
-- Only code quality review is needed.
-
 ## Workflow
-
 1. Scan the repo layout, build system, and major domains; if access is restricted, note the gap and continue with available areas.
 2. Identify entry points, ownership seams, and runtime paths.
 3. Extract conventions, workflows, and recurring patterns.
@@ -37,24 +22,26 @@ Scan repositories, infer architecture, detect entry points, extract conventions,
 
 ## Output Contract
 
-Default:
+The canonical output is sectioned text (not JSON):
 
 ```text
 repo_map:
-- ...
+- area or package — one-line responsibility and observed scope
 
 entrypoints:
-- ...
+- path or command — why it matters and kind (runtime, build, test, or CI)
 
 conventions:
-- ...
+- observed convention with a concrete source or example
 
 hotspots:
-- ...
+- area — concrete change risk and reason
 
 agent_artifacts:
-- ...
+- artifact — how to use it
 ```
+
+Every section MUST contain substantive entries. If a section genuinely has no applicable content, use exactly `- none`; do not use empty lists or infer absence from omitted sections. Each section is validated independently, and entries MUST describe observed repository content rather than generic advice.
 
 ## Handoffs
 
@@ -79,23 +66,22 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Assets
 
-- `assets/templates/output.md` — concrete output template
-- `assets/examples/happy-path.md` — monorepo onboarding scenario
-- `assets/examples/edge-case.md` — partial access / restricted paths scenario
-- `scripts/validate-output.py` — validates output structure
+- `assets/templates/output.md` — read when formatting the onboarding artifact.
+- `assets/examples/happy-path.md` — read for a monorepo onboarding example.
+- `assets/examples/edge-case.md` — read when access is partial or paths are restricted.
+- `scripts/validate-output.py` — run when validating an onboarding artifact.
 - `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
-- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
+- `tests/validation-checklist.md` — read when checking the skill's validation requirements.
 
 ## References
 
-- See `references/workflow.md` for the detailed workflow.
-- See `references/artifact-schema.md` for the output schema.
-- See `references/examples.md` for sample repo maps.
+- `references/examples.md` — read for sample repository maps.
+- `references/artifact-schema.md` — read when producing or checking the output schema.
 
 ## Rules
 
-- `rules/_sections.md`
-- `rules/architecture-map.md`
-- `rules/entrypoint-detection.md`
-- `rules/convention-extraction.md`
-- `rules/hotspot-identification.md`
+- `rules/_sections.md` — read when structuring rule content.
+- `rules/architecture-map.md` — read when mapping architecture.
+- `rules/entrypoint-detection.md` — read when detecting entry points.
+- `rules/convention-extraction.md` — read when extracting conventions.
+- `rules/hotspot-identification.md` — read when identifying hotspots.

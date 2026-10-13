@@ -132,6 +132,9 @@ def normalize_related_work(relations: object) -> list[dict]:
 
 
 def main() -> None:
+    if "--help" in sys.argv[1:]:
+        print("usage: normalize-work-item.py < work-item.json")
+        return
     payload = json.load(sys.stdin)
     fields = payload.get("fields", {})
     work_item_type = fields.get("System.WorkItemType", "")
@@ -163,7 +166,8 @@ def main() -> None:
         "acceptance_criteria": normalize_html(get_field("Microsoft.VSTS.Common.AcceptanceCriteria", "Custom.AcceptanceCriteria")),
         "repro_steps": repro,
         "system_info": system_info,
-        "tags": get_field("System.Tags"),
+        "tags": lib.redact_text(get_field("System.Tags")) or "",
+        "state": lib.redact_text(get_field("System.State")) or "",
         "comments": [
             {
                 "id": comment.get("id"),

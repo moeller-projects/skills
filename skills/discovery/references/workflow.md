@@ -12,6 +12,3 @@
 1. Name the key unknown and the top two options.
 2. Recommend the safest next move with one reason.
 
-## Escalation
-
-Use more detail only when correctness, safety, or ambiguity requires it.

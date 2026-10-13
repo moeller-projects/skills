@@ -12,9 +12,10 @@ Read-mode scripts may only fetch Azure DevOps data with GET requests and must em
 
 ## Checks
 
-- Read-mode scripts use GET requests only.
+- Read-mode scripts use GET requests only, with bounded retries for GET transport failures.
 - Read-mode scripts do not accept mutation flags or execute write actions.
-- Read-mode output stays deterministic and safe for downstream normalization.
+- Read-mode output follows comment continuation tokens and redacts secrets recursively before emission.
+- Read-mode output stays deterministic and safe for downstream normalization; incomplete combined sources are explicit partial output.
 - Write workflows remain in separate scripts that follow `rules/write-boundary.md`.
 
 ## Anti-Pattern

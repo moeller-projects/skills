@@ -1,13 +1,15 @@
 # Examples
 
-## Example 1
+Use these compact artifacts when a worked example is useful after the main workflow:
 
-A product request is vague. Use this skill to clarify the real goal, audit assumptions, and turn the request into a decision-ready implementation plan.
+## Example 1 — vague request
 
-## Example 2
+Capture the real goal, assumptions, and decision-ready options for an underspecified product request.
 
-A roadmap item feels too large for an MVP. Use this skill to challenge scope, isolate must-haves, and propose smaller options with tradeoffs.
+## Example 2 — MVP scope
 
-## Example 3
+Pressure-test must-haves and compare smaller options with explicit tradeoffs.
 
-A draft plan seems reasonable but risky. Use this skill to critique blind spots, dependencies, and missing validation before execution starts.
+## Example 3 — risky draft
+
+Audit blind spots, dependencies, and missing validation before execution starts.

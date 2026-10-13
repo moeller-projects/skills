@@ -7,8 +7,8 @@ Side effects: Reads the shared JSON schema only.
 Requires Python 3.9+, standard library only. Run with: python scripts/validate-handoff.py
 """
 from __future__ import annotations
-
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any, Dict, List
@@ -44,6 +44,8 @@ def walk(value: Any, node: Dict[str, Any], path: List[str]) -> None:
         raise ValueError(path, f"expected constant {node['const']!r}, got {value!r}")
     if "enum" in node and value not in node["enum"]:
         raise ValueError(path, f"expected one of {node['enum']!r}, got {value!r}")
+    if "pattern" in node and isinstance(value, str) and re.fullmatch(node["pattern"], value) is None:
+        raise ValueError(path, f"value does not match required pattern {node['pattern']!r}")
     if "type" in node:
         expected = node["type"]
         expected_types = expected if isinstance(expected, list) else [expected]
@@ -67,6 +69,9 @@ def walk(value: Any, node: Dict[str, Any], path: List[str]) -> None:
 
 
 def main() -> int:
+    if "--help" in sys.argv[1:]:
+        print("usage: validate-handoff.py < handoff.json")
+        return 0
     schema_path = Path(__file__).resolve().parent.parent / "assets" / "schemas" / "ado-openspec-handoff.schema.json"
     raw = sys.stdin.read()
     instance = json.loads(raw)

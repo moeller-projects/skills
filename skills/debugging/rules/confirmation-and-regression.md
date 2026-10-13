@@ -12,11 +12,9 @@ Require a falsifiable causal experiment before calling a root cause confirmed, t
 
 ## Checks
 
-- The suspected cause's removal prevents the failure or its reintroduction recreates it.
-- The original repro passes after the narrow fix.
-- A regression check fails before the fix and passes after it, or the blocker is explicit.
-- Residual risks and escalation conditions are reported.
+- Test the suspected cause's prediction: remove it to prevent the failure, or reintroduce it to recreate the failure.
+- Record residual risks and escalation conditions when evidence remains incomplete.
 
 ## Anti-Pattern
 
-Calling a correlated change the root cause, or declaring success from a new test without rerunning the original repro.
+Calling a correlated change the root cause, or declaring success from a new check without authorized evidence for the original failure.

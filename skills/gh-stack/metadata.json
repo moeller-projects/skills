@@ -1,0 +1,23 @@
+{
+  "name": "gh-stack",
+  "title": "GH Stack",
+  "version": "1.0.3",
+  "summary": "Create, maintain, and merge stacked pull requests with the gh stack CLI extension.",
+  "type": "hybrid",
+  "activation": {
+    "use_when": [
+      "Creating, viewing, editing, pushing, submitting, syncing, rebasing, or merging a stack of dependent branches or PRs with gh stack",
+      "Splitting multi-part work into small reviewable branch layers",
+      "The user mentions a stack, branch layers, dependent PRs, or gh stack",
+      "A gh-stack stack is checked out in the current repository"
+    ],
+    "avoid_when": [
+      "General Git history, branching, or recovery planning without gh stack — use git-workflow",
+      "Reviewing PR content or findings — use pr-review",
+      "A live production incident — use incident-response"
+    ]
+  },
+  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
+  "requires_network": true,
+  "maintainer": "Lukas"
+}

@@ -25,6 +25,9 @@ def blocker(required: list[str], question: str) -> int:
 
 
 def main(argv: list[str]) -> int:
+    if "--help" in argv:
+        print("usage: generate-handoff.py [--pull-request-url URL] [--organization ORG] [--project PROJECT] [--repository-id ID] [--pull-request-id ID] [--work-item-id ID] [--mode MODE]")
+        return 0
     script_dir = Path(__file__).resolve().parent
     pull_request_url = ""
     organization = os.environ.get("ADO_ORGANIZATION", "")
@@ -70,6 +73,7 @@ def main(argv: list[str]) -> int:
 
     with tempfile.TemporaryDirectory() as tmp:
         tmp_dir = Path(tmp)
+        warnings: list[str] = []
         work_item_file = ""
         pr_comments_file = ""
         if mode in {"work-item", "work-item-plus-pr-comments"}:
@@ -81,24 +85,72 @@ def main(argv: list[str]) -> int:
             fetch = script_dir / "fetch-work-item.py"
             normalize = script_dir / "normalize-work-item.py"
             with raw_file.open("w", encoding="utf-8") as out:
-                result = subprocess.run([sys.executable, str(fetch), organization, project, work_item_id], stdout=out)
-            if result.returncode: return result.returncode
-            with normalized_file.open("w", encoding="utf-8") as out, raw_file.open("r", encoding="utf-8") as inp:
-                result = subprocess.run([sys.executable, str(normalize)], stdin=inp, stdout=out)
-            if result.returncode: return result.returncode
-            work_item_file = str(normalized_file)
+                result = subprocess.run([sys.executable, str(fetch), organization, project, work_item_id], stdout=out, stderr=subprocess.PIPE, text=True)
+            if result.returncode and "BLOCKER:" in result.stderr:
+                sys.stderr.write(result.stderr)
+                return result.returncode
+            if result.returncode == 0:
+                with normalized_file.open("w", encoding="utf-8") as out, raw_file.open("r", encoding="utf-8") as inp:
+                    result = subprocess.run([sys.executable, str(normalize)], stdin=inp, stdout=out, stderr=subprocess.PIPE, text=True)
+                if result.returncode:
+                    if mode == "work-item":
+                        if result.stderr:
+                            sys.stderr.write(result.stderr)
+                        return result.returncode
+                    warning = "work-item normalization failed; handoff is partial"
+                    warnings.append(warning)
+                    print(f"WARNING: {warning}.", file=sys.stderr)
+                    if result.stderr:
+                        print(result.stderr, file=sys.stderr)
+                    normalized_file.unlink(missing_ok=True)
+                else:
+                    work_item_file = str(normalized_file)
+            elif result.stderr:
+                if mode == "work-item":
+                    sys.stderr.write(result.stderr)
+                    return result.returncode
+                warning = "work-item source unavailable; handoff is partial"
+                warnings.append(warning)
+                print(f"WARNING: {warning}.", file=sys.stderr)
+                print(result.stderr, file=sys.stderr)
+            if not work_item_file:
+                raw_file.unlink(missing_ok=True)
+                normalized_file.unlink(missing_ok=True)
         if mode in {"pr-comments", "work-item-plus-pr-comments"}:
             comments_file = tmp_dir / "pr-comments.json"
             fetch = script_dir / "fetch-pr-comments.py"
             with comments_file.open("w", encoding="utf-8") as out:
-                result = subprocess.run([sys.executable, str(fetch), "--organization", organization, "--project", project, "--repository-id", repository_id, "--pull-request-id", str(pull_request_id)], stdout=out)
-            if result.returncode: return result.returncode
-            pr_comments_file = str(comments_file)
+                result = subprocess.run([sys.executable, str(fetch), "--organization", organization, "--project", project, "--repository-id", repository_id, "--pull-request-id", str(pull_request_id)], stdout=out, stderr=subprocess.PIPE, text=True)
+            if result.returncode and "BLOCKER:" in result.stderr:
+                sys.stderr.write(result.stderr)
+                return result.returncode
+            if result.returncode == 0:
+                pr_comments_file = str(comments_file)
+            else:
+                if mode == "pr-comments":
+                    if result.stderr:
+                        sys.stderr.write(result.stderr)
+                    return result.returncode
+                warning = "PR source unavailable; handoff is partial"
+                warnings.append(warning)
+                print(f"WARNING: {warning}.", file=sys.stderr)
+                if result.stderr:
+                    print(result.stderr, file=sys.stderr)
+                comments_file.unlink(missing_ok=True)
         args = [sys.executable, str(script_dir / "emit-handoff.py"), "--mode", mode, "--organization", organization, "--project", project, "--repository-id", repository_id]
         if work_item_id: args += ["--work-item-id", work_item_id]
         if pull_request_id: args += ["--pull-request-id", pull_request_id]
         if work_item_file: args += ["--work-item-file", work_item_file]
         if pr_comments_file: args += ["--pr-comments-file", pr_comments_file]
+        for warning in warnings:
+            args += ["--warning", warning]
+        if not work_item_file and not pr_comments_file:
+            lib.emit_error(
+                "FETCH_FAILED",
+                "fetch",
+                "No requested Azure DevOps source could be fetched.",
+                "Resolve the source fetch failure and retry; no partial handoff was emitted.",
+            )
         result = subprocess.run(args)
         return result.returncode
 
