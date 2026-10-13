@@ -21,9 +21,6 @@
 1. Write the goal, scope, and top requirements.
 2. Add minimum acceptance criteria and unresolved questions.
 
-## Escalation
-
-Use more detail only when correctness, safety, or ambiguity requires it.
 
 ## OpenSpec Serialization Flow
 

@@ -3,7 +3,7 @@
 
 Purpose: Validate Spec Writing freeform spec and OpenSpec proposal outputs.
 Inputs: Contract text on stdin.
-Outputs: "OK" on stdout when valid; validation errors on stdout when invalid.
+Outputs: "OK" on stdout when valid; validation errors on stderr when invalid.
 Side effects: None.
 
 Requires Python 3.9+, standard library only. Run with: python scripts/validate-output.py
@@ -13,6 +13,11 @@ import re
 import sys
 from pathlib import Path
 
+
+HELP = """Usage: python scripts/validate-output.py < output.txt
+
+Validate Spec Writing output from stdin. Diagnostics are written to stderr.
+"""
 
 BANNED_WORDS = (
     "should", "might", "maybe", "as needed", "where appropriate", "etc",
@@ -112,19 +117,29 @@ def validate_delta(path: str, block: str, errors: list[str]) -> None:
     requirement = None
     requirement_section = ""
     normative = False
-    scenarios = 0
+    scenarios: list[list[str]] = []
+    active_scenario = None
 
     def flush() -> None:
-        nonlocal requirement, requirement_section, normative, scenarios
+        nonlocal requirement, requirement_section, normative, scenarios, active_scenario
+        if active_scenario is not None:
+            scenarios.append(active_scenario)
+            active_scenario = None
         if requirement is not None and requirement_section in ("ADDED", "MODIFIED"):
             if not normative:
-                errors.append(f"OpenSpec delta spec {path}: requirement \"{requirement}\" in {requirement_section} must include SHALL or MUST")
-            if scenarios < 1:
+                errors.append(f"OpenSpec delta spec {path}: requirement \"{requirement}\" in {requirement_section} must include SHALL or MUST in its body before the first scenario")
+            if not scenarios:
                 errors.append(f"OpenSpec delta spec {path}: requirement \"{requirement}\" in {requirement_section} must include at least one #### Scenario:")
+            for scenario in scenarios:
+                scenario_text = "\n".join(scenario[1:])
+                if not re.search(r"\bWHEN(?:\*\*)?\s+\S", scenario_text):
+                    errors.append(f"OpenSpec delta spec {path}: requirement \"{requirement}\" scenario must include observable WHEN with a condition")
+                if not re.search(r"\bTHEN(?:\*\*)?\s+\S", scenario_text):
+                    errors.append(f"OpenSpec delta spec {path}: requirement \"{requirement}\" scenario must include observable THEN with an outcome")
         requirement = None
         requirement_section = ""
         normative = False
-        scenarios = 0
+        scenarios = []
 
     for line in block.splitlines():
         match = re.match(r"^## (ADDED|MODIFIED|REMOVED|RENAMED) Requirements$", line)
@@ -141,7 +156,11 @@ def validate_delta(path: str, block: str, errors: list[str]) -> None:
             continue
         if requirement is not None:
             if re.match(r"^#### Scenario:", line):
-                scenarios += 1
+                if active_scenario is not None:
+                    scenarios.append(active_scenario)
+                active_scenario = [line]
+            elif active_scenario is not None:
+                active_scenario.append(line)
             elif requirement_section in ("ADDED", "MODIFIED") and re.search(r"(^|[^A-Za-z0-9_-])(SHALL|MUST)($|[^A-Za-z0-9_-])", line):
                 normative = True
     flush()
@@ -241,11 +260,14 @@ def validate(text: str) -> list[str]:
 
 
 def main() -> None:
+    if "--help" in sys.argv[1:]:
+        print(HELP, end="")
+        return
     errors = validate(sys.stdin.read())
     if errors:
-        print("INVALID output:")
+        print("INVALID output:", file=sys.stderr)
         for error in errors:
-            print(f"  - {error}")
+            print(f"  - {error}", file=sys.stderr)
         raise SystemExit(1)
     print("OK")
 

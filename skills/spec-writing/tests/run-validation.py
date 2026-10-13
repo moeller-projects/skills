@@ -160,6 +160,24 @@ def main() -> None:
         fail("normative language in a scenario heading incorrectly satisfied its requirement")
     passed("validator requires normative language in the requirement body")
 
+    missing_observable = VALID_OPENSPEC.replace(
+        "- **WHEN** a verified user requests password reset",
+        "- a verified user requests password reset",
+    )
+    errors = validate_output["validate"](missing_observable)
+    if not any("observable WHEN" in error for error in errors):
+        fail("scenario missing WHEN failure not reported")
+    passed("validator requires observable WHEN in each scenario")
+
+    missing_then = VALID_OPENSPEC.replace(
+        "- **THEN** the system sends a reset email with a one-time link",
+        "- the system sends a reset email with a one-time link",
+    )
+    errors = validate_output["validate"](missing_then)
+    if not any("observable THEN" in error for error in errors):
+        fail("scenario missing THEN failure not reported")
+    passed("validator requires observable THEN in each scenario")
+
     openspec_invalid = VALID_OPENSPEC.replace("metadata_file: .openspec.yaml", "metadata_file: change.yaml").replace(
         "## Capabilities\n- New: auth-reset-flow\n", ""
     ).replace("## Impact\n- Auth service, email service, and integration tests.\n\nspecs/auth/spec.md:\n## ADDED Requirements\n", "specs/auth/spec.md:\n")

@@ -1,10 +1,9 @@
 ---
 name: spec-writing
 description: Use when turning ambiguous requests, tickets, research, or normalized azure-devops handoffs into an implementation-ready spec or OpenSpec proposal. Do not use when the task is pure code implementation or governance review with no new spec-authoring step.
-allowed-tools: read_file
 metadata:
   title: Spec Writing
-  version: "1.1.1"
+  version: "1.1.4"
   summary: Turn requests or azure-devops handoffs into structured, version-aware specs with risk tiers, acceptance criteria, policy gates, and optional OpenSpec proposal output.
 ---
 
@@ -12,16 +11,13 @@ metadata:
 
 ## Purpose
 
-Extract requirements, create structured specs, validate requirement quality, manage spec diffs, enforce versioning, and produce implementation-ready artifacts.
+Extract requirements, create structured specs, validate requirement quality while authoring, manage spec diffs while evolving a spec, enforce versioning, and produce implementation-ready artifacts.
 
 ## Use When
 
 - Creating a freeform implementation-ready spec from user input, tickets, or research.
 - Consuming a normalized azure-devops handoff JSON to generate a spec from Azure DevOps work item data.
 - Emitting an OpenSpec proposal from a spec produced by this skill or a prior session.
-- Validating requirement quality or acceptance criteria.
-- Diffing or versioning spec changes.
-- Enforcing policy or governance around requirements.
 - Producing implementation-ready artifacts from ambiguous requests.
 
 ## Avoid When
@@ -33,13 +29,10 @@ Extract requirements, create structured specs, validate requirement quality, man
 
 ## Workflow
 
-1. Convert goals, constraints, and context into explicit scope; if goals conflict, surface the conflict as an open question.
-2. Write requirements and acceptance criteria that are testable. Every acceptance criterion is expressed in GIVEN/WHEN/THEN form per `rules/acceptance-criteria.md`.
-3. Check for ambiguity, missing decisions, and policy gaps.
-4. Assign a risk tier (Low / Medium / High / Critical) based on the scope of change: Low for internal clarification, Medium for additive features, High for cross-module behavior, Critical for public API or security posture changes. If the tier cannot be determined from available context, list it as an open question.
-5. Capture diffs or version changes when the spec evolves.
-6. Deliver the spec with gates and open questions.
-7. Serialize to output_format. If output_format=openspec, emit the spec as an OpenSpec proposal directory per the rules in `rules/openspec-format.md`. Default output_format is freeform.
+1. Capture goals, constraints, and scope, then choose freeform or OpenSpec output.
+2. Write testable requirements and GIVEN/WHEN/THEN acceptance criteria.
+3. Check ambiguity, policy gaps, risk tier, open questions, and required handoffs.
+4. Deliver the spec, preserving prior versions when changing an existing spec.
 
 ## Output Contract
 
@@ -104,26 +97,26 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Assets
 
-- `assets/templates/output.md` — concrete output template
-- `assets/examples/happy-path.md` — password reset spec scenario
-- `assets/examples/edge-case.md` — conflicting requirements scenario
-- `scripts/validate-output.py` — validates output structure
+- `assets/templates/output.md` — read when producing the standard output contract.
+- `assets/examples/happy-path.md` — read when drafting a password-reset spec.
+- `assets/examples/edge-case.md` — read when resolving conflicting requirements.
+- `scripts/validate-output.py` — run when validating output structure.
 - `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
-- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
+- `tests/validation-checklist.md` — read when reviewing validation requirements.
 
 ## References
 
-- See `references/workflow.md` for the detailed workflow.
-- See `references/artifact-schema.md` for the output schema.
-- See `references/openspec-format.md` for OpenSpec serialization rules and source version pin.
-- See `references/examples.md` for sample specs.
+- Read `references/workflow.md` for the detailed workflow after selecting the output mode.
+- Read `references/artifact-schema.md` when checking the output schema.
+- Read `references/openspec-format.md` when serializing an OpenSpec proposal.
+- Read `references/examples.md` when comparing sample specs.
 
 ## Rules
 
-- `rules/_sections.md`
-- `rules/requirement-quality.md`
-- `rules/acceptance-criteria.md`
-- `rules/diff-versioning.md`
-- `rules/policy-gates.md`
-- `rules/handoff-consumption.md`
-- `rules/openspec-format.md`
+- `rules/_sections.md` — read when organizing spec sections.
+- `rules/requirement-quality.md` — read when checking requirement testability.
+- `rules/acceptance-criteria.md` — read when writing GIVEN/WHEN/THEN criteria.
+- `rules/diff-versioning.md` — read when evolving an existing authored spec.
+- `rules/policy-gates.md` — read when governance or policy constraints apply.
+- `rules/handoff-consumption.md` — read when consuming normalized handoff data.
+- `rules/openspec-format.md` — read when emitting an OpenSpec proposal.

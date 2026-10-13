@@ -60,7 +60,7 @@ openspec_proposal:
   metadata_file: .openspec.yaml
   proposal_file: proposal.md
   delta_spec_files:
-  - specs/auth/spec.md
+  - specs/auth-password-reset/spec.md
 
 .openspec.yaml:
   schema: spec-driven
@@ -79,12 +79,37 @@ Password reset is required for account recovery.
 ## Impact
 - Auth service, email delivery, and integration tests.
 
-specs/auth/spec.md:
+specs/auth-password-reset/spec.md:
 ## ADDED Requirements
-### Requirement: Password reset via emailed link
-The system MUST let a registered user request a password reset email with a time-limited single-use link.
+### Requirement: Password reset request delivery
+The system MUST send a password reset email within 60 seconds of a valid request, and the link MUST be single-use.
 
-#### Scenario: Password reset email sent
-- **WHEN** a registered user requests a password reset
-- **THEN** the system sends a reset email with a single-use link
+#### Scenario: Reset email sent within service level
+- **WHEN** a registered user submits a valid reset request
+- **THEN** the system sends an email within 60 seconds containing a single-use link
+
+### Requirement: Password reset token expiry
+The system MUST expire reset tokens after 15 minutes and MUST return HTTP 410 Gone for expired or already-used links.
+
+#### Scenario: Expired link rejected
+- **WHEN** a user opens a reset link more than 15 minutes after issuance
+- **THEN** the service returns HTTP 410 Gone
+
+#### Scenario: Reused link rejected
+- **WHEN** a user opens a reset link after it was successfully used
+- **THEN** the service returns HTTP 410 Gone
+
+### Requirement: Password policy on reset
+The system MUST enforce the existing password policy of at least 8 characters, one uppercase letter, and one digit before accepting a new password.
+
+#### Scenario: Weak password rejected
+- **WHEN** a user submits a password with seven characters or without an uppercase letter or digit
+- **THEN** the service rejects the reset with a password-policy validation error
+
+### Requirement: Successful reset invalidates link
+The system MUST invalidate the reset link after a successful password change.
+
+#### Scenario: Successful reset link cannot be reused
+- **WHEN** a user successfully changes the password and opens the same link again
+- **THEN** the service returns HTTP 410 Gone
 ```
