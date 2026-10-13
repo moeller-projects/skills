@@ -1,0 +1,23 @@
+{
+  "name": "setup-wizard",
+  "title": "Setup Wizard",
+  "version": "1.0.2",
+  "summary": "Turn human-only procedures into interactive bash wizards with captured values and confirmation gates.",
+  "type": "hybrid",
+  "invocation": "model",
+  "activation": {
+    "use_when": [
+      "Provisioning infrastructure or third-party accounts the agent has no access to",
+      "Capturing credentials or CI secrets from dashboards",
+      "One-off migrations or cutovers with irreversible steps"
+    ],
+    "avoid_when": [
+      "The steps are agent-runnable — automate them directly instead",
+      "The procedure is fully documented and short — a README checklist suffices"
+    ]
+  },
+  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
+  "risk_level": "medium",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}
