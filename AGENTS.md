@@ -5,10 +5,23 @@ This repository contains reusable agent skills under `skills/<kebab-case-name>/`
 ## Skill layout
 
 - A skill directory MUST contain `SKILL.md`. Add supporting directories only when used. Do not add `README.md`, `CHANGELOG.md`, or installation/process documents to a skill directory.
-- Keep `SKILL.md` frontmatter limited to Agent Skills specification fields: `name`, `description`, `license`, `compatibility`, `metadata`, and `allowed-tools`. Store repository-specific `title`, `version`, and `summary` inside the `metadata` mapping; keep `metadata.json` synchronized.
+- Keep `SKILL.md` frontmatter limited to Agent Skills specification fields: `name`, `description`, `license`, `compatibility`, `metadata`, and `allowed-tools`. Store repository-specific `title`, `version`, `summary`, and `invocation` inside the `metadata` mapping; keep `metadata.json` synchronized.
 - `allowed-tools`, when present, MUST be a space-separated string of pre-approved tools, not a YAML list.
 - Keep `SKILL.md` concise. Put detailed workflows in `references/`, focused guidance in `rules/`, examples/templates in `assets/`, and executable helpers in `scripts/` where needed. Every bundled resource MUST be linked directly from `SKILL.md` with a stated use condition. Avoid reference chains.
 - Make minimal, skill-scoped changes; update links and descriptions in the root README if the catalog or use cases change.
+
+## Invocation classes
+
+Every skill is exactly one of two invocation classes, recorded as `metadata.invocation` (default `model`):
+
+- **Model-invoked** (`invocation: "model"`): reusable discipline the agent reaches for autonomously when the task fits. The `description` carries the full triggering burden: what it does, when to use it, and when not to. Most skills are model-invoked.
+- **User-invoked** (`invocation: "user"`): an orchestrator that fires only when the human names it (e.g. `ask-lukas`, `session-retro`, `session-handoff`). Its `description` is human-facing orientation, not a trigger; do not stuff it with model-facing trigger clauses. On harnesses that support it, apply `disable-model-invocation: true` at install time.
+
+A user-invoked skill may compose model-invoked skills, but MUST NOT invoke another user-invoked skill — chaining orchestrators is the human's job. When the catalog grows past what a human can remember, add or update a user-invoked router skill (`ask-lukas`) instead of making everything model-invoked.
+
+## Composition over duplication
+
+Shared discipline lives in exactly one model-invoked primitive; other skills link to it by name in their Handoffs section. A skill that mostly forwards to one or two primitives should be a thin wrapper that says so in one line, not a copy of the primitive's content. Duplicated doctrine across skills is a defect: fix it by extracting the primitive, not by editing both copies.
 
 ## Change workflow
 
