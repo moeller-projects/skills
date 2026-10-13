@@ -4,8 +4,7 @@ Run this checklist before accepting a test plan as complete.
 
 ## Trigger Check
 
-- [ ] Task involves writing, reviewing, or improving tests.
-- [ ] Task is NOT pure refactoring with no testing component.
+- [ ] Task involves planning, reviewing, or improving test coverage or test quality.
 
 ## Test Plan Check
 
@@ -16,7 +15,7 @@ Run this checklist before accepting a test plan as complete.
 
 ## Cases Check
 
-- [ ] Every case follows GIVEN/WHEN/THEN format.
+- [ ] Every case is a test case translated from the acceptance criteria; any chosen format is applied consistently.
 - [ ] Every case has a type (unit, integration, e2e) and priority.
 - [ ] Every case is independently runnable without shared mutable state.
 

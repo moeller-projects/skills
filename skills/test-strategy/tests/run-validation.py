@@ -51,8 +51,18 @@ coverage-gaps:
 - Browser checkout E2E is blocked until staging credentials are available.
 
 cases:
-- GIVEN a valid discount code WHEN checkout is submitted THEN the order total is reduced.
-- GIVEN an expired discount code WHEN checkout is submitted THEN the API returns a validation error.
+- case: valid discount reduces order total
+  given: a valid discount code and a $100 order
+  when: checkout calculates the total
+  then: total is reduced and returned to the caller
+  level: unit
+  priority: high
+- case: expired discount is rejected
+  given: an expired discount code
+  when: checkout validates the code
+  then: a validation error is returned
+  level: integration
+  priority: critical
 
 risk:
 - Staging-only tax logic still needs manual verification
@@ -68,18 +78,20 @@ coverage-gaps:
 - Browser checkout E2E is blocked until staging credentials are available.
 
 cases:
-- GIVEN a valid discount code WHEN checkout is submitted.
+- test case translated from acceptance criteria: valid discount code reduces the order total.
 
-risk:
-- Staging-only tax logic still needs manual verification
 """
     errors = validate(invalid_output)
     if not errors:
         fail("invalid test output unexpectedly passed")
-    if not any("GIVEN/WHEN/THEN" in error for error in errors):
-        fail("case format failure not reported")
-    passed("validator rejects incomplete test cases")
-
+    if not any("missing section: risk:" in error for error in errors):
+        fail("missing required section was not reported")
+    passed("validator rejects output with a missing required section")
+    missing_case_fields = valid_output.replace("  level: unit\n", "").replace("  priority: high\n", "")
+    errors = validate(missing_case_fields)
+    if not any("substantive level" in error for error in errors) or not any("substantive priority" in error for error in errors):
+        fail("case level and priority omissions were not reported")
+    passed("each case requires level and priority")
     print("\nTest Strategy validation completed successfully.")
 
 

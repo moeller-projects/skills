@@ -1,35 +1,23 @@
 ---
 name: test-strategy
-description: Use when designing or improving unit, integration, E2E, or flake-reduction test coverage. Do not use when the request is broader code review or refactoring quality work, or when the task is documentation-only.
+description: Plan resilient unit, integration, E2E, and flake-reduction test coverage: select levels, cases, and risk remedies. Use when planning coverage or making test-quality decisions; route requests to implement behavior with tests, including regression-test fixes, to `test-driven-development`. Do not use for writing tests or implementing behavior, broader code review or refactoring quality work, or documentation-only tasks.
 allowed-tools: read_file
 metadata:
   title: Test Strategy
-  version: "1.0.2"
-  summary: Design resilient test strategies and practical unit, integration, E2E, and Playwright coverage improvements.
+  version: "1.0.6"
+  summary: Plan resilient test coverage by selecting levels, cases, and flake-risk remedies; route test writing and behavior implementation to test-driven-development.
 ---
 
 # Test Strategy
 
 ## Purpose
 
-Design and improve test strategy, coverage, edge-case validation, unit and integration tests, E2E flows, and Playwright-based automation.
+Plan and improve test strategy, coverage, edge-case validation, test levels, and E2E stability without implementing the behavior under test.
 
-## Use When
-
-- Writing tests for new or changed behavior.
-- Reviewing test quality or coverage gaps.
-- Designing E2E or Playwright workflows.
-- Reducing flaky or brittle tests.
-- Improving edge-case validation.
-
-## Avoid When
-
-- The task is pure refactoring without tests.
-- The user only wants documentation.
 
 ## Workflow
 
-1. MUST map the behavior, risk, and test boundaries that matter; if behavior is ambiguous, ask one question before writing tests.
+1. MUST map the behavior, risk, and test boundaries that matter; if behavior is ambiguous, ask one question before finalizing the plan.
 2. MUST choose the lowest-cost test level that proves the behavior.
 3. MUST add meaningful happy-path, edge-case, and failure coverage.
 4. MUST keep E2E tests stable by controlling timing, data, and selectors; skip E2E when the test environment is unavailable and note the gap.
@@ -45,9 +33,13 @@ test-plan:
 
 coverage-gaps:
 - ...
-
 cases:
-- given/when/then
+- case: <acceptance-criterion case>
+  given: <precondition>
+  when: <action>
+  then: <observable outcome>
+  level: unit|integration|e2e
+  priority: critical|high|medium|low
 
 risk:
 - ...
@@ -57,20 +49,17 @@ risk:
 
 - Accepts work from `codebase-onboarding` once the test surface to cover is identified.
 - Accepts work from `code-review` when code changes require new or updated test coverage.
-- Accepts work from `spec-writing` when acceptance criteria need test validation.
-- Terminal skill — output is the final artifact; no downstream handoff.
+- Accepts work from `spec-writing` when acceptance criteria need test-case translation; `spec-writing` owns criteria authoring.
 
 ## Error Handling
 
-1. Local: If target behavior is unclear, ask one question before writing tests.
-2. Flow: Skip E2E tests when the test environment is unavailable; note the coverage gap explicitly.
-3. Recovery: Revert to the last stable test suite state if new tests fail unexpectedly.
+1. Local: If target behavior is unclear, clarify or revise the test plan before drafting cases.
+2. Flow: If the test environment is unavailable, defer E2E tests in the plan and note the coverage gap explicitly.
+3. Recovery: If proposed tests expose an unexpected failure, revise the plan and its assumptions; do not revert the stable test suite as a planning response.
 
 ## Validation Checklist
 
-- [ ] Test levels are the lowest cost that prove the behavior.
 - [ ] Happy-path, failure, and edge-case cases all present.
-- [ ] Every case follows GIVEN/WHEN/THEN format.
 - [ ] E2E tests deferred with explicit re-enable condition if environment unavailable.
 - [ ] Coverage gaps listed explicitly.
 
@@ -78,23 +67,22 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Assets
 
-- `assets/templates/output.md` — concrete output template
-- `assets/examples/happy-path.md` — discount function test plan
-- `assets/examples/edge-case.md` — unavailable E2E environment scenario
-- `scripts/validate-output.py` — validates output structure
-- `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
-- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
+- `assets/templates/output.md` — read when formatting the final test-plan artifact.
+- `assets/examples/happy-path.md` — read when a concrete happy-path test-plan example is needed.
+- `assets/examples/edge-case.md` — read when documenting an unavailable E2E environment scenario.
+- `scripts/validate-output.py` — run when validating the output contract, only with explicit test execution authorization.
+- `tests/run-validation.py` — run only when test execution is explicitly authorized to validate the skill output.
+- `tests/validation-checklist.md` — read when reviewing the skill's validation requirements.
 
 ## References
 
-- See `references/workflow.md` for the detailed workflow.
-- See `references/examples.md` for sample test plans.
+- See `references/examples.md` when sample test plans are needed.
 
 ## Rules
 
-- `rules/_sections.md`
-- `rules/behavior-over-implementation.md`
-- `rules/meaningful-coverage.md`
-- `rules/edge-cases.md`
-- `rules/e2e-stability.md`
-- `rules/flaky-test-reduction.md`
+- `rules/_sections.md` — read when structuring skill sections.
+- `rules/behavior-over-implementation.md` — read when choosing behavior-level assertions over implementation details.
+- `rules/meaningful-coverage.md` — read when assessing whether coverage is meaningful.
+- `rules/edge-cases.md` — read when identifying boundary and invalid-input cases.
+- `rules/e2e-stability.md` — read when designing or reviewing E2E stability.
+- `rules/flaky-test-reduction.md` — read when diagnosing or reducing flaky tests.

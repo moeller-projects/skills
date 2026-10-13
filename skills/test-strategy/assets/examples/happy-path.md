@@ -27,35 +27,35 @@ cases:
   given: price=100, couponCode="SAVE10"
   when: calculateDiscount is called
   then: returns 90
-  type: unit
+  level: unit
   priority: critical
 
 - case: SAVE20 applies 20% discount
   given: price=100, couponCode="SAVE20"
   when: calculateDiscount is called
   then: returns 80
-  type: unit
+  level: unit
   priority: critical
 
 - case: unknown coupon returns original price
   given: price=100, couponCode="UNKNOWN"
   when: calculateDiscount is called
   then: returns 100
-  type: unit
+  level: unit
   priority: high
 
 - case: zero price returns zero
   given: price=0, couponCode="SAVE10"
   when: calculateDiscount is called
   then: returns 0
-  type: unit
+  level: unit
   priority: medium
 
 - case: empty coupon string returns original price
   given: price=50, couponCode=""
   when: calculateDiscount is called
   then: returns 50
-  type: unit
+  level: unit
   priority: medium
 
 risk:

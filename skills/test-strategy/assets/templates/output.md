@@ -15,7 +15,7 @@ cases:
   given: <precondition>
   when: <action>
   then: <observable outcome>
-  type: unit|integration|e2e
+  level: unit|integration|e2e
   priority: critical|high|medium|low
 
 risk:
@@ -36,7 +36,7 @@ cases:
   given: <precondition>
   when: <action>
   then: <observable outcome>
-  type: unit|integration|e2e
+  level: unit|integration|e2e
   priority: critical|high|medium|low
 
 risk:

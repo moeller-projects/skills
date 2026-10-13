@@ -1,18 +1,17 @@
 {
   "name": "test-strategy",
   "title": "Test Strategy",
-  "version": "1.0.2",
-  "summary": "Design resilient test strategies and practical unit, integration, E2E, and Playwright coverage improvements.",
+  "version": "1.0.6",
+  "summary": "Plan resilient test coverage by selecting levels, cases, and flake-risk remedies; route test writing and behavior implementation to test-driven-development.",
   "type": "rule",
   "activation": {
     "use_when": [
-      "Writing tests for new or changed behavior",
-      "Reviewing test quality or coverage gaps",
-      "Designing E2E or Playwright workflows",
-      "Reducing flaky or brittle tests",
-      "Improving edge-case validation"
+      "Planning unit, integration, E2E, or Playwright coverage",
+      "Selecting test levels, edge and failure cases, or flake remedies",
+      "Reviewing test quality or coverage gaps"
     ],
     "avoid_when": [
+      "Writing tests or implementing behavior — use test-driven-development",
       "The task is pure refactoring without tests",
       "The user only wants documentation"
     ]

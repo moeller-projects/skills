@@ -27,21 +27,21 @@ cases:
   given: cart=[{price:50, qty:2}, {price:30, qty:1}], coupon=SAVE10
   when: calculateCartTotal is called
   then: returns 117 (130 * 0.9)
-  type: unit
+  level: unit
   priority: critical
 
 - case: order submission returns 201 with valid payload
   given: valid order payload with mock Stripe token
   when: POST /api/orders is called
   then: returns 201 with orderId in response body
-  type: integration
+  level: integration
   priority: critical
 
 - case: E2E checkout flow — DEFERRED
   given: staging environment available with Stripe test mode
   when: user adds item, enters card details, confirms purchase
   then: order confirmation page displays with order ID
-  type: e2e
+  level: e2e
   priority: high
   note: BLOCKED — re-enable when staging and Stripe sandbox are configured
 
