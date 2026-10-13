@@ -1,9 +1,8 @@
 {
   "name": "task-planning",
   "title": "Task Planning",
-  "version": "1.0.2",
+  "version": "1.1.3",
   "summary": "Break work into atomic, shippable tasks with explicit dependencies, critical path, estimates, and definitions of done.",
-  "type": "rule",
   "activation": {
     "use_when": [
       "Breaking a spec, feature, or brief into executable tasks",
@@ -25,9 +24,6 @@
     "claude-code",
     "cursor",
     "opencode"
-  ],
-  "allowed_tools": [
-    "read_file"
   ],
   "risk_level": "low",
   "requires_network": false,

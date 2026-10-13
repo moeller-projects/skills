@@ -1,10 +1,9 @@
 ---
 name: task-planning
 description: Use when confirmed scope must be broken into atomic tasks with dependencies, estimates, and done criteria. Do not use when requirements are still being written or the user wants option comparison or plan critique before scope is fixed.
-allowed-tools: read_file
 metadata:
   title: Task Planning
-  version: "1.0.2"
+  version: "1.1.3"
   summary: Break work into atomic, shippable tasks with explicit dependencies, critical path, estimates, and definitions of done.
 ---
 
@@ -28,16 +27,13 @@ Turn a confirmed scope into a structured, executable task list that a team can c
 - The task is code review or refactoring — use code-review.
 - The task is architectural decision-making — use discovery.
 - Scope is too vague to produce atomic tasks — clarify before proceeding.
+- Executing a confirmed plan — use `plan-execution`.
 
 ## Workflow
 
 1. Confirm scope, constraints, and success bar; if scope is ambiguous, ask one question before proceeding.
-2. Break the work into atomic vertical slices — each task must be independently shippable, not a layer or phase.
-3. Map dependencies between tasks; identify which dependencies are hard blockers versus soft ordering preferences.
-4. Assign size estimates (S / M / L) and mark any estimate as unreliable when the work is poorly understood.
-5. Define done for each task — a concrete, verifiable completion condition.
-6. Surface all unknowns as named items; never bury them inside a task description.
-7. Identify the critical path — the dependency chain that determines the earliest possible completion date.
+2. Select independently shippable vertical slices, then consult `references/workflow.md` for decomposition, dependencies, estimates, done criteria, unknowns, and critical path.
+3. Deliver the task graph and surface blockers before implementation.
 
 ## Output Contract
 
@@ -71,6 +67,7 @@ validation:
 ## Handoffs
 
 - Consume `spec-writing` output when scope, requirements, and acceptance criteria are stable enough to decompose into executable tasks.
+- Hand off execution of the confirmed task graph to `plan-execution`.
 - After producing the task graph, hand off to implementation or review skills only when a downstream request targets code, tests, docs, or operations work.
 
 ## Error Handling
@@ -92,22 +89,21 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Assets
 
-- `assets/templates/output.md` — concrete output template
-- `assets/examples/happy-path.md` — feature delivery planning scenario
-- `assets/examples/edge-case.md` — unknown-blocked plan scenario
-- `scripts/validate-output.py` — validates output structure
+- `assets/templates/output.md` — read when producing the standard task graph.
+- `assets/examples/happy-path.md` — read when planning a clear feature delivery.
+- `assets/examples/edge-case.md` — read when unknowns block planning.
+- `scripts/validate-output.py` — run when validating output structure.
 - `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
-- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
-
+- `tests/validation-checklist.md` — read when reviewing planning requirements.
 ## References
 
-- See `references/workflow.md` for the detailed workflow.
-- See `references/examples.md` for sample delivery plans.
+- Read `references/workflow.md` for decomposition details after selecting vertical slices.
+- Read `references/examples.md` when comparing sample delivery plans.
 
 ## Rules
 
-- `rules/_sections.md`
-- `rules/vertical-slicing.md`
-- `rules/unknown-exposure.md`
-- `rules/estimate-integrity.md`
-- `rules/critical-path.md`
+- `rules/_sections.md` — read when organizing task-plan sections.
+- `rules/vertical-slicing.md` — read when ensuring tasks are independently shippable.
+- `rules/unknown-exposure.md` — read when surfacing blockers and unknowns.
+- `rules/estimate-integrity.md` — read when assigning estimates.
+- `rules/critical-path.md` — read when identifying the critical path.

@@ -170,6 +170,133 @@ validation:
     )
     passed("spike with timebox passes without S/M/L estimate")
 
+    assert_invalid(
+        """tasks:
+- id: T-01
+  title: Ship a vertical reset slice
+  estimate: S
+  estimate_reliability: high
+  depends_on: [T-99]
+  done_when: User can request and confirm a reset.
+
+dependencies:
+- T-01 → T-99: invalid dependency
+risks:
+- none
+critical_path:
+- T-01 → T-99
+unknowns: none
+validation:
+- Run the reset flow.
+""",
+        "unknown task T-99",
+        "unknown dependency failure not reported",
+    )
+    passed("validator rejects unknown task references")
+
+    assert_invalid(
+        """tasks:
+- id: T-01
+  title: Ship a vertical reset slice
+  estimate: S
+  estimate_reliability: high
+  depends_on: []
+  done_when: User can request and confirm a reset.
+dependencies:
+- none
+risks:
+- none
+critical_path:
+- schema review
+unknowns: none
+validation:
+- Run the reset flow.
+""",
+        "critical_path must list planned task ids",
+        "non-task critical path failure not reported",
+    )
+    passed("validator rejects non-task critical path entries")
+
+    assert_invalid(
+        """tasks:
+- id: T-01
+  title: Ship first vertical slice
+  estimate: S
+  estimate_reliability: high
+  depends_on: [T-02]
+  done_when: First slice is verified.
+- id: T-02
+  title: Ship second vertical slice
+  estimate: S
+  estimate_reliability: high
+  depends_on: [T-01]
+  done_when: Second slice is verified.
+dependencies:
+- T-01 ↔ T-02: circular dependency
+risks:
+- none
+critical_path:
+- T-01 → T-02
+unknowns: none
+validation:
+- Run both slices.
+""",
+        "dependency graph contains a cycle",
+        "dependency cycle failure not reported",
+    )
+    passed("validator rejects dependency cycles")
+
+    assert_invalid(
+        """tasks:
+- id: T-01
+  title: Ship a vertical slice
+  estimate: S
+  estimate_reliability: high
+  depends_on: []
+  done_when: Slice is verified.
+dependencies:
+- T-01 → T-99: unknown edge
+risks:
+- none
+critical_path:
+- T-01
+unknowns: none
+validation:
+- Verify the slice.
+""",
+        "dependencies section references unknown task",
+        "unknown dependencies-section edge failure not reported",
+    )
+    passed("validator rejects unknown dependencies-section edges")
+
+    assert_invalid(
+        """tasks:
+- id: T-01
+  title: Ship prerequisite slice
+  estimate: S
+  estimate_reliability: high
+  depends_on: []
+  done_when: Prerequisite is verified.
+- id: T-02
+  title: Ship dependent slice
+  estimate: S
+  estimate_reliability: high
+  depends_on: [T-01]
+  done_when: Dependent slice is verified.
+dependencies:
+- T-02 → T-01: contradictory direction
+risks:
+- none
+critical_path:
+- T-01 → T-02
+unknowns: none
+validation:
+- Verify both slices.
+""",
+        "contradicts",
+        "contradictory dependencies-section edge failure not reported",
+    )
+    passed("validator rejects contradictory dependencies-section edges")
     print("\nTask Planning validation completed successfully.")
 
 

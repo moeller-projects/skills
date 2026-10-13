@@ -37,7 +37,8 @@ risks:
 - REST and GraphQL running in parallel creates dual-maintenance surface — medium / high
 
 critical_path:
-- T-01 (parallel T-02) → schema review → implementation tasks (not yet plannable)
+- T-01
+- blocked_future: implementation tasks require both spike outcomes and are not yet planned
 
 unknowns:
 - U-01: What is the target GraphQL schema? Who owns schema design decisions?

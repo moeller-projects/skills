@@ -26,6 +26,7 @@ risks:
 
 critical_path:
 - T-01 → T-02 → T-05
+- blocked_future: <planned task IDs only; describe unplanned blocked work outside the path>
 
 unknowns:
 - U-01: <what must be resolved> — owner: <person or team>
