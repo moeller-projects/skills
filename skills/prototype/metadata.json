@@ -1,0 +1,23 @@
+{
+  "name": "prototype",
+  "title": "Prototype",
+  "version": "1.0.2",
+  "summary": "Answer one design question with throwaway, trivially-runnable code, then record the verdict in its spec or ticket; production edits require a separate implementation scope.",
+  "type": "hybrid",
+  "invocation": "model",
+  "activation": {
+    "use_when": [
+      "A design question is hard to settle on paper — state model, logic, or UI direction",
+      "Discussion is circling and a cheap concrete artifact would settle it"
+    ],
+    "avoid_when": [
+      "Building the real thing — use plan-execution or test-driven-development",
+      "Reproducing a failure — use debugging",
+      "A quick discussion can settle the question"
+    ]
+  },
+  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
+  "risk_level": "low",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}

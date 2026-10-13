@@ -1,0 +1,23 @@
+{
+  "name": "session-handoff",
+  "title": "Session Handoff",
+  "version": "1.0.2",
+  "summary": "Create a portable handoff document that lets a fresh agent or colleague continue work with its state, decisions, next action, and references.",
+  "invocation": "user",
+  "activation": {
+    "use_when": [
+      "The user asks for a handoff, summary-for-continuation, or context transfer",
+      "The context window is nearly spent mid-work",
+      "Work moves to another harness, machine, directory, or person"
+    ],
+    "avoid_when": [
+      "Summarizing a finished change for review — use pr-body",
+      "Recording a durable architectural decision — use domain-modeling",
+      "The session is over and the lesson is environmental — use session-retro"
+    ]
+  },
+  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
+  "risk_level": "low",
+  "requires_network": false,
+  "maintainer": "Lukas"
+}
