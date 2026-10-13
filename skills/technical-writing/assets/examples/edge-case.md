@@ -21,6 +21,13 @@ doc:
   3. Rollback procedure [how-to] — how to reverse a failed migration
   4. Safety gates [reference] — checks before and after applying
 
+- format:
+  - type: markdown
+  - reason: maintained inside the repository and reviewed through diffs
+
+- artifact:
+  - AGENTS.md
+
 changes:
 - AGENTS.md — added "Database Migrations" section (skeleton with gaps marked)
 

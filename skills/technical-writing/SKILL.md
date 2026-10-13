@@ -1,10 +1,9 @@
 ---
 name: technical-writing
 description: Use when creating or improving README, AGENTS.md, architecture, workflow, or decision-record docs. Do not use when the primary need is repository discovery or architecture mapping before authoring docs, or when the request is pure code implementation.
-allowed-tools: read_file
 metadata:
   title: Technical Writing
-  version: "1.0.2"
+  version: "1.0.5"
   summary: Create accurate technical docs, READMEs, AGENTS.md files, and developer guides with clear structure.
 ---
 
@@ -38,22 +37,8 @@ Decision question:
 - Edited → Markdown
 - Read → HTML
 
-## Use When
-
-- Writing or improving a README.
-- Writing or refining AGENTS.md guidance.
-- Documenting architecture or developer workflows.
-- Creating usage docs or technical notes.
-- Explaining how a system should be used or maintained.
-- Capturing an architectural decision, reusable pattern, or failure lesson as a durable decision record.
-
-## Avoid When
-
-- The user wants implementation only.
-- Documentation would duplicate obvious code.
-
 ## Workflow
-
+ 
 1. Identify the audience, task, and missing decisions the doc must support; if audience is unclear, state the assumption explicitly.
 2. Build a clear structure before expanding prose; tag each section with its Diátaxis mode (tutorial, how-to, reference, explanation).
 3. If the target file already exists, default to a diff-only update; stop and request explicit approval before replacing the full document or overwriting a top-level README.md, AGENTS.md, or workflow guide.
@@ -64,12 +49,17 @@ Decision question:
 ## Output Contract
 
 Default:
-
 ```text
 doc:
 - purpose:
 - audience:
 - structure:
+  1. <section> [tutorial|how-to|reference|explanation] — <scope>
+- format:
+  - type: markdown|html
+  - reason:
+- artifact:
+  - <filename>
 
 changes:
 - ...
@@ -108,31 +98,29 @@ Request explicit approval before:
 
 See `tests/validation-checklist.md` for the full checklist.
 
-## Assets
-
-- `assets/templates/output.md` — concrete output template
-- `assets/examples/happy-path.md` — new README creation scenario
-- `assets/examples/edge-case.md` — missing source material scenario
-- `assets/examples/decision-record.md` — decision record scenario and expected output
-- `assets/examples/mode-mixed.md` — multi-mode README with Diátaxis mode tags
-- `scripts/validate-output.py` — validates output structure
+- `assets/templates/output.md` — read when producing the standard output structure.
+- `assets/examples/happy-path.md` — read when creating a new README.
+- `assets/examples/edge-case.md` — read when source material is missing.
+- `assets/examples/decision-record.md` — read when producing a decision record.
+- `assets/examples/mode-mixed.md` — read when producing a multi-mode README.
+- `scripts/validate-output.py` — run when validating output structure. For HTML, pass `--html-artifact path/to/file.html` to validate the actual artifact; without it, validation is metadata-only and MUST NOT claim the HTML was checked.
 - `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
-- `tests/validation-checklist.md` — consult when reviewing the skill's validation requirements.
-- `assets/examples/html-report.md` — HTML report output example; read when producing a standalone HTML artifact.
-- `assets/templates/html-document.html` — self-contained HTML document template; use when selecting HTML output.
+- `tests/validation-checklist.md` — read when reviewing the skill's validation requirements.
+- `assets/examples/html-report.md` — read when producing a standalone HTML artifact.
+- `assets/templates/html-document.html` — read when selecting HTML output; escape substituted title/header text as HTML text, and use the template's inline style/print rules for self-containment.
 
 ## References
 
-- See `references/workflow.md` for the detailed workflow.
 - See `references/examples.md` for sample documentation outputs.
 
 ## Rules
 
-- `rules/_sections.md`
-- `rules/audience-first.md`
-- `rules/command-accuracy.md`
-- `rules/structure-over-prose.md`
-- `rules/agentsmd-specificity.md`
-- `rules/readme-completeness.md`
-- `rules/decision-capture.md`
-- `rules/diataxis-mode.md`
+- `rules/_sections.md` — read when organizing document sections.
+- `rules/audience-first.md` — read when identifying audience and purpose.
+- `rules/command-accuracy.md` — read when documenting commands or paths.
+- `rules/structure-over-prose.md` — read when designing document structure.
+- `rules/agentsmd-specificity.md` — read when writing AGENTS.md guidance.
+- `rules/readme-completeness.md` — read when writing or reviewing a README.
+- `rules/decision-capture.md` — read when recording architectural decisions.
+- `rules/diataxis-mode.md` — read when assigning Diátaxis modes.
+- `rules/output-format.md` — read when selecting Markdown versus HTML output.

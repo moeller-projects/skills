@@ -32,6 +32,11 @@ doc:
 - audience: <who reads the document and what they already know>
 - structure:
   1. <section name> [<mode>] — <what stays or changes>
+- format:
+  - type: markdown|html
+  - reason: <why this format matches consumption>
+- artifact:
+  - <filename>
 
 changes:
 - <file> — update existing content via diff instead of full replacement

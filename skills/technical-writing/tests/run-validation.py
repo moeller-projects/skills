@@ -8,7 +8,7 @@ Side effects: None.
 
 Requires Python 3.9+, standard library only. Run with: python tests/run-validation.py
 """
-
+import tempfile
 import sys
 from pathlib import Path
 
@@ -121,7 +121,36 @@ gaps:
 """
     if validate(html_doc):
         fail("html output contract rejected")
-    passed("validator accepts html output contract")
+    valid_html = """<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Report</title><style>@media print { body { color: black; } }</style></head><body><main>Report body</main></body></html>"""
+    invalid_variants = (
+        valid_html.replace("<style>", '<link rel="stylesheet" href="https://example.invalid/x.css"><style>'),
+        valid_html.replace("@media print { body { color: black; } }", '@import url("https://example.invalid/x.css");'),
+        valid_html.replace("@media print { body { color: black; } }", "body { color: black; }"),
+        valid_html.replace("<main>Report body</main>", ""),
+        valid_html.replace('lang="en"', ""),
+    )
+    with tempfile.TemporaryDirectory() as directory:
+        valid_path = Path(directory) / "valid.html"
+        invalid_path = Path(directory) / "invalid.html"
+        valid_path.write_text(valid_html, encoding="utf-8")
+        artifact_contract = html_doc.replace("weekly-engineering-update.html", str(valid_path))
+        if validate(artifact_contract, str(valid_path)):
+            fail("valid supplied HTML artifact rejected")
+        passed("validator accepts actual full HTML with attributes, style, and print rules")
+        mismatch_errors = validate(artifact_contract, str(invalid_path))
+        if not any("does not match declared" in error for error in mismatch_errors):
+            fail("artifact path mismatch was not rejected")
+        passed("validator rejects an artifact different from the declared path")
+        for artifact in invalid_variants:
+            invalid_path.write_text(artifact, encoding="utf-8")
+            declared_contract = html_doc.replace("weekly-engineering-update.html", str(invalid_path))
+            if not validate(declared_contract, str(invalid_path)):
+                fail("invalid supplied HTML artifact was accepted")
+        passed("validator rejects external or incomplete supplied HTML artifacts")
+    decision = "decision:\n  context: c\n  decision: d\n  reasoning: r\n  tradeoffs: t\n  reuse_scope: s\n"
+    if not any("--html-artifact requires" in error for error in validate(decision, "missing.html")):
+        fail("artifact option did not reject non-document contract")
+    passed("artifact option rejects non-HTML contract")
 
     print("\nTechnical Writing validation completed successfully.")
 

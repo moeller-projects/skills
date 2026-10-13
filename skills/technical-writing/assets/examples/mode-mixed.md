@@ -25,12 +25,20 @@ doc:
   5. Endpoint reference [reference] — POST /charge, POST /refund, GET /charges/:id
   6. Idempotency model [explanation] — why charges use idempotency keys, what guarantees are made
 
+- format:
+  - type: markdown
+  - reason: maintained inside the repository and reviewed through diffs
+
+- artifact:
+  - README.md
+
 changes:
 - README.md — created from scratch
 
 gaps:
 - production deployment guide (separate doc needed)
 - on-call runbook for Stripe outages (separate doc needed)
+
 ```
 
 ## Why This Is Correct

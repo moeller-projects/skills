@@ -24,6 +24,14 @@ doc:
   4. Endpoints [reference] — POST /login, POST /refresh, POST /logout with request/response examples
   5. Testing [how-to] — how to run the test suite
   6. Configuration reference [reference] — all env vars with defaults
+  7. Output format [reference] — Markdown for repository editing
+
+- format:
+  - type: markdown
+  - reason: maintained inside the repository and reviewed through diffs
+
+- artifact:
+  - README.md
 
 changes:
 - README.md — created from scratch

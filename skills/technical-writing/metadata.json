@@ -1,7 +1,7 @@
 {
   "name": "technical-writing",
   "title": "Technical Writing",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "summary": "Create accurate technical docs, READMEs, AGENTS.md files, and developer guides with clear structure.",
   "type": "rule",
   "activation": {
@@ -24,9 +24,6 @@
     "claude-code",
     "cursor",
     "opencode"
-  ],
-  "allowed_tools": [
-    "read_file"
   ],
   "risk_level": "medium",
   "requires_network": false,
