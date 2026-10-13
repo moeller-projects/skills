@@ -1,7 +1,9 @@
 # Agent Skills specification (condensed)
 
-Normative rules from the agentskills.io specification and the official
-`skills-ref` validator. `validate_skill.py` enforces all ERROR-level rules.
+Field constraints below summarize the agentskills.io specification. The bundled
+validator checks these field types and limits, manifest synchronization when
+`metadata.json` exists, and the resource-layout checks described below; it does
+not replace official validation or behavioral evaluation.
 
 ## Directory structure
 
@@ -56,5 +58,12 @@ file. For reference files >100 lines, add a table of contents at the top.
 ## Validation
 
 Official: `skills-ref validate ./my-skill` (from the agentskills/skills-ref
-package). This skill's `scripts/validate_skill.py` reimplements those checks
-plus production lint, with `--json` output and `--strict` mode.
+package). The bundled `scripts/validate_skill.py` checks field types, required
+values, names, limits, known frontmatter fields, and synchronized manifest
+identity/tool declarations. Layout lint includes `rules/`, `tests/`, and `evals/`
+as well as scripts, assets, and references. `--strict` treats lint warnings as
+failures; `--json` emits diagnostics.
+
+These checks cannot establish trigger precision, truth of instructions,
+semantic output completeness, runtime safety, or when a resource should be read.
+Review those separately and run authorized behavioral checks.

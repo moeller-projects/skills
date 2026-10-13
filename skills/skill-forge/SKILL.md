@@ -3,7 +3,10 @@ name: skill-forge
 description: Create new Agent Skills and refactor existing ones to production grade, compliant with the agentskills.io open specification. Use when the user asks to create, build, scaffold, write, improve, refactor, audit, review, fix, validate, or package a skill (a directory containing SKILL.md with YAML frontmatter). Covers spec-compliant frontmatter (name/description limits), triggering-optimized descriptions, progressive disclosure structure, scripts/references/assets organization, validation, and .skill packaging — even when the user just says "make this skill better" or "check my skill".
 compatibility: Requires Python 3.8+ to run the bundled scripts (stdlib only; PyYAML optional). The guidance in SKILL.md and references/ works without it.
 metadata:
-  version: "1.2"
+  title: "Skill Forge"
+  version: "1.3.3"
+  summary: "Create and refactor Agent Skills with explicit static validation, behavioral evaluation, and safe packaging."
+  invocation: "model"
   spec: agentskills.io
 ---
 
@@ -22,8 +25,8 @@ knowledge — generic instructions are the most common failure mode.
   For the audit rubric and evaluation-driven iteration, read
   [references/refactoring.md](references/refactoring.md).
 - **Unsure about a format rule** → check
-  [references/specification.md](references/specification.md) (condensed normative
-  spec + validator behavior).
+  [references/specification.md](references/specification.md) (normative field
+  constraints and the static validator's checking scope).
 
 ## Create
 
@@ -35,7 +38,8 @@ knowledge — generic instructions are the most common failure mode.
    `scripts/` (deterministic or repeatedly rewritten logic), `references/`
    (docs loaded on demand), or `assets/` (files used in output). Most skills
    need only a subset; create no empty directories.
-3. **Initialize:** `python3 scripts/init_skill.py <skill-name> --path <dir>`
+3. **Initialize (when the user explicitly requests script execution):**
+   `python3 scripts/init_skill.py <skill-name> --path <dir>`
 4. **Write the skill.** Replace every `[TODO]` in the generated SKILL.md:
    - Frontmatter: `name` (must equal directory name) and `description`. The
      description is the only triggering signal — write what the skill does AND
@@ -44,10 +48,11 @@ knowledge — generic instructions are the most common failure mode.
    - Body: imperative instructions; under 500 lines. Add only what the agent
      would get wrong without the skill; move detail into `references/` and
      state in SKILL.md exactly when to read each file.
-   - Test every bundled script by actually running it before packaging.
+  - **Execution gate:** Run a bundled script only when the user explicitly requests script execution in the current conversation. Otherwise inspect it statically; do not run it.
 5. **Validate:** `python3 scripts/validate_skill.py <skill-dir>` — fix all
    ERRORs; treat WARNINGs as production-grade checklist items.
-6. **Package:** `python3 scripts/package_skill.py <skill-dir> [output-dir]`
+6. **Package (when the user explicitly requests script execution):**
+   `python3 scripts/package_skill.py <skill-dir> [output-dir]`
 7. **Iterate.** After real use, fold user corrections into a `## Gotchas`
    section and re-validate. For systematic quality testing (test cases,
    assertions, with/without-skill benchmarks), see
@@ -64,8 +69,10 @@ knowledge — generic instructions are the most common failure mode.
 3. **Apply changes in priority order:** spec errors → description (triggering)
    → context bloat (split/trim) → structure → scripts → style. Generalize
    fixes; do not patch narrow cases.
-4. **Re-validate and package** (steps 5-6 of Create). When the user can run
-   evals, compare old vs new with the evaluation loop in
+4. **Re-validate and package** (steps 5-6 of Create) only when the user
+   explicitly requests script execution. Otherwise inspect the result statically;
+   validation lint remains ungated. When the user can run evals, compare old vs
+   new with the execution-gated evaluation loop in
    [references/refactoring.md](references/refactoring.md#evaluation-driven-iteration).
 
 ## Scripts
@@ -73,11 +80,15 @@ knowledge — generic instructions are the most common failure mode.
 - **`scripts/init_skill.py <name> --path <dir>`** — scaffold a compliant
   SKILL.md template. Validates the name against spec rules.
 - **`scripts/validate_skill.py <skill-dir> [--json] [--strict]`** — checks all
-  spec rules (exit 1 on violation) plus production warnings: oversized SKILL.md,
-  unreferenced or deeply nested bundled files, forbidden README/CHANGELOG-style
-  docs, missing or weak trigger clauses, absolute paths, dead links.
+  frontmatter types and constraints, bundled manifest synchronization, and
+  production lint for directly discoverable references, scripts, assets, rules,
+  tests, and evaluations. It does not prove activation, workflow, or script safety.
 - **`scripts/package_skill.py <skill-dir> [out-dir] [--strict]`** — validates,
   then zips to `<name>.skill`. Refuses to package when spec errors exist.
+- **`tests/run-validation.py [--include-packaging]`** — run only with explicit
+  test authorization to exercise malformed contracts and resource discovery;
+  `--include-packaging` also requires explicit packaging authorization and checks
+  first/repeat packages in disposable directories.
 
 ## Gotchas
 
@@ -94,3 +105,9 @@ knowledge — generic instructions are the most common failure mode.
   the only documentation the agent reads.
 - Skills must teach a reusable *approach*, not a one-off answer; and scripts
   must be non-interactive with `--help`, clear errors, and structured output.
+- Packaging excludes generated `.skill` archives, including its own destination;
+  a retry must package the source, not the preceding archive.
+- Every skill has an invocation class in `metadata.invocation`: `model`
+  (default; description is the trigger) or `user` (orchestrator the human
+  names). See `references/authoring.md` for the choice and the
+  compose-don't-duplicate rule.

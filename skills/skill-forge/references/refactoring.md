@@ -53,10 +53,7 @@ fields.
 
 ### 5. Scripts
 
-Run each script (or a representative sample). Check: non-interactive; `--help`;
-actionable error messages; structured stdout vs diagnostics on stderr; pinned
-dependencies; idempotency; bounded output. If the agent would rewrite the same
-helper logic on every run, extract it into a tested script.
+When the user explicitly requests script execution, run each script (or a representative sample). Otherwise inspect scripts statically without running them. In either case, check: non-interactive; `--help`; actionable error messages; structured stdout vs diagnostics on stderr; pinned dependencies; idempotency; bounded output. If the agent would rewrite the same helper logic on every run, extract it into a tested script.
 
 ### 6. Anti-patterns to fix on sight
 
@@ -70,27 +67,29 @@ helper logic on every run, extract it into a tested script.
 
 ## Evaluation-driven iteration
 
-When production-grade means *measurably* better, run structured evals rather
-than vibes. Summary of the full loop:
-
+When production-grade means *measurably* better, use structured evals rather
+than vibes. The execution gate below applies to all evaluation runs.
 1. **Test cases** in `evals/evals.json` inside the skill: realistic prompts,
    human-readable expected outputs, optional input files. Start with 2-3; vary
    phrasing and include one edge case.
-2. **Run each case twice** — with the skill and without (or against a snapshot
+2. **Execution gate:** Run eval cases only when the user explicitly requests
+   evaluation execution in the current conversation. Otherwise inspect the
+   cases, assertions, and expected output statically; do not run them.
+3. **Run each case twice** — with the skill and without (or against a snapshot
    of the old version) — in clean sessions, saving outputs under
    `<workspace>/iteration-N/<eval-name>/{with_skill,without_skill}/outputs/`.
    Record tokens and duration per run.
-3. **Assertions**: after seeing first outputs, add verifiable statements
+4. **Assertions**: after seeing first outputs, add verifiable statements
    ("output is valid JSON", "chart has labeled axes"). Avoid vague or brittle
    ones. Grade each PASS/FAIL with quoted evidence; use scripts for mechanical
    checks, LLM judgment for the rest.
-4. **Benchmark**: aggregate pass rates, time, tokens into `benchmark.json`;
+5. **Benchmark**: aggregate pass rates, time, tokens into `benchmark.json`;
    compute the delta between configurations. A skill that triples tokens for a
    2-point gain is a bad trade.
-5. **Analyze**: drop assertions that always pass in both configs; fix ones that
+6. **Analyze**: drop assertions that always pass in both configs; fix ones that
    always fail; tighten instructions where results vary run-to-run; read
    transcripts of time/token outliers.
-6. **Iterate**: feed failed assertions + human feedback + transcripts + current
+7. **Iterate**: feed failed assertions + human feedback + transcripts + current
    SKILL.md to an LLM; ask for generalized, lean fixes. Repeat until feedback is
    consistently empty or improvements plateau.
 
@@ -102,13 +101,16 @@ When the problem is that the skill fires at the wrong times:
    detail, complexity) and 8-10 should-NOT-trigger — near-misses sharing
    keywords, not obviously irrelevant prompts.
 2. Split 60/40 into train/validation sets (mixed labels in both, fixed split).
-3. Run each query ~3 times with the skill installed; compute trigger rates;
-   threshold 0.5.
-4. Revise the description against *train* failures only: broaden for missed
+3. **Execution gate:** Run trigger queries only when the user explicitly
+   requests evaluation execution in the current conversation. Otherwise inspect
+   the query set statically; do not run it.
+4. **Run each query ~3 times with the skill installed; compute trigger rates;
+   threshold 0.5.**
+5. Revise the description against *train* failures only: broaden for missed
    triggers, add specificity/boundaries for false triggers. Never hard-code
    keywords from failed queries — address the general category. Watch the
    1024-char limit.
-5. Stop after ~5 iterations or at plateau; select the iteration with the best
+6. Stop after ~5 iterations or at plateau; select the iteration with the best
    *validation* pass rate (not the last one — later ones may overfit).
-6. Sanity-check the final description with 5-10 fresh queries never used in
+7. Sanity-check the final description with 5-10 fresh queries never used in
    optimization.

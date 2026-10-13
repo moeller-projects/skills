@@ -4,6 +4,8 @@ Read this when creating a new skill or rewriting a skill's content.
 
 ## Contents
 
+- [Choose the invocation class](#choose-the-invocation-class)
+- [Compose, don't duplicate](#compose-dont-duplicate)
 - [Ground the skill in real expertise](#ground-the-skill-in-real-expertise)
 - [Spend context wisely](#spend-context-wisely)
 - [Scope coherent units](#scope-coherent-units)
@@ -13,6 +15,32 @@ Read this when creating a new skill or rewriting a skill's content.
 - [Progressive disclosure structure](#progressive-disclosure-structure)
 - [Bundled scripts](#bundled-scripts)
 - [What never belongs in a skill](#what-never-belongs-in-a-skill)
+
+## Choose the invocation class
+
+Every skill is either **model-invoked** (default) or **user-invoked**, recorded as
+`invocation` in the `metadata` mapping:
+
+- **Model-invoked** (`invocation: "model"`): the agent fires it autonomously when
+  the task fits. The description is an always-loaded context pointer, so it must
+  carry the trigger branches — what it does, when to use it, when not to.
+- **User-invoked** (`invocation: "user"`): an orchestrator that fires only when
+  the human names it. Write the description for the human, not the model; skip
+  model-facing trigger clauses. User-invoked skills may compose model-invoked
+  ones, never each other.
+
+Pick model-invocation only when the agent must reach the skill on its own or
+another skill must compose it. An orchestrator nobody but the human should start
+is user-invoked: it costs no discovery context.
+
+## Compose, don't duplicate
+
+Shared discipline belongs in exactly one model-invoked primitive. When two skills
+need the same guidance, extract the primitive and link it by name from both
+(Handoffs or an inline "call X" line). A skill that mostly forwards to one or two
+primitives is a thin wrapper: say so in one line instead of copying content. When
+the catalog grows past what the human can remember, add a user-invoked router
+skill that maps situations to skills.
 
 ## Ground the skill in real expertise
 
@@ -112,7 +140,9 @@ when deterministic reliability matters. Requirements for agent-facing scripts:
   operations, bounded output size (`--output` file or pagination for large data).
 
 State runtime prerequisites in SKILL.md; use the `compatibility` frontmatter
-field for hard environment requirements. Test every script by running it.
+field for hard environment requirements. Run a script only when the user
+explicitly requests script execution in the current conversation; otherwise
+inspect it statically without running it.
 
 ## What never belongs in a skill
 
