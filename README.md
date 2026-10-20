@@ -25,6 +25,7 @@ permission to edit or execute. Workflow authorization gates still apply.
 | [task-planning](skills/task-planning/) | Breaking confirmed scope into tasks, dependencies, and done criteria |
 | [plan-execution](skills/plan-execution/) | Executing a confirmed plan to completion: per-task proof, review gates, subagent or inline modes |
 | [technical-writing](skills/technical-writing/) | READMEs, agent instructions, developer guides, and decision records |
+| [ste-clarity](skills/ste-clarity/) | STE-inspired rewriting, explanation, and linting for technical English |
 | [operations](skills/operations/) | CI/CD, infrastructure, rollout safety, and operational risk |
 | [codebase-onboarding](skills/codebase-onboarding/) | Repository discovery, conventions, entry points, and hotspots |
 | [spec-writing](skills/spec-writing/) | Requirements, acceptance criteria, and OpenSpec proposals |
