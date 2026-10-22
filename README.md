@@ -4,16 +4,23 @@ Reusable instructions for coding agents. Each skill's `SKILL.md` describes when 
 
 ## Get started
 
-1. Choose a skill from the catalog below and copy its entire `skills/<name>/` directory into the skills directory supported by your agent. The destination depends on the agent; this repository does not provide an installer.
-2. Open the copied `SKILL.md` and use its `description` to decide when it applies. Follow its workflow and consult linked files relative to that skill directory.
-3. Keep the whole directory together: some skills use `rules/`, `references/`, `assets/`, or `scripts/` in addition to `SKILL.md`.
+1. Install a skill and the model-invoked primitives it requires:
+   `python scripts/install.py --dest <your skills directory> --skill <name>`.
+   It is a dry run until you add `--apply`; `--harness pi` also adds
+   `disable-model-invocation: true` to user-invoked skills. Copying a skill
+   directory by hand still works.
+2. Open the installed `SKILL.md` and use its `description` to decide when it
+   applies. Follow its workflow and consult linked files relative to that skill
+   directory.
+3. Keep the whole directory together: some skills use `rules/`, `references/`,
+   `assets/`, or `scripts/` in addition to `SKILL.md`.
 
-Skills compose other skills by name. Copy the model-invoked primitives named in
-the selected skill's Handoffs/workflow too; those instructions are not bundled
-automatically. User-invoked recommendations remain the human's decision.
-Tool names and `allowed-tools` support differ between harnesses: map supported
-capabilities at installation, and do not turn a read-only declaration into
-permission to edit or execute. Workflow authorization gates still apply.
+`metadata.json` `requires` lists the model-invoked primitives each skill
+composes, so the installer copies them automatically. User-invoked
+recommendations remain the human's decision. Tool names and `allowed-tools`
+support differ between harnesses: map supported capabilities at installation,
+and do not turn a read-only declaration into permission to edit or execute.
+Workflow authorization gates still apply.
 
 ## Skill catalog
 

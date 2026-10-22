@@ -37,6 +37,11 @@ Fix at the source. When an eval or review fails, repair the one canonical rule a
 
 `metadata.json`, the README skill table, and the validation-runner lists are generated. Edit the source — `SKILL.md` frontmatter, `catalog.json`, or the README row order — then regenerate with `sync_manifests.py` and `sync_readme.py`. Do not hand-edit generated output; `--check` fails on drift.
 
+## Repository scripts
+
+- `scripts/install.py` — installs a skill with the model-invoked `requires` closure; dry-run by default.
+- `skills/skill-forge/scripts/` — `validate_skill.py` (spec + layout), `repo_lint.py` (repo hygiene and handoff graph), `sync_manifests.py`, `sync_readme.py`.
+
 ## Change workflow
 
 1. Read the affected skill's `SKILL.md`, `metadata.json`, and every relevant bundled file before editing.
