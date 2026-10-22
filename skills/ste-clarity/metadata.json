@@ -1,8 +1,8 @@
 {
   "name": "ste-clarity",
-  "title": "",
+  "title": "STE Clarity",
   "version": "1.0.0",
-  "summary": "",
+  "summary": "Rewrite and lint technical English with ASD-STE100-inspired clarity rules.",
   "invocation": "model",
   "compatibility": [
     "chatgpt",

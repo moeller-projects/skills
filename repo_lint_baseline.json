@@ -1,9 +1,4 @@
 {
-  "findings": {
-    "required-key|skills/ste-clarity/SKILL.md|metadata.summary": "frontmatter metadata is missing required 'summary'",
-    "required-key|skills/ste-clarity/SKILL.md|metadata.title": "frontmatter metadata is missing required 'title'",
-    "validate-skill-error|skills/ste-clarity/SKILL.md|summary must be a non-empty string in frontmatter and metadata.json": "summary must be a non-empty string in frontmatter and metadata.json",
-    "validate-skill-error|skills/ste-clarity/SKILL.md|title must be a non-empty string in frontmatter and metadata.json": "title must be a non-empty string in frontmatter and metadata.json"
-  },
+  "findings": {},
   "note": "Known repo-lint findings. Fix the defect, then rerun with --update-baseline to shrink this list."
 }
