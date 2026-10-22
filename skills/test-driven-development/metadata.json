@@ -12,8 +12,6 @@
     "opencode"
   ],
   "requires": [
-    "codebase-design",
-    "git-workflow",
     "test-strategy",
     "verification-before-completion"
   ],

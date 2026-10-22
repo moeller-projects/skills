@@ -11,11 +11,7 @@
     "cursor",
     "opencode"
   ],
-  "requires": [
-    "code-review",
-    "technical-writing",
-    "test-strategy"
-  ],
+  "requires": [],
   "type": "hybrid",
   "risk_level": "medium",
   "requires_network": false,

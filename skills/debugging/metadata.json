@@ -12,10 +12,6 @@
     "opencode"
   ],
   "requires": [
-    "code-review",
-    "incident-response",
-    "pr-review",
-    "test-strategy",
     "verification-before-completion"
   ],
   "type": "hybrid",

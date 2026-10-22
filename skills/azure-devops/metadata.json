@@ -11,9 +11,7 @@
     "cursor",
     "opencode"
   ],
-  "requires": [
-    "spec-writing"
-  ],
+  "requires": [],
   "type": "hybrid",
   "risk_level": "high",
   "requires_network": true,

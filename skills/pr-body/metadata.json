@@ -15,8 +15,6 @@
     "read_file"
   ],
   "requires": [
-    "gh-stack",
-    "pr-review",
     "verification-before-completion"
   ],
   "type": "hybrid",

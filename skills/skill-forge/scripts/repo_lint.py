@@ -341,6 +341,26 @@ def check_duplicates(report: Report, root: Path, skill_dir: Path) -> None:
                                line=ib, ident=ident)
 
 
+def handoff_refs(skill_dir: Path, skills: set[str], meta: dict) -> list[str]:
+    """Model-invoked skills in this skill's Handoffs section, excluding itself.
+
+    User-invoked skills are omitted: they never fire automatically, so a
+    reference to one cannot form an automatic handoff loop.
+    """
+    refs, in_handoffs = [], False
+    for line in (skill_dir / "SKILL.md").read_text(encoding="utf-8").splitlines():
+        if line.startswith("## "):
+            in_handoffs = line[3:].strip().lower() == "handoffs"
+        if not in_handoffs:
+            continue
+        for token in KEBAB_RE.findall(line):
+            if (token in skills and token != skill_dir.name
+                    and meta.get(token, {}).get("invocation", "model") == "model"
+                    and token not in refs):
+                refs.append(token)
+    return refs
+
+
 def check_graph(report: Report, root: Path, skills: set[str], meta: dict) -> None:
     """Handoff-graph checks: reachability, user-invoked references, cycles."""
     router = root / "skills" / "ask-lukas" / "SKILL.md"
@@ -368,18 +388,18 @@ def check_graph(report: Report, root: Path, skills: set[str], meta: dict) -> Non
                                f"Handoffs invokes user-invoked '{token}'; recommend it instead",
                                line=i, ident=token, severity="warning")
 
+    handoffs = {d.name: handoff_refs(d, skills, meta)
+                for d in sorted(p for p in (root / "skills").iterdir() if p.is_dir())}
     seen_pairs = set()
     for a in sorted(skills):
-        for b in meta.get(a, {}).get("requires", []):
-            if b not in skills:
-                continue
+        for b in handoffs.get(a, []):
             pair = frozenset({a, b})
             if pair in seen_pairs:
                 continue
             seen_pairs.add(pair)
             if pair in INTENTIONAL_CYCLES:
                 continue
-            if a in meta.get(b, {}).get("requires", []):
+            if a in handoffs.get(b, []):
                 report.add("graph-cycle", a,
                            posix((root / "skills" / a / "SKILL.md").relative_to(root)),
                            f"mutual handoff between '{a}' and '{b}'",

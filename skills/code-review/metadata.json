@@ -12,10 +12,7 @@
     "opencode"
   ],
   "requires": [
-    "codebase-design",
-    "codebase-onboarding",
-    "task-planning",
-    "test-strategy"
+    "codebase-design"
   ],
   "type": "rule",
   "risk_level": "medium",

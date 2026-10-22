@@ -2,9 +2,9 @@
 """Install skills, together with the model-invoked primitives they require.
 
 Reads each skill's generated ``metadata.json`` ``requires`` list (the
-model-invoked skills named in its Handoffs section) and copies the transitive
-closure. This replaces the README's manual "copy the primitives named in
-Handoffs" step.
+model-invoked primitives the skill composes, from Handoffs composition lines)
+and copies the transitive closure. This replaces the README's manual "copy the
+primitives named in Handoffs" step.
 
 Dry-run by default: prints the plan and writes nothing. Pass ``--apply`` to
 copy. ``--harness pi`` adds ``disable-model-invocation: true`` to the installed

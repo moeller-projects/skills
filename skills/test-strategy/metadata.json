@@ -15,8 +15,6 @@
     "read_file"
   ],
   "requires": [
-    "code-review",
-    "codebase-onboarding",
     "spec-writing"
   ],
   "type": "rule",

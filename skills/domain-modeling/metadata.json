@@ -11,9 +11,7 @@
     "cursor",
     "opencode"
   ],
-  "requires": [
-    "codebase-design"
-  ],
+  "requires": [],
   "type": "hybrid",
   "risk_level": "low",
   "requires_network": false,

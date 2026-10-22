@@ -41,6 +41,13 @@ DEFAULT_COMPATIBILITY = ["chatgpt", "codex", "claude-code", "cursor", "opencode"
 CATALOG_FIELDS = ("type", "risk_level", "requires_network", "maintainer")
 TOKEN_RE = re.compile(r"^[a-z][a-z0-9-]*$")
 KEBAB_RE = re.compile(r"`([a-z][a-z0-9]*(?:-[a-z0-9]+)+)`")
+# Composition verbs mark a primitive a skill depends on, as opposed to a
+# handoff to a neighbouring skill. Only composed primitives go into `requires`.
+COMPOSE_RE = re.compile(
+    r"\b(use|uses|using|consult|consults|apply|applies|follow|follows|"
+    r"belongs to|owned by|owns|composes)\b",
+    re.IGNORECASE,
+)
 
 
 def load_invocations(root: Path) -> dict[str, str]:
@@ -56,13 +63,13 @@ def load_invocations(root: Path) -> dict[str, str]:
 
 
 def handoff_requires(skill_dir: Path, invocations: dict[str, str]) -> list[str]:
-    """Model-invoked skills named in this skill's Handoffs section."""
+    """Model-invoked primitives this skill composes (Handoffs composition lines)."""
     refs = []
     in_handoffs = False
     for line in (skill_dir / "SKILL.md").read_text(encoding="utf-8").splitlines():
         if line.startswith("## "):
             in_handoffs = line[3:].strip().lower() == "handoffs"
-        if not in_handoffs:
+        if not in_handoffs or not COMPOSE_RE.search(line):
             continue
         for token in KEBAB_RE.findall(line):
             if token != skill_dir.name and invocations.get(token) == "model" and token not in refs:

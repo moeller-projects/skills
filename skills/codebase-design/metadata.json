@@ -14,12 +14,7 @@
   "allowed_tools": [
     "read_file"
   ],
-  "requires": [
-    "domain-modeling",
-    "pr-review",
-    "test-driven-development",
-    "test-strategy"
-  ],
+  "requires": [],
   "type": "rule",
   "risk_level": "low",
   "requires_network": false,

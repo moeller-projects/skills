@@ -11,10 +11,7 @@
     "cursor",
     "opencode"
   ],
-  "requires": [
-    "codebase-onboarding",
-    "spec-writing"
-  ],
+  "requires": [],
   "type": "hybrid",
   "risk_level": "high",
   "requires_network": false,

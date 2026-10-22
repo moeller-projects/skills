@@ -11,13 +11,7 @@
     "cursor",
     "opencode"
   ],
-  "requires": [
-    "branch-integration",
-    "gh-stack",
-    "git-worktrees",
-    "incident-response",
-    "pr-review"
-  ],
+  "requires": [],
   "type": "hybrid",
   "risk_level": "high",
   "requires_network": false,

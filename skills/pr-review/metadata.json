@@ -14,13 +14,7 @@
   "allowed_tools": [
     "read_file"
   ],
-  "requires": [
-    "azure-devops",
-    "code-review",
-    "codebase-onboarding",
-    "review-response",
-    "test-strategy"
-  ],
+  "requires": [],
   "type": "rule",
   "risk_level": "low",
   "requires_network": false,
