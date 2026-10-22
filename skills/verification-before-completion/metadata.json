@@ -11,6 +11,10 @@
     "cursor",
     "opencode"
   ],
+  "requires": [
+    "git-workflow",
+    "test-strategy"
+  ],
   "type": "hybrid",
   "risk_level": "low",
   "requires_network": false,

@@ -11,6 +11,12 @@
     "cursor",
     "opencode"
   ],
+  "requires": [
+    "codebase-design",
+    "codebase-onboarding",
+    "task-planning",
+    "test-strategy"
+  ],
   "type": "rule",
   "risk_level": "medium",
   "requires_network": false,

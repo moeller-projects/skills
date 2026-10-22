@@ -14,6 +14,11 @@
   "allowed_tools": [
     "read_file"
   ],
+  "requires": [
+    "code-review",
+    "codebase-onboarding",
+    "spec-writing"
+  ],
   "type": "rule",
   "risk_level": "medium",
   "requires_network": false,

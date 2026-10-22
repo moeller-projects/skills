@@ -11,6 +11,10 @@
     "cursor",
     "opencode"
   ],
+  "requires": [
+    "code-review",
+    "technical-writing"
+  ],
   "type": "rule",
   "risk_level": "high",
   "requires_network": false,

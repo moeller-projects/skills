@@ -72,6 +72,29 @@ SKILL_REF_PHRASE_RE = re.compile(
     r"delegate[sd]?\s+to|route[sd]?\s+to|hand\s+to|composes?\b",
     re.IGNORECASE,
 )
+# Bidirectional handoffs are intentional in this catalog (each direction names
+# a different transition). New mutual references outside this set warn.
+INTENTIONAL_CYCLES = {
+    frozenset({"azure-devops", "spec-writing"}),
+    frozenset({"branch-integration", "git-workflow"}),
+    frozenset({"code-review", "codebase-onboarding"}),
+    frozenset({"code-review", "test-strategy"}),
+    frozenset({"codebase-design", "domain-modeling"}),
+    frozenset({"codebase-design", "test-driven-development"}),
+    frozenset({"codebase-onboarding", "technical-writing"}),
+    frozenset({"codebase-onboarding", "test-strategy"}),
+    frozenset({"debugging", "test-driven-development"}),
+    frozenset({"gh-stack", "git-workflow"}),
+    frozenset({"git-workflow", "git-worktrees"}),
+    frozenset({"git-worktrees", "plan-execution"}),
+    frozenset({"pr-review", "review-response"}),
+    frozenset({"spec-writing", "task-planning"}),
+}
+INVOKE_RE = re.compile(
+    r"\b(invoke[sd]?|start[s]?|execute[sd]?|call[s]?|automatically|trigger[s]?)\b",
+    re.IGNORECASE,
+)
+
 TOC_LINE_RE = re.compile(r"^\s*[-*]\s+\[")
 KEY_VALUE_LINE_RE = re.compile(r"^\s*[-*]?\s*[A-Za-z_][A-Za-z0-9_]*\s*:")
 LINK_ONLY_LINE_RE = re.compile(r"^\s*\[[^\]]+\]\([^)]+\)\.?$")
@@ -119,7 +142,8 @@ class Report:
         self.findings: list[dict] = []
 
     def add(self, check: str, skill: str, file: str, message: str,
-            line: int | None = None, ident: str | None = None) -> None:
+            line: int | None = None, ident: str | None = None,
+            severity: str = "error") -> None:
         key = make_key(check, file, ident if ident is not None else str(line))
         self.findings.append({
             "check": check,
@@ -128,6 +152,7 @@ class Report:
             "line": line,
             "message": message,
             "key": key,
+            "severity": severity,
         })
 
 
@@ -316,6 +341,51 @@ def check_duplicates(report: Report, root: Path, skill_dir: Path) -> None:
                                line=ib, ident=ident)
 
 
+def check_graph(report: Report, root: Path, skills: set[str], meta: dict) -> None:
+    """Handoff-graph checks: reachability, user-invoked references, cycles."""
+    router = root / "skills" / "ask-lukas" / "SKILL.md"
+    router_text = router.read_text(encoding="utf-8") if router.is_file() else ""
+    router_rel = posix(router.relative_to(root))
+    for name in sorted(skills):
+        if name == "ask-lukas" or meta.get(name, {}).get("invocation", "model") != "model":
+            continue
+        if f"`{name}`" not in router_text:
+            report.add("graph-unreachable", name, router_rel,
+                       f"model-invoked skill '{name}' is not reachable from the ask-lukas router",
+                       ident=name)
+
+    for skill_dir in sorted(p for p in (root / "skills").iterdir() if p.is_dir()):
+        rel = posix((skill_dir / "SKILL.md").relative_to(root))
+        in_handoffs = False
+        for i, line in enumerate((skill_dir / "SKILL.md").read_text(encoding="utf-8").splitlines(), 1):
+            if line.startswith("## "):
+                in_handoffs = line[3:].strip().lower() == "handoffs"
+            if not in_handoffs:
+                continue
+            for token in KEBAB_RE.findall(line):
+                if meta.get(token, {}).get("invocation") == "user" and INVOKE_RE.search(line):
+                    report.add("graph-user-invoked-handoff", skill_dir.name, rel,
+                               f"Handoffs invokes user-invoked '{token}'; recommend it instead",
+                               line=i, ident=token, severity="warning")
+
+    seen_pairs = set()
+    for a in sorted(skills):
+        for b in meta.get(a, {}).get("requires", []):
+            if b not in skills:
+                continue
+            pair = frozenset({a, b})
+            if pair in seen_pairs:
+                continue
+            seen_pairs.add(pair)
+            if pair in INTENTIONAL_CYCLES:
+                continue
+            if a in meta.get(b, {}).get("requires", []):
+                report.add("graph-cycle", a,
+                           posix((root / "skills" / a / "SKILL.md").relative_to(root)),
+                           f"mutual handoff between '{a}' and '{b}'",
+                           ident="~".join(sorted(pair)), severity="warning")
+
+
 def check_spacing(report: Report, root: Path, skill_dir: Path) -> None:
     targets = [skill_dir / "SKILL.md"]
     for sub in ("rules", "references"):
@@ -350,6 +420,7 @@ def check_spacing(report: Report, root: Path, skill_dir: Path) -> None:
 def lint(root: Path, only: set[str] | None) -> Report:
     report = Report()
     skills = {p.name for p in (root / "skills").iterdir() if p.is_dir()}
+    meta: dict = {}
 
     def wanted(check: str) -> bool:
         return only is None or check in only
@@ -365,6 +436,10 @@ def lint(root: Path, only: set[str] | None) -> Report:
                 manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
             except (OSError, ValueError):
                 manifest = None
+        meta[skill_dir.name] = {
+            "invocation": (manifest or {}).get("invocation", "model"),
+            "requires": (manifest or {}).get("requires", []),
+        }
         if frontmatter is None or body is None:
             continue
         if wanted("required-key"):
@@ -381,6 +456,8 @@ def lint(root: Path, only: set[str] | None) -> Report:
 
     if wanted("dangling-skill"):
         check_dangling_skills(report, root, skills)
+    if wanted("graph-unreachable") or wanted("graph-user-invoked-handoff") or wanted("graph-cycle"):
+        check_graph(report, root, skills, meta)
     return report
 
 
@@ -418,10 +495,11 @@ def main() -> int:
             print(f"warning: cannot read baseline: {exc}", file=sys.stderr)
 
     if args.update_baseline:
+        errors = [f for f in report.findings if f.get("severity", "error") == "error"]
         payload = {
-            "note": "Known repo-lint findings. Fix the defect, then rerun "
+            "note": "Known repo-lint errors. Fix the defect, then rerun "
                     "with --update-baseline to shrink this list.",
-            "findings": {f["key"]: f["message"] for f in report.findings},
+            "findings": {f["key"]: f["message"] for f in errors},
         }
         args.baseline.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n",
                                  encoding="utf-8")
@@ -432,29 +510,32 @@ def main() -> int:
         finding["status"] = "known" if finding["key"] in known else "new"
 
     new = [f for f in report.findings if f["status"] == "new"]
+    new_errors = [f for f in new if f.get("severity", "error") == "error"]
     known_count = len(report.findings) - len(new)
 
     if args.json:
         print(json.dumps({
-            "valid": not new,
+            "valid": not new_errors,
             "root": posix(root),
             "baseline": None if args.no_baseline else posix(args.baseline),
-            "summary": {"new": len(new), "known": known_count,
-                        "total": len(report.findings)},
+            "summary": {"new": len(new_errors), "new_warnings": len(new) - len(new_errors),
+                        "known": known_count, "total": len(report.findings)},
             "findings": report.findings,
         }, indent=2))
     else:
         for finding in report.findings:
             marker = "KNOWN" if finding["status"] == "known" else "NEW  "
+            severity = finding.get("severity", "error")
             location = finding["file"]
             if finding["line"]:
                 location += f":{finding['line']}"
-            print(f"{marker} [{finding['check']}] {location}: {finding['message']}")
-        print(f"{len(new)} new, {known_count} known finding(s)")
-        if new:
+            print(f"{marker} {severity.upper():7} [{finding['check']}] {location}: {finding['message']}")
+        print(f"{len(new_errors)} new error(s), {len(new) - len(new_errors)} new warning(s), "
+              f"{known_count} known finding(s)")
+        if new_errors:
             print("repo lint failed: fix the new findings or update the baseline",
                   file=sys.stderr)
-    return 1 if new else 0
+    return 1 if new_errors else 0
 
 
 if __name__ == "__main__":

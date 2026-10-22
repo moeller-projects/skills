@@ -11,6 +11,10 @@
     "cursor",
     "opencode"
   ],
+  "requires": [
+    "azure-devops",
+    "task-planning"
+  ],
   "type": "hybrid",
   "risk_level": "medium",
   "requires_network": false,

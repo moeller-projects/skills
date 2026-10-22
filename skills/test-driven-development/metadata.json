@@ -11,6 +11,12 @@
     "cursor",
     "opencode"
   ],
+  "requires": [
+    "codebase-design",
+    "git-workflow",
+    "test-strategy",
+    "verification-before-completion"
+  ],
   "type": "hybrid",
   "risk_level": "medium",
   "requires_network": false,

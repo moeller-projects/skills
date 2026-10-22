@@ -11,6 +11,11 @@
     "cursor",
     "opencode"
   ],
+  "requires": [
+    "branch-integration",
+    "git-workflow",
+    "plan-execution"
+  ],
   "type": "hybrid",
   "risk_level": "medium",
   "requires_network": false,

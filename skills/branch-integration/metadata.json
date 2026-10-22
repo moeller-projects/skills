@@ -11,6 +11,12 @@
     "cursor",
     "opencode"
   ],
+  "requires": [
+    "gh-stack",
+    "git-workflow",
+    "review-response",
+    "verification-before-completion"
+  ],
   "type": "hybrid",
   "risk_level": "high",
   "requires_network": false,

@@ -11,6 +11,11 @@
     "cursor",
     "opencode"
   ],
+  "requires": [
+    "git-workflow",
+    "incident-response",
+    "pr-review"
+  ],
   "type": "hybrid",
   "risk_level": "high",
   "requires_network": true,

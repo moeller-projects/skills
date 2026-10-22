@@ -11,6 +11,9 @@
     "cursor",
     "opencode"
   ],
+  "requires": [
+    "technical-writing"
+  ],
   "type": "hybrid",
   "risk_level": "low",
   "requires_network": false,

@@ -40,6 +40,34 @@ import validate_skill  # noqa: E402  (same directory)
 DEFAULT_COMPATIBILITY = ["chatgpt", "codex", "claude-code", "cursor", "opencode"]
 CATALOG_FIELDS = ("type", "risk_level", "requires_network", "maintainer")
 TOKEN_RE = re.compile(r"^[a-z][a-z0-9-]*$")
+KEBAB_RE = re.compile(r"`([a-z][a-z0-9]*(?:-[a-z0-9]+)+)`")
+
+
+def load_invocations(root: Path) -> dict[str, str]:
+    """Map each skill name to its invocation class (default model)."""
+    invocations = {}
+    for skill_dir in sorted(p for p in (root / "skills").iterdir() if p.is_dir()):
+        frontmatter, _ = validate_skill.parse_frontmatter(
+            (skill_dir / "SKILL.md").read_text(encoding="utf-8"))
+        extra = frontmatter.get("metadata")
+        extra = extra if isinstance(extra, dict) else {}
+        invocations[skill_dir.name] = extra.get("invocation", "model")
+    return invocations
+
+
+def handoff_requires(skill_dir: Path, invocations: dict[str, str]) -> list[str]:
+    """Model-invoked skills named in this skill's Handoffs section."""
+    refs = []
+    in_handoffs = False
+    for line in (skill_dir / "SKILL.md").read_text(encoding="utf-8").splitlines():
+        if line.startswith("## "):
+            in_handoffs = line[3:].strip().lower() == "handoffs"
+        if not in_handoffs:
+            continue
+        for token in KEBAB_RE.findall(line):
+            if token != skill_dir.name and invocations.get(token) == "model" and token not in refs:
+                refs.append(token)
+    return sorted(refs)
 
 
 def compatibility_list(value: object) -> list[str]:
@@ -50,7 +78,8 @@ def compatibility_list(value: object) -> list[str]:
     return list(DEFAULT_COMPATIBILITY)
 
 
-def build_manifest(skill_dir: Path, catalog_block: dict) -> dict:
+def build_manifest(skill_dir: Path, catalog_block: dict,
+                   invocations: dict[str, str]) -> dict:
     frontmatter, _ = validate_skill.parse_frontmatter(
         (skill_dir / "SKILL.md").read_text(encoding="utf-8"))
     extra = frontmatter.get("metadata")
@@ -69,6 +98,7 @@ def build_manifest(skill_dir: Path, catalog_block: dict) -> dict:
     tools = frontmatter.get("allowed-tools")
     if isinstance(tools, str) and tools.split():
         manifest["allowed_tools"] = tools.split()
+    manifest["requires"] = handoff_requires(skill_dir, invocations)
     for field in CATALOG_FIELDS:
         manifest[field] = catalog_block[field]
     return manifest
@@ -96,6 +126,7 @@ def main() -> int:
         print(f"error: catalog not found: {args.catalog}", file=sys.stderr)
         return 2
     catalog = json.loads(args.catalog.read_text(encoding="utf-8")).get("skills", {})
+    invocations = load_invocations(root)
 
     skill_dirs = sorted(p for p in (root / "skills").iterdir() if p.is_dir())
     names = {p.name for p in skill_dirs}
@@ -109,7 +140,7 @@ def main() -> int:
     results = []
     for skill_dir in skill_dirs:
         try:
-            manifest = build_manifest(skill_dir, catalog[skill_dir.name])
+            manifest = build_manifest(skill_dir, catalog[skill_dir.name], invocations)
         except (OSError, ValueError) as exc:
             results.append({"skill": skill_dir.name, "status": "error", "detail": str(exc)})
             continue

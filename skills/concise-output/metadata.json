@@ -14,6 +14,7 @@
   "allowed_tools": [
     "read_file"
   ],
+  "requires": [],
   "type": "rule",
   "risk_level": "low",
   "requires_network": false,

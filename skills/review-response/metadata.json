@@ -11,6 +11,11 @@
     "cursor",
     "opencode"
   ],
+  "requires": [
+    "pr-review",
+    "test-driven-development",
+    "verification-before-completion"
+  ],
   "type": "hybrid",
   "risk_level": "low",
   "requires_network": false,

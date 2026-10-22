@@ -11,6 +11,7 @@
     "cursor",
     "opencode"
   ],
+  "requires": [],
   "type": "rule",
   "risk_level": "low",
   "requires_network": false,

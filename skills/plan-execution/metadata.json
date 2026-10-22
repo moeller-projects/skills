@@ -11,6 +11,15 @@
     "cursor",
     "opencode"
   ],
+  "requires": [
+    "branch-integration",
+    "code-review",
+    "git-worktrees",
+    "pr-review",
+    "review-response",
+    "test-driven-development",
+    "verification-before-completion"
+  ],
   "type": "hybrid",
   "risk_level": "high",
   "requires_network": false,

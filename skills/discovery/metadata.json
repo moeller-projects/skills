@@ -11,6 +11,11 @@
     "cursor",
     "opencode"
   ],
+  "requires": [
+    "domain-modeling",
+    "spec-writing",
+    "task-planning"
+  ],
   "type": "hybrid",
   "risk_level": "medium",
   "requires_network": false,
