@@ -1,7 +1,7 @@
 ---
 name: debugging
 description: Diagnose LOCAL development failures from stack traces, error messages, failing tests, regressions, or unexpected behavior. Use when the user reports something failing, broken, or behaving unexpectedly and the root cause is unknown. Reproduce a minimal deterministic failure first, rank evidence-backed hypotheses, isolate variables, confirm the root cause, and apply the narrowest fix. Accept user-reported failure evidence as ground truth; run reproduction, build, dependency-install, or test commands only when the user explicitly authorizes that operation, and report unrun verification. Do not use for live production incidents (use incident-response), code-quality or security review without a failure (use code-review), designing test suites from scratch (use test-strategy), or PR review (use pr-review).
-license: Proprietary
+license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Debugging

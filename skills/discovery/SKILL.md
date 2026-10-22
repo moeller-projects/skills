@@ -1,6 +1,8 @@
 ---
 name: discovery
 description: Use when the problem is vague, assumptions need pressure-testing, or options must be compared before commitment. Do not use when scope is fixed and the output must be an executable task breakdown with dependencies and done criteria.
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Discovery
   version: "1.1.4"

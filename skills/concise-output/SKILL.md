@@ -2,6 +2,8 @@
 name: concise-output
 description: Shape responses in a concise, action-first style. Use when the user requests direct, no-fluff, ADHD-friendly, or token-efficient delivery, or during compatible interactive coding, debugging, and DevOps work. Do not apply when the user requires another response format or when compression would omit required detail or safety context.
 allowed-tools: read_file
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Concise Output
   version: "1.0.4"

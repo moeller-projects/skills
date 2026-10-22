@@ -1,6 +1,8 @@
 ---
 name: task-planning
 description: Use when confirmed scope must be broken into atomic tasks with dependencies, estimates, and done criteria. Do not use when requirements are still being written or the user wants option comparison or plan critique before scope is fixed.
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Task Planning
   version: "1.1.3"

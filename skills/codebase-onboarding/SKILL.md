@@ -1,6 +1,8 @@
 ---
 name: codebase-onboarding
 description: Use when onboarding to a repository, mapping architecture, or extracting entry points, conventions, hotspots, and agent artifacts. Do not use when exact files are already known, the question is strategic rather than repository-specific, or the request is to author onboarding or AGENTS.md docs.
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Codebase Onboarding
   version: "1.0.5"

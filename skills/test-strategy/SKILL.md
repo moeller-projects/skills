@@ -2,6 +2,8 @@
 name: test-strategy
 description: Plan resilient unit, integration, E2E, and flake-reduction test coverage: select levels, cases, and risk remedies. Use when planning coverage or making test-quality decisions; route requests to implement behavior with tests, including regression-test fixes, to `test-driven-development`. Do not use for writing tests or implementing behavior, broader code review or refactoring quality work, or documentation-only tasks.
 allowed-tools: read_file
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Test Strategy
   version: "1.0.6"

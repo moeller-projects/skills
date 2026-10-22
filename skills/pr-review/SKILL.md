@@ -2,6 +2,8 @@
 name: pr-review
 description: Use when reviewing a pull request, diff, or changeset and producing author-facing review feedback with an approve / request-changes / comment verdict. Do not use for whole-codebase quality or security review (use `code-review`), test coverage review (use `test-strategy`), infrastructure review (use `operations`), or fetching Azure DevOps PR discussion data (use `azure-devops` for the fetch, then return here for the review).
 allowed-tools: read_file
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: PR Review
   version: "2.1.2"

@@ -1,6 +1,8 @@
 ---
 name: operations
 description: Use when planning or reviewing CI/CD, infrastructure, containers, Kubernetes, rollout safety, or operational risk. Do not use when the task is pure application refactoring or documentation-only work, or when reviewing application/library security (use `code-review`; operations covers infrastructure, deployment, and cluster security).
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Operations
   version: "1.0.6"

@@ -1,6 +1,8 @@
 ---
 name: incident-response
 description: Use when responding to a live production incident — triage, mitigation-first stabilization, timeline capture, comms, and postmortem follow-ups. Do not use when the task is planned deployment or rollback design (use `operations`), non-urgent code defects (use `code-review`), or writing specs for permanent fixes before the incident is stable.
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Incident Response
   version: "2.1.3"

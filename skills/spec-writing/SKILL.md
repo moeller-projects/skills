@@ -1,6 +1,8 @@
 ---
 name: spec-writing
 description: Use when turning ambiguous requests, tickets, research, or normalized azure-devops handoffs into an implementation-ready spec or OpenSpec proposal. Do not use when the task is pure code implementation or governance review with no new spec-authoring step.
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Spec Writing
   version: "1.1.4"

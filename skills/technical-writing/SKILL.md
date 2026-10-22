@@ -1,6 +1,8 @@
 ---
 name: technical-writing
 description: Use when creating or improving README, AGENTS.md, architecture, workflow, or decision-record docs. Do not use when the primary need is repository discovery or architecture mapping before authoring docs, or when the request is pure code implementation.
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Technical Writing
   version: "1.0.5"
