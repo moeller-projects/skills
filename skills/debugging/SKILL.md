@@ -47,8 +47,8 @@ open_risks:
 - <remaining uncertainty, impact, or "none">
 ```
 
-`status` MUST be one of the four listed values. `root_cause.evidence`, `repro_steps`, `fix`, `verification`, `regression_check`, and `open_risks` MUST be non-empty. Do not claim confirmation or a fixed result without evidence.
 `status` MUST be one of the four listed values. `root_cause` MUST contain non-empty `finding` and `evidence` list items; every other listed section MUST contain at least one meaningful item. Use `hypothesized` when only static source/trace reasoning or supplied evidence is available and the causal experiment cannot run. Do not claim `confirmed` or `fixed` without evidence establishing causality and the authorized verification result.
+
 ## Handoffs
 
 - Use `verification-before-completion` for the general completion-proof and evidence gate.

@@ -26,6 +26,7 @@ Write a handoff document a fresh agent — with zero memory of this session — 
 6. Include a "suggested skills" section naming which skills the next agent should invoke, so the route through the catalog survives the transition.
 7. Redact secrets, tokens, and personal data before writing.
 8. Save to the OS temporary directory (not the workspace) unless the user asked otherwise; report the absolute path.
+
 ## Output Contract
 
 ```text

@@ -327,8 +327,17 @@ def check_spacing(report: Report, root: Path, skill_dir: Path) -> None:
             continue
         rel = posix(path.relative_to(root))
         lines = path.read_text(encoding="utf-8").splitlines()
+        in_fence = False
         for i, line in enumerate(lines):
-            if i == 0:
+            stripped = line.strip()
+            if stripped.startswith(("```", "~~~")):
+                if not in_fence and i > 0 and lines[i - 1].strip() and path.name == "SKILL.md":
+                    report.add("fence-spacing", skill_dir.name, rel,
+                               "no blank line before opening code fence",
+                               line=i + 1, ident=str(i + 1))
+                in_fence = not in_fence
+                continue
+            if in_fence or i == 0:
                 continue
             if line.startswith("## ") and lines[i - 1].strip():
                 report.add("heading-spacing", skill_dir.name, rel,
@@ -367,7 +376,7 @@ def lint(root: Path, only: set[str] | None) -> Report:
             check_resource_sections(report, root, skill_dir, raw)
         if wanted("duplicate-line") or wanted("near-duplicate"):
             check_duplicates(report, root, skill_dir)
-        if wanted("heading-spacing"):
+        if wanted("heading-spacing") or wanted("fence-spacing"):
             check_spacing(report, root, skill_dir)
 
     if wanted("dangling-skill"):

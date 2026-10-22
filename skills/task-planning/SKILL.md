@@ -95,6 +95,7 @@ See `tests/validation-checklist.md` for the full checklist.
 - `scripts/validate-output.py` — run when validating output structure.
 - `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
 - `tests/validation-checklist.md` — read when reviewing planning requirements.
+
 ## References
 
 - Read `references/workflow.md` for decomposition details after selecting vertical slices.

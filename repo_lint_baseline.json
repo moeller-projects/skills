@@ -1,10 +1,5 @@
 {
   "findings": {
-    "heading-spacing|skills/debugging/SKILL.md|## handoffs": "no blank line before heading '## Handoffs'",
-    "heading-spacing|skills/pr-body/SKILL.md|## summary": "no blank line before heading '## Summary'",
-    "heading-spacing|skills/session-handoff/SKILL.md|## output contract": "no blank line before heading '## Output Contract'",
-    "heading-spacing|skills/task-planning/SKILL.md|## references": "no blank line before heading '## References'",
-    "near-duplicate|skills/debugging/SKILL.md|`status` must be one of the four listed values. `root_cause.~`status` must be one of the four listed values. `root_cause`": "lines 50 and 51 are near-duplicates: `status` must be one of the four listed values. `root_cause.",
     "required-key|skills/azure-devops/SKILL.md|compatibility": "frontmatter is missing required 'compatibility'",
     "required-key|skills/azure-devops/SKILL.md|license": "frontmatter is missing required 'license'",
     "required-key|skills/azure-devops/metadata.json|invocation": "metadata.json is missing required 'invocation'",
@@ -64,16 +59,6 @@
     "required-key|skills/test-strategy/SKILL.md|license": "frontmatter is missing required 'license'",
     "required-key|skills/test-strategy/metadata.json|invocation": "metadata.json is missing required 'invocation'",
     "required-key|skills/verification-before-completion/metadata.json|invocation": "metadata.json is missing required 'invocation'",
-    "resource-section|skills/technical-writing/SKILL.md|assets/examples/decision-record.md": "'assets/examples/decision-record.md' sits under 'Validation Checklist', not a resource section",
-    "resource-section|skills/technical-writing/SKILL.md|assets/examples/edge-case.md": "'assets/examples/edge-case.md' sits under 'Validation Checklist', not a resource section",
-    "resource-section|skills/technical-writing/SKILL.md|assets/examples/happy-path.md": "'assets/examples/happy-path.md' sits under 'Validation Checklist', not a resource section",
-    "resource-section|skills/technical-writing/SKILL.md|assets/examples/html-report.md": "'assets/examples/html-report.md' sits under 'Validation Checklist', not a resource section",
-    "resource-section|skills/technical-writing/SKILL.md|assets/examples/mode-mixed.md": "'assets/examples/mode-mixed.md' sits under 'Validation Checklist', not a resource section",
-    "resource-section|skills/technical-writing/SKILL.md|assets/templates/html-document.html": "'assets/templates/html-document.html' sits under 'Validation Checklist', not a resource section",
-    "resource-section|skills/technical-writing/SKILL.md|assets/templates/output.md": "'assets/templates/output.md' sits under 'Validation Checklist', not a resource section",
-    "resource-section|skills/technical-writing/SKILL.md|scripts/validate-output.py": "'scripts/validate-output.py' sits under 'Validation Checklist', not a resource section",
-    "resource-section|skills/technical-writing/SKILL.md|tests/run-validation.py": "'tests/run-validation.py' sits under 'Validation Checklist', not a resource section",
-    "resource-section|skills/technical-writing/SKILL.md|tests/validation-checklist.md": "'tests/validation-checklist.md' sits under 'Validation Checklist', not a resource section",
     "validate-skill-error|skills/ste-clarity/SKILL.md|summary must be a non-empty string in frontmatter and metadata.json": "summary must be a non-empty string in frontmatter and metadata.json",
     "validate-skill-error|skills/ste-clarity/SKILL.md|title must be a non-empty string in frontmatter and metadata.json": "title must be a non-empty string in frontmatter and metadata.json"
   },

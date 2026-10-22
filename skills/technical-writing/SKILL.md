@@ -49,6 +49,7 @@ Decision question:
 ## Output Contract
 
 Default:
+
 ```text
 doc:
 - purpose:
@@ -97,6 +98,8 @@ Request explicit approval before:
 - [ ] Existing docs stay in diff form unless explicit overwrite approval is granted.
 
 See `tests/validation-checklist.md` for the full checklist.
+
+## Assets
 
 - `assets/templates/output.md` — read when producing the standard output structure.
 - `assets/examples/happy-path.md` — read when creating a new README.
