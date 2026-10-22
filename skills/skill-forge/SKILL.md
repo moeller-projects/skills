@@ -85,6 +85,10 @@ knowledge — generic instructions are the most common failure mode.
   tests, and evaluations. It does not prove activation, workflow, or script safety.
 - **`scripts/package_skill.py <skill-dir> [out-dir] [--strict]`** — validates,
   then zips to `<name>.skill`. Refuses to package when spec errors exist.
+- **`scripts/repo_lint.py [--json] [--only CHECK]`** — run for repository-wide
+  hygiene across all skills: required catalog keys, resource links and their use
+  conditions, resource-section placement, dangling skill names, duplicate prose,
+  and heading spacing. Known findings live in `repo_lint_baseline.json`.
 - **`tests/run-validation.py [--include-packaging]`** — run only with explicit
   test authorization to exercise malformed contracts and resource discovery;
   `--include-packaging` also requires explicit packaging authorization and checks
