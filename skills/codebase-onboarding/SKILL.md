@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Codebase Onboarding
-  version: "1.0.5"
+  version: "1.0.6"
   summary: Map repository architecture, entry points, conventions, hotspots, and onboarding artifacts for fast execution.
 ---
 

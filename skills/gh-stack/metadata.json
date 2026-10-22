@@ -1,7 +1,7 @@
 {
   "name": "gh-stack",
   "title": "GH Stack",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "summary": "Create, maintain, and merge stacked pull requests with the gh stack CLI extension.",
   "invocation": "model",
   "compatibility": [

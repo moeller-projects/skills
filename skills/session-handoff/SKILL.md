@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Session Handoff
-  version: "1.0.2"
+  version: "1.0.3"
   summary: Create a portable handoff document that lets a fresh agent or colleague continue work with its state, decisions, next action, and references.
   invocation: user
 ---

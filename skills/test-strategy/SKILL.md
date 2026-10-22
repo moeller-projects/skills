@@ -6,7 +6,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Test Strategy
-  version: "1.0.6"
+  version: "1.0.7"
   summary: Plan resilient test coverage by selecting levels, cases, and flake-risk remedies; route test writing and behavior implementation to test-driven-development.
 ---
 

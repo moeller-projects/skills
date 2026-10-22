@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: GH Stack
-  version: "1.0.3"
+  version: "1.0.4"
   summary: Create, maintain, and merge stacked pull requests with the gh stack CLI extension.
 ---
 

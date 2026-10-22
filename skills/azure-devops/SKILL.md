@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Azure DevOps
-  version: "1.1.4"
+  version: "1.1.5"
   summary: Read and safely write selected Azure DevOps work items and PR artifacts with deterministic dry-run, approval, and validation gates.
 ---
 

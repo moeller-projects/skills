@@ -6,7 +6,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: PR Review
-  version: "2.1.2"
+  version: "2.1.3"
   summary: Review pull requests and changesets against the diff, deliver actionable author-facing findings, and issue a clear verdict.
 ---
 

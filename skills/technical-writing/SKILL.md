@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Technical Writing
-  version: "1.0.5"
+  version: "1.0.6"
   summary: Create accurate technical docs, READMEs, AGENTS.md files, and developer guides with clear structure.
 ---
 

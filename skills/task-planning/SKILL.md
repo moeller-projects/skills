@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Task Planning
-  version: "1.1.3"
+  version: "1.1.4"
   summary: Break work into atomic, shippable tasks with explicit dependencies, critical path, estimates, and definitions of done.
 ---
 

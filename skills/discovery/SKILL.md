@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Discovery
-  version: "1.1.4"
+  version: "1.1.5"
   summary: Explore ambiguous problems, test assumptions, compare options, and produce decision-ready plans.
   invocation: "model"
 ---

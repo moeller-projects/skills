@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Code Review
-  version: "1.2.3"
+  version: "1.2.4"
   summary: Improve correctness, readability, maintainability, performance, and legacy modernization with minimal mutation.
 ---
 

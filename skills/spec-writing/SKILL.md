@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Spec Writing
-  version: "1.1.4"
+  version: "1.1.5"
   summary: Turn requests or azure-devops handoffs into structured, version-aware specs with risk tiers, acceptance criteria, policy gates, and optional OpenSpec proposal output.
 ---
 

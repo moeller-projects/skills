@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Debugging
-  version: "1.1.5"
+  version: "1.1.6"
   summary: Find and verify root causes of local development failures through deterministic reproduction and evidence.
 ---
 

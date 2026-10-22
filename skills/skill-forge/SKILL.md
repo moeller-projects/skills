@@ -5,7 +5,7 @@ compatibility: Requires Python 3.8+ to run the bundled scripts (stdlib only; PyY
 license: MIT
 metadata:
   title: "Skill Forge"
-  version: "1.3.3"
+  version: "1.4.0"
   summary: "Create and refactor Agent Skills with explicit static validation, behavioral evaluation, and safe packaging."
   invocation: "model"
   spec: agentskills.io

@@ -6,7 +6,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Concise Output
-  version: "1.0.4"
+  version: "1.0.5"
   summary: Deliver accurate, action-first responses with concise prose and explicit next steps.
 ---
 

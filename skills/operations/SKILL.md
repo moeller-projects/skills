@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Operations
-  version: "1.0.6"
+  version: "1.0.7"
   summary: Plan safer delivery across CI/CD, containers, Kubernetes, reliability, threat modeling, and rollback decisions.
 ---
 

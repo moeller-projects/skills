@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Incident Response
-  version: "2.1.3"
+  version: "2.1.4"
   summary: Respond to live production incidents with mitigation-first triage, disciplined timelines, clear comms, and durable follow-ups.
 ---
 
