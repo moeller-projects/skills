@@ -93,6 +93,9 @@ knowledge — generic instructions are the most common failure mode.
 - **`scripts/sync_manifests.py [--check]`** — run to regenerate each
   `metadata.json` from SKILL.md frontmatter plus the `catalog.json` block, or
   with `--check` to fail on drift.
+- **`scripts/sync_readme.py [--check]`** — run to regenerate the README skill
+  table and the validation-runner lists in README.md and AGENTS.md, or with
+  `--check` to fail on drift.
 - **`tests/run-validation.py [--include-packaging]`** — run only with explicit
   test authorization to exercise malformed contracts and resource discovery;
   `--include-packaging` also requires explicit packaging authorization and checks
