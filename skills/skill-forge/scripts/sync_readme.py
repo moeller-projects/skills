@@ -153,7 +153,8 @@ def main() -> int:
                 "status": ("drift" if args.check else "written") if changed else "in-sync",
             })
         if updated != text and not args.check:
-            path.write_text(updated, encoding="utf-8")
+            with path.open("w", encoding="utf-8", newline="\n") as handle:
+                handle.write(updated)
 
     bad = [r for r in results if r["status"] not in ("in-sync", "written")]
     if args.json:

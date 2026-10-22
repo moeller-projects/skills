@@ -159,7 +159,8 @@ def main() -> int:
         elif args.check:
             results.append({"skill": skill_dir.name, "status": "drift"})
         else:
-            manifest_path.write_text(desired, encoding="utf-8")
+            with manifest_path.open("w", encoding="utf-8", newline="\n") as handle:
+                handle.write(desired)
             results.append({"skill": skill_dir.name, "status": "written"})
 
     drifted = [r for r in results if r["status"] in ("drift", "error")]

@@ -99,8 +99,8 @@ def copy_skill(name: str, skills: dict, dest: Path, harness: str, force: bool) -
         (target / relative).parent.mkdir(parents=True, exist_ok=True)
         if relative.as_posix() == "SKILL.md":
             text = path.read_text(encoding="utf-8")
-            (target / relative).write_text(
-                overlay(text, harness, skills[name]["invocation"]), encoding="utf-8")
+            with (target / relative).open("w", encoding="utf-8", newline="\n") as handle:
+                handle.write(overlay(text, harness, skills[name]["invocation"]))
         else:
             shutil.copy2(path, target / relative)
 

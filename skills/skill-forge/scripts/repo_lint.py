@@ -521,8 +521,8 @@ def main() -> int:
                     "with --update-baseline to shrink this list.",
             "findings": {f["key"]: f["message"] for f in errors},
         }
-        args.baseline.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n",
-                                 encoding="utf-8")
+        with args.baseline.open("w", encoding="utf-8", newline="\n") as handle:
+            handle.write(json.dumps(payload, indent=2, sort_keys=True) + "\n")
         print(f"wrote {len(report.findings)} finding(s) to {args.baseline}")
         return 0
 
