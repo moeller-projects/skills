@@ -23,6 +23,8 @@ A user-invoked skill may compose model-invoked skills, but MUST NOT invoke anoth
 
 Shared discipline lives in exactly one model-invoked primitive; other skills link to it by name in their Handoffs section. A skill that mostly forwards to one or two primitives should be a thin wrapper that says so in one line, not a copy of the primitive's content. Duplicated doctrine across skills is a defect: fix it by extracting the primitive, not by editing both copies.
 
+Fix at the source. When an eval or review fails, repair the one canonical rule and replace any restatement with a pointer. Record a Gotcha once.
+
 ## Change workflow
 
 1. Read the affected skill's `SKILL.md`, `metadata.json`, and every relevant bundled file before editing.
