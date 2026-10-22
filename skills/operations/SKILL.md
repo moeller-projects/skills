@@ -1,9 +1,11 @@
 ---
 name: operations
 description: Use when planning or reviewing CI/CD, infrastructure, containers, Kubernetes, rollout safety, or operational risk. Do not use when the task is pure application refactoring or documentation-only work, or when reviewing application/library security (use `code-review`; operations covers infrastructure, deployment, and cluster security).
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Operations
-  version: "1.0.6"
+  version: "1.0.7"
   summary: Plan safer delivery across CI/CD, containers, Kubernetes, reliability, threat modeling, and rollback decisions.
 ---
 
@@ -87,7 +89,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when structuring rule content.
 - `rules/deployment-safety.md` — read when planning deployment safeguards.
 - `rules/ci-cd-reproducibility.md` — read when reviewing reproducibility.
 - `rules/kubernetes-safety.md` — read when changing Kubernetes resources.

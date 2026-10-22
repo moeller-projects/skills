@@ -1,9 +1,11 @@
 ---
 name: spec-writing
 description: Use when turning ambiguous requests, tickets, research, or normalized azure-devops handoffs into an implementation-ready spec or OpenSpec proposal. Do not use when the task is pure code implementation or governance review with no new spec-authoring step.
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Spec Writing
-  version: "1.1.4"
+  version: "1.1.5"
   summary: Turn requests or azure-devops handoffs into structured, version-aware specs with risk tiers, acceptance criteria, policy gates, and optional OpenSpec proposal output.
 ---
 
@@ -113,7 +115,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when organizing spec sections.
 - `rules/requirement-quality.md` — read when checking requirement testability.
 - `rules/acceptance-criteria.md` — read when writing GIVEN/WHEN/THEN criteria.
 - `rules/diff-versioning.md` — read when evolving an existing authored spec.

@@ -2,9 +2,11 @@
 name: pr-review
 description: Use when reviewing a pull request, diff, or changeset and producing author-facing review feedback with an approve / request-changes / comment verdict. Do not use for whole-codebase quality or security review (use `code-review`), test coverage review (use `test-strategy`), infrastructure review (use `operations`), or fetching Azure DevOps PR discussion data (use `azure-devops` for the fetch, then return here for the review).
 allowed-tools: read_file
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: PR Review
-  version: "2.1.2"
+  version: "2.1.3"
   summary: Review pull requests and changesets against the diff, deliver actionable author-facing findings, and issue a clear verdict.
 ---
 
@@ -80,7 +82,6 @@ Apply the operating rules above when finalizing every review. For the detailed c
 - Run `scripts/validate-output.py` when checking a generated review against the output contract.
 - Read `references/workflow.md` when the review needs detailed step-by-step workflow guidance.
 - Read `references/examples.md` when sample reviews beyond the templates are needed.
-- Read `rules/_sections.md` when checking the required output sections.
 - Read `rules/diff-first.md` when applying detailed diff-scope guidance.
 - Read `rules/verdict-discipline.md` when resolving verdict consistency.
 - Read `rules/comment-quality.md` when drafting or revising findings.

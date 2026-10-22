@@ -24,6 +24,7 @@ from pathlib import Path
 SKILL_DIR = Path(__file__).resolve().parents[1]
 SCRIPTS_DIR = SKILL_DIR / "scripts"
 EXAMPLES_DIR = SKILL_DIR / "assets" / "examples"
+GOLDENS_PATH = SKILL_DIR / "tests" / "goldens.json"
 sys.path.insert(0, str(SCRIPTS_DIR))
 
 NO_PAT_ENV = {k: v for k, v in os.environ.items() if k != "AZURE_DEVOPS_PAT"}
@@ -72,6 +73,22 @@ def expect_fail_with(result: subprocess.CompletedProcess, needle: str, message: 
         fail(f"{message} — stderr missing '{needle}': {result.stderr.strip()}")
 
 
+def check_dry_run_goldens() -> None:
+    """Compare write-script dry runs against the pre-refactor baseline."""
+    data = json.loads(GOLDENS_PATH.read_text(encoding="utf-8"))
+    for fixture in data["fixtures"]:
+        result = run_script(fixture["script"], *fixture["argv"], env=NO_PAT_ENV)
+        expect_ok(result, f"golden dry-run {fixture['name']} failed")
+        actual = json.loads(result.stdout)
+        if actual != fixture["expected"]:
+            fail(
+                f"golden dry-run {fixture['name']} output changed:\n"
+                f"  expected: {json.dumps(fixture['expected'], sort_keys=True)}\n"
+                f"  actual:   {json.dumps(actual, sort_keys=True)}"
+            )
+        passed(f"golden dry-run {fixture['name']} unchanged")
+
+
 def main() -> None:
     for script in [
         "ensure-env.py",
@@ -93,6 +110,8 @@ def main() -> None:
         if not (SCRIPTS_DIR / script).is_file():
             fail(f"missing {script}")
     passed("required local scripts exist")
+
+    check_dry_run_goldens()
 
     with tempfile.TemporaryDirectory() as tmp:
         tmp_dir = Path(tmp)

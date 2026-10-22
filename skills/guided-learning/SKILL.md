@@ -1,11 +1,11 @@
 ---
 name: guided-learning
-description: Teach a topic across sessions with a stateful workspace of lessons, references, practice, and learning records.
+description: User-invoked only: Teach a topic across sessions with a stateful workspace of lessons, references, practice, and learning records.
 license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Guided Learning
-  version: "1.0.2"
+  version: "1.0.3"
   summary: Teach a topic across sessions with a stateful workspace of lessons, references, practice, and learning records.
   invocation: user
 ---

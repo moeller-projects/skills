@@ -7,3 +7,6 @@ __pycache__/
 /.idea/indexLayout.xml
 /.idea/misc.xml
 /.idea/vcs.xml
+
+# Phase 0 refactor baseline scratch
+.baseline/

@@ -2,9 +2,11 @@
 name: test-strategy
 description: Plan resilient unit, integration, E2E, and flake-reduction test coverage: select levels, cases, and risk remedies. Use when planning coverage or making test-quality decisions; route requests to implement behavior with tests, including regression-test fixes, to `test-driven-development`. Do not use for writing tests or implementing behavior, broader code review or refactoring quality work, or documentation-only tasks.
 allowed-tools: read_file
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Test Strategy
-  version: "1.0.6"
+  version: "1.0.7"
   summary: Plan resilient test coverage by selecting levels, cases, and flake-risk remedies; route test writing and behavior implementation to test-driven-development.
 ---
 
@@ -80,7 +82,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when structuring skill sections.
 - `rules/behavior-over-implementation.md` — read when choosing behavior-level assertions over implementation details.
 - `rules/meaningful-coverage.md` — read when assessing whether coverage is meaningful.
 - `rules/edge-cases.md` — read when identifying boundary and invalid-input cases.

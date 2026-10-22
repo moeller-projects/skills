@@ -1,9 +1,11 @@
 ---
 name: codebase-onboarding
 description: Use when onboarding to a repository, mapping architecture, or extracting entry points, conventions, hotspots, and agent artifacts. Do not use when exact files are already known, the question is strategic rather than repository-specific, or the request is to author onboarding or AGENTS.md docs.
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Codebase Onboarding
-  version: "1.0.5"
+  version: "1.0.6"
   summary: Map repository architecture, entry points, conventions, hotspots, and onboarding artifacts for fast execution.
 ---
 
@@ -80,7 +82,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when structuring rule content.
 - `rules/architecture-map.md` — read when mapping architecture.
 - `rules/entrypoint-detection.md` — read when detecting entry points.
 - `rules/convention-extraction.md` — read when extracting conventions.

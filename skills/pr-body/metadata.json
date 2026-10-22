@@ -3,21 +3,21 @@
   "title": "PR Body",
   "version": "1.0.2",
   "summary": "Write PR bodies with the smallest clarifying visual, before/after evidence, and an honest call on what merging risks, including explicit verification gaps when proof is not authorized.",
-  "type": "hybrid",
   "invocation": "model",
-  "activation": {
-    "use_when": [
-      "Creating or updating a pull request description",
-      "A finished change is about to be opened for review"
-    ],
-    "avoid_when": [
-      "Reviewing a PR's content — use pr-review",
-      "Planning commits, branches, or history — use git-workflow",
-      "The PR is one layer of a stack — use gh-stack for the stack"
-    ]
-  },
-  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
-  "allowed_tools": ["read_file"],
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "allowed_tools": [
+    "read_file"
+  ],
+  "requires": [
+    "verification-before-completion"
+  ],
+  "type": "hybrid",
   "risk_level": "low",
   "requires_network": false,
   "maintainer": "Lukas"

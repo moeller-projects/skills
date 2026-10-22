@@ -1,23 +1,9 @@
 {
   "name": "debugging",
   "title": "Debugging",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "summary": "Find and verify root causes of local development failures through deterministic reproduction and evidence.",
-  "type": "hybrid",
-  "activation": {
-    "use_when": [
-      "A stack trace or error message needs diagnosis.",
-      "Tests fail, behavior regresses after a change, or the user says it is failing or broken.",
-      "A local development command produces unexpected behavior.",
-      "The failure can be investigated with repository, environment, and reproducible local evidence."
-    ],
-    "avoid_when": [
-      "The issue is a live production incident; use incident-response.",
-      "The request is code-quality or security review without a concrete failure; use code-review.",
-      "The user is designing a test suite from scratch; use test-strategy after root cause is found if coverage is missing.",
-      "The request is a pull-request review; use pr-review."
-    ]
-  },
+  "invocation": "model",
   "compatibility": [
     "chatgpt",
     "codex",
@@ -25,6 +11,10 @@
     "cursor",
     "opencode"
   ],
+  "requires": [
+    "verification-before-completion"
+  ],
+  "type": "hybrid",
   "risk_level": "medium",
   "requires_network": false,
   "maintainer": "Lukas"

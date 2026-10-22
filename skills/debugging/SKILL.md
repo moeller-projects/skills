@@ -1,11 +1,11 @@
 ---
 name: debugging
 description: Diagnose LOCAL development failures from stack traces, error messages, failing tests, regressions, or unexpected behavior. Use when the user reports something failing, broken, or behaving unexpectedly and the root cause is unknown. Reproduce a minimal deterministic failure first, rank evidence-backed hypotheses, isolate variables, confirm the root cause, and apply the narrowest fix. Accept user-reported failure evidence as ground truth; run reproduction, build, dependency-install, or test commands only when the user explicitly authorizes that operation, and report unrun verification. Do not use for live production incidents (use incident-response), code-quality or security review without a failure (use code-review), designing test suites from scratch (use test-strategy), or PR review (use pr-review).
-license: Proprietary
+license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Debugging
-  version: "1.1.5"
+  version: "1.1.6"
   summary: Find and verify root causes of local development failures through deterministic reproduction and evidence.
 ---
 
@@ -47,8 +47,8 @@ open_risks:
 - <remaining uncertainty, impact, or "none">
 ```
 
-`status` MUST be one of the four listed values. `root_cause.evidence`, `repro_steps`, `fix`, `verification`, `regression_check`, and `open_risks` MUST be non-empty. Do not claim confirmation or a fixed result without evidence.
 `status` MUST be one of the four listed values. `root_cause` MUST contain non-empty `finding` and `evidence` list items; every other listed section MUST contain at least one meaningful item. Use `hypothesized` when only static source/trace reasoning or supplied evidence is available and the causal experiment cannot run. Do not claim `confirmed` or `fixed` without evidence establishing causality and the authorized verification result.
+
 ## Handoffs
 
 - Use `verification-before-completion` for the general completion-proof and evidence gate.

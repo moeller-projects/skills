@@ -1,25 +1,9 @@
 {
   "name": "code-review",
   "title": "Code Review",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "summary": "Improve correctness, readability, maintainability, performance, and legacy modernization with minimal mutation.",
-  "type": "rule",
-  "activation": {
-    "use_when": [
-      "Reviewing a whole codebase or subsystem for systemic code quality or safety issues",
-      "Reviewing a whole codebase or subsystem for code-level security defects (injection, authorization gaps, secrets in source, unsafe input handling)",
-      "Refactoring a codebase or subsystem for clarity or maintainability",
-      "Optimizing systemic performance with real evidence",
-      "Reducing complexity in fragile areas across a codebase or subsystem",
-      "Modernizing legacy code with minimal mutation"
-    ],
-    "avoid_when": [
-      "Reviewing a pull request, diff, patch, changeset, or merge request, or writing author-facing review feedback — use pr-review",
-      "Only documentation is requested",
-      "Test design or coverage is the primary task",
-      "Infrastructure or deployment is the primary task"
-    ]
-  },
+  "invocation": "model",
   "compatibility": [
     "chatgpt",
     "codex",
@@ -27,6 +11,10 @@
     "cursor",
     "opencode"
   ],
+  "requires": [
+    "codebase-design"
+  ],
+  "type": "rule",
   "risk_level": "medium",
   "requires_network": false,
   "maintainer": "Lukas"

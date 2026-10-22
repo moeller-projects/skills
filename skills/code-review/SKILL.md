@@ -1,9 +1,11 @@
 ---
 name: code-review
 description: Use when reviewing a whole codebase or subsystem for systemic code quality, security, refactoring, or evidence-backed performance concerns. Inspect application and library code for correctness, maintainability, injection flaws, authorization gaps, secrets, unsafe input handling, complexity, legacy modernization, and measured bottlenecks. Do not use for pull request, diff, patch, changeset, or merge-request review or author-facing feedback; use `pr-review` instead. Do not use for test quality or coverage, documentation, or infrastructure or deployment review.
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Code Review
-  version: "1.2.3"
+  version: "1.2.4"
   summary: Improve correctness, readability, maintainability, performance, and legacy modernization with minimal mutation.
 ---
 
@@ -78,7 +80,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when structuring rule content.
 - `rules/correctness-first.md` — read when assessing correctness.
 - `rules/minimal-mutation.md` — read when selecting the smallest safe patch.
 - `rules/complexity-reduction.md` — read when evaluating complexity.

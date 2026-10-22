@@ -1,9 +1,11 @@
 ---
 name: technical-writing
 description: Use when creating or improving README, AGENTS.md, architecture, workflow, or decision-record docs. Do not use when the primary need is repository discovery or architecture mapping before authoring docs, or when the request is pure code implementation.
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Technical Writing
-  version: "1.0.5"
+  version: "1.0.6"
   summary: Create accurate technical docs, READMEs, AGENTS.md files, and developer guides with clear structure.
 ---
 
@@ -49,6 +51,7 @@ Decision question:
 ## Output Contract
 
 Default:
+
 ```text
 doc:
 - purpose:
@@ -98,6 +101,8 @@ Request explicit approval before:
 
 See `tests/validation-checklist.md` for the full checklist.
 
+## Assets
+
 - `assets/templates/output.md` — read when producing the standard output structure.
 - `assets/examples/happy-path.md` — read when creating a new README.
 - `assets/examples/edge-case.md` — read when source material is missing.
@@ -115,7 +120,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when organizing document sections.
 - `rules/audience-first.md` — read when identifying audience and purpose.
 - `rules/command-accuracy.md` — read when documenting commands or paths.
 - `rules/structure-over-prose.md` — read when designing document structure.

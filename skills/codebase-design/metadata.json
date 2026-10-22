@@ -2,22 +2,20 @@
   "name": "codebase-design",
   "title": "Codebase Design",
   "version": "1.0.3",
-  "summary": "Design deep modules — small interfaces over real behavior, at clean seams, testable through the interface.",
+  "summary": "Design deep modules \u2014 small interfaces over real behavior, at clean seams, testable through the interface.",
   "invocation": "model",
-  "activation": {
-    "use_when": [
-      "Designing a module's interface or deciding where a seam belongs",
-      "Evaluating whether an abstraction earns its place",
-      "A review or test-design discussion needs precise module vocabulary",
-      "Making code more testable or easier for agents to navigate"
-    ],
-    "avoid_when": [
-      "Domain terminology is the problem — use domain-modeling",
-      "Review existing diffs — use pr-review"
-    ]
-  },
-  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
-  "allowed_tools": ["read_file"],
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "allowed_tools": [
+    "read_file"
+  ],
+  "requires": [],
+  "type": "rule",
   "risk_level": "low",
   "requires_network": false,
   "maintainer": "Lukas"

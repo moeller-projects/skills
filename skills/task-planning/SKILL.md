@@ -1,9 +1,11 @@
 ---
 name: task-planning
 description: Use when confirmed scope must be broken into atomic tasks with dependencies, estimates, and done criteria. Do not use when requirements are still being written or the user wants option comparison or plan critique before scope is fixed.
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Task Planning
-  version: "1.1.3"
+  version: "1.1.4"
   summary: Break work into atomic, shippable tasks with explicit dependencies, critical path, estimates, and definitions of done.
 ---
 
@@ -95,6 +97,7 @@ See `tests/validation-checklist.md` for the full checklist.
 - `scripts/validate-output.py` — run when validating output structure.
 - `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
 - `tests/validation-checklist.md` — read when reviewing planning requirements.
+
 ## References
 
 - Read `references/workflow.md` for decomposition details after selecting vertical slices.
@@ -102,7 +105,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when organizing task-plan sections.
 - `rules/vertical-slicing.md` — read when ensuring tasks are independently shippable.
 - `rules/unknown-exposure.md` — read when surfacing blockers and unknowns.
 - `rules/estimate-integrity.md` — read when assigning estimates.

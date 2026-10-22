@@ -64,6 +64,8 @@ When the user explicitly requests script execution, run each script (or a repres
 - One-off answers hard-coded for a single task → generalize into a procedure.
 - Generic filler ("follow best practices", "handle errors appropriately") →
   replace with the specific practice, or delete.
+- A rule stated twice in different files or sections → keep the canonical
+  statement and replace every copy with a pointer.
 
 ## Evaluation-driven iteration
 
@@ -90,8 +92,10 @@ than vibes. The execution gate below applies to all evaluation runs.
    always fail; tighten instructions where results vary run-to-run; read
    transcripts of time/token outliers.
 7. **Iterate**: feed failed assertions + human feedback + transcripts + current
-   SKILL.md to an LLM; ask for generalized, lean fixes. Repeat until feedback is
-   consistently empty or improvements plateau.
+   SKILL.md to an LLM; ask for generalized, lean fixes. Fix each failed assertion
+   at the canonical rule's source — never by adding a restatement elsewhere, and
+   record a Gotcha only once. Repeat until feedback is consistently empty or
+   improvements plateau.
 
 ## Triggering optimization (description tuning)
 

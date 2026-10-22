@@ -2,9 +2,10 @@
 name: skill-forge
 description: Create new Agent Skills and refactor existing ones to production grade, compliant with the agentskills.io open specification. Use when the user asks to create, build, scaffold, write, improve, refactor, audit, review, fix, validate, or package a skill (a directory containing SKILL.md with YAML frontmatter). Covers spec-compliant frontmatter (name/description limits), triggering-optimized descriptions, progressive disclosure structure, scripts/references/assets organization, validation, and .skill packaging — even when the user just says "make this skill better" or "check my skill".
 compatibility: Requires Python 3.8+ to run the bundled scripts (stdlib only; PyYAML optional). The guidance in SKILL.md and references/ works without it.
+license: MIT
 metadata:
   title: "Skill Forge"
-  version: "1.3.3"
+  version: "1.4.0"
   summary: "Create and refactor Agent Skills with explicit static validation, behavioral evaluation, and safe packaging."
   invocation: "model"
   spec: agentskills.io
@@ -85,6 +86,16 @@ knowledge — generic instructions are the most common failure mode.
   tests, and evaluations. It does not prove activation, workflow, or script safety.
 - **`scripts/package_skill.py <skill-dir> [out-dir] [--strict]`** — validates,
   then zips to `<name>.skill`. Refuses to package when spec errors exist.
+- **`scripts/repo_lint.py [--json] [--only CHECK]`** — run for repository-wide
+  hygiene across all skills: required catalog keys, resource links and their use
+  conditions, resource-section placement, dangling skill names, duplicate prose,
+  and heading spacing. Known findings live in `repo_lint_baseline.json`.
+- **`scripts/sync_manifests.py [--check]`** — run to regenerate each
+  `metadata.json` from SKILL.md frontmatter plus the `catalog.json` block, or
+  with `--check` to fail on drift.
+- **`scripts/sync_readme.py [--check]`** — run to regenerate the README skill
+  table and the validation-runner lists in README.md and AGENTS.md, or with
+  `--check` to fail on drift.
 - **`tests/run-validation.py [--include-packaging]`** — run only with explicit
   test authorization to exercise malformed contracts and resource discovery;
   `--include-packaging` also requires explicit packaging authorization and checks

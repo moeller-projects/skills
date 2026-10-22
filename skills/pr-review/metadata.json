@@ -1,24 +1,9 @@
 {
   "name": "pr-review",
   "title": "PR Review",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "summary": "Review pull requests and changesets against the diff, deliver actionable author-facing findings, and issue a clear verdict.",
-  "type": "rule",
-  "activation": {
-    "use_when": [
-      "Reviewing a pull request or merge request",
-      "Reviewing a diff, patch, or staged changeset before merge",
-      "Writing review comments for an author",
-      "Deciding between approve, request-changes, and comment verdicts",
-      "Re-reviewing a changeset after feedback was addressed"
-    ],
-    "avoid_when": [
-      "Whole-codebase quality, refactoring, or security review — use code-review",
-      "Test quality or coverage review — use test-strategy",
-      "Infrastructure or deployment review — use operations",
-      "Fetching Azure DevOps PR discussion data — use azure-devops for the fetch, then return here for the review"
-    ]
-  },
+  "invocation": "model",
   "compatibility": [
     "chatgpt",
     "codex",
@@ -29,6 +14,8 @@
   "allowed_tools": [
     "read_file"
   ],
+  "requires": [],
+  "type": "rule",
   "risk_level": "low",
   "requires_network": false,
   "maintainer": "Lukas"

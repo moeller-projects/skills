@@ -1,21 +1,9 @@
 {
   "name": "test-strategy",
   "title": "Test Strategy",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "summary": "Plan resilient test coverage by selecting levels, cases, and flake-risk remedies; route test writing and behavior implementation to test-driven-development.",
-  "type": "rule",
-  "activation": {
-    "use_when": [
-      "Planning unit, integration, E2E, or Playwright coverage",
-      "Selecting test levels, edge and failure cases, or flake remedies",
-      "Reviewing test quality or coverage gaps"
-    ],
-    "avoid_when": [
-      "Writing tests or implementing behavior — use test-driven-development",
-      "The task is pure refactoring without tests",
-      "The user only wants documentation"
-    ]
-  },
+  "invocation": "model",
   "compatibility": [
     "chatgpt",
     "codex",
@@ -26,6 +14,10 @@
   "allowed_tools": [
     "read_file"
   ],
+  "requires": [
+    "spec-writing"
+  ],
+  "type": "rule",
   "risk_level": "medium",
   "requires_network": false,
   "maintainer": "Lukas"

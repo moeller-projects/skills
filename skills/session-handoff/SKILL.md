@@ -1,11 +1,11 @@
 ---
 name: session-handoff
-description: Create a portable handoff document that lets a fresh agent or colleague continue work with its state, decisions, next action, and references.
+description: User-invoked only: Create a portable handoff document that lets a fresh agent or colleague continue work with its state, decisions, next action, and references.
 license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Session Handoff
-  version: "1.0.2"
+  version: "1.0.4"
   summary: Create a portable handoff document that lets a fresh agent or colleague continue work with its state, decisions, next action, and references.
   invocation: user
 ---
@@ -26,6 +26,7 @@ Write a handoff document a fresh agent — with zero memory of this session — 
 6. Include a "suggested skills" section naming which skills the next agent should invoke, so the route through the catalog survives the transition.
 7. Redact secrets, tokens, and personal data before writing.
 8. Save to the OS temporary directory (not the workspace) unless the user asked otherwise; report the absolute path.
+
 ## Output Contract
 
 ```text

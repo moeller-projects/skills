@@ -1,9 +1,11 @@
 ---
 name: incident-response
 description: Use when responding to a live production incident — triage, mitigation-first stabilization, timeline capture, comms, and postmortem follow-ups. Do not use when the task is planned deployment or rollback design (use `operations`), non-urgent code defects (use `code-review`), or writing specs for permanent fixes before the incident is stable.
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Incident Response
-  version: "2.1.3"
+  version: "2.1.4"
   summary: Respond to live production incidents with mitigation-first triage, disciplined timelines, clear comms, and durable follow-ups.
 ---
 
@@ -106,7 +108,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when structuring incident response content.
 - `rules/mitigate-first.md` — read during the mitigation phase.
 - `rules/timeline-capture.md` — read while capturing the timeline.
 - `rules/comms-discipline.md` — read during incident communications.

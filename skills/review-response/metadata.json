@@ -3,20 +3,16 @@
   "title": "Review Response",
   "version": "1.0.3",
   "summary": "Verify review feedback against the codebase, then implement or push back with technical reasoning; gate tests on explicit authorization and report unrun verification honestly.",
+  "invocation": "model",
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "requires": [],
   "type": "hybrid",
-  "activation": {
-    "use_when": [
-      "You received review comments, change requests, or feedback on code you produced",
-      "Feedback seems unclear, partially understood, or technically questionable",
-      "Multiple feedback items need ordering and individual verification"
-    ],
-    "avoid_when": [
-      "You are performing the review — use pr-review or code-review",
-      "The feedback reports a failure whose root cause is unknown — use debugging",
-      "The feedback requires new behavior — implement under test-driven-development"
-    ]
-  },
-  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
   "risk_level": "low",
   "requires_network": false,
   "maintainer": "Lukas"

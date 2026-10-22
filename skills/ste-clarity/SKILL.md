@@ -15,7 +15,9 @@ description: >
 license: MIT
 compatibility: Requires Python 3.8+ to run scripts/ste_lint.py (stdlib only). The rewriting guidance works without it.
 metadata:
-  version: "1.0.0"
+  title: STE Clarity
+  version: "1.0.1"
+  summary: Rewrite and lint technical English with ASD-STE100-inspired clarity rules.
   origin: Synthesized from danyuchn/asd-ste100-skill and prithivrajmu/asd-ste100 (both MIT)
 ---
 

@@ -3,19 +3,16 @@
   "title": "Verification Before Completion",
   "version": "1.0.3",
   "summary": "Back every completion, fixed, or passing claim with fresh verification evidence, or an honest unverified status when execution is not authorized; use before reporting completion or success.",
+  "invocation": "model",
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "requires": [],
   "type": "hybrid",
-  "activation": {
-    "use_when": [
-      "About to claim that work is complete, fixed, passing, or working",
-      "Before committing changes or opening a pull request",
-      "Before reporting task or plan status as complete"
-    ],
-    "avoid_when": [
-      "Proposing a plan, hypothesis, or design with no completion claim",
-      "Diagnosing a failure whose root cause is unknown — use debugging"
-    ]
-  },
-  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
   "risk_level": "low",
   "requires_network": false,
   "maintainer": "Lukas"

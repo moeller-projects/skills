@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: GH Stack
-  version: "1.0.3"
+  version: "1.0.4"
   summary: Create, maintain, and merge stacked pull requests with the gh stack CLI extension.
 ---
 
@@ -128,9 +128,8 @@ warning; queued PRs may land in separate groups.
 ## Reading state
 
 `gh stack view --json` writes JSON to **stdout**. Status messages go to **stderr** — do not parse
-them, branch on exit codes instead. The `sync` abort marker is the documented exception: a zero exit
-code can still mean `Sync aborted`, so the required detection is checking that marker. Comparing stack
-state with `gh stack view --json` is supplemental only and cannot replace marker detection.
+them; branch on exit codes. See "Staying in sync" for the `sync` abort marker, the one documented
+exception.
 
 ```
 trunk           string
@@ -203,9 +202,7 @@ Open the reference whose trigger matches the task; no need to preload all three.
 
 ## Error Handling
 
-- Branch on exit codes, not stderr text; the documented exception is `sync`, whose zero-exit
-  `Sync aborted` result requires checking the abort marker. A `gh stack view --json` comparison is
-  supplemental only.
+- Branch on exit codes, not stderr text; the documented exception is `sync` (see "Staying in sync").
 - If a command prompts or opens a TUI, re-run it with the non-interactive flags listed under
   "Non-interactive use"; never answer prompts by guessing.
 - If stacked PRs are unavailable on the repository (exit 9), tell the user and fall back to a

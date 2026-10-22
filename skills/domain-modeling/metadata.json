@@ -3,20 +3,16 @@
   "title": "Domain Modeling",
   "version": "1.0.2",
   "summary": "Keep the project's shared language sharp; propose glossary terms and ADRs, and mutate artifacts only when explicitly requested.",
-  "type": "hybrid",
   "invocation": "model",
-  "activation": {
-    "use_when": [
-      "A conversation uses vague, overloaded, or conflicting domain terms",
-      "Writing or editing a GLOSSARY.md",
-      "A hard-to-reverse, non-obvious decision was just made and needs an ADR"
-    ],
-    "avoid_when": [
-      "General documentation work — use technical-writing",
-      "Designing a module's interface or shape — use codebase-design"
-    ]
-  },
-  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "requires": [],
+  "type": "hybrid",
   "risk_level": "low",
   "requires_network": false,
   "maintainer": "Lukas"

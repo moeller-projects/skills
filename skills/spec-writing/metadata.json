@@ -1,22 +1,9 @@
 {
   "name": "spec-writing",
   "title": "Spec Writing",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "summary": "Turn requests or azure-devops handoffs into structured, version-aware specs with risk tiers, acceptance criteria, policy gates, and optional OpenSpec proposal output.",
-  "activation": {
-    "use_when": [
-      "Creating a freeform implementation-ready spec from user input, tickets, or research",
-      "Consuming a normalized azure-devops handoff JSON to generate a spec from Azure DevOps work item data",
-      "Emitting an OpenSpec proposal from a spec produced by this skill or a prior session",
-      "Producing implementation-ready artifacts from ambiguous requests"
-    ],
-    "avoid_when": [
-      "The user only wants code",
-      "The task has no requirement or spec component",
-      "The task is validating, scoring, or diffing an existing spec file with no new authoring step",
-      "The task is pure OpenSpec governance with no spec-authoring step"
-    ]
-  },
+  "invocation": "model",
   "compatibility": [
     "chatgpt",
     "codex",
@@ -24,6 +11,8 @@
     "cursor",
     "opencode"
   ],
+  "requires": [],
+  "type": "hybrid",
   "risk_level": "medium",
   "requires_network": false,
   "maintainer": "Lukas"

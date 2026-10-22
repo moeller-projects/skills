@@ -1,9 +1,11 @@
 ---
 name: azure-devops
 description: Use when fetching, parsing, normalizing, or narrowly creating approved Azure DevOps work items and pull request artifacts. Do not use when the task targets GitHub PR review, destructive Azure DevOps actions, or OpenSpec authoring.
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Azure DevOps
-  version: "1.1.4"
+  version: "1.1.5"
   summary: Read and safely write selected Azure DevOps work items and PR artifacts with deterministic dry-run, approval, and validation gates.
 ---
 
@@ -142,3 +144,4 @@ Request explicit approval before:
 
 - `tests/validation-checklist.md` — read when manually checking the skill; do not execute test steps unless the user explicitly requests test execution.
 - `tests/run-validation.py` — run only when the user explicitly requests test execution; dependency restore, build, and test authorization remains separate.
+- `tests/goldens.json` — read when comparing dry-run write output to the pre-refactor baseline; change only for intentional output changes.

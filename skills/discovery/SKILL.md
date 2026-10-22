@@ -1,9 +1,11 @@
 ---
 name: discovery
 description: Use when the problem is vague, assumptions need pressure-testing, or options must be compared before commitment. Do not use when scope is fixed and the output must be an executable task breakdown with dependencies and done criteria.
+license: MIT
+compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Discovery
-  version: "1.1.4"
+  version: "1.1.5"
   summary: Explore ambiguous problems, test assumptions, compare options, and produce decision-ready plans.
   invocation: "model"
 ---
@@ -81,7 +83,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when structuring the standard response sections.
 - `rules/assumption-audit.md` — read before generating options to separate facts, assumptions, and unknowns.
 - `rules/option-generation.md` — read when multiple strategy paths need comparison.
 - `rules/decision-readiness.md` — read when preparing the recommendation and next steps.

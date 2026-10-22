@@ -4,55 +4,64 @@ Reusable instructions for coding agents. Each skill's `SKILL.md` describes when 
 
 ## Get started
 
-1. Choose a skill from the catalog below and copy its entire `skills/<name>/` directory into the skills directory supported by your agent. The destination depends on the agent; this repository does not provide an installer.
-2. Open the copied `SKILL.md` and use its `description` to decide when it applies. Follow its workflow and consult linked files relative to that skill directory.
-3. Keep the whole directory together: some skills use `rules/`, `references/`, `assets/`, or `scripts/` in addition to `SKILL.md`.
+1. Install a skill and the model-invoked primitives it requires:
+   `python scripts/install.py --dest <your skills directory> --skill <name>`.
+   It is a dry run until you add `--apply`; `--harness pi` also adds
+   `disable-model-invocation: true` to user-invoked skills. Copying a skill
+   directory by hand still works.
+2. Open the installed `SKILL.md` and use its `description` to decide when it
+   applies. Follow its workflow and consult linked files relative to that skill
+   directory.
+3. Keep the whole directory together: some skills use `rules/`, `references/`,
+   `assets/`, or `scripts/` in addition to `SKILL.md`.
 
-Skills compose other skills by name. Copy the model-invoked primitives named in
-the selected skill's Handoffs/workflow too; those instructions are not bundled
-automatically. User-invoked recommendations remain the human's decision.
-Tool names and `allowed-tools` support differ between harnesses: map supported
-capabilities at installation, and do not turn a read-only declaration into
-permission to edit or execute. Workflow authorization gates still apply.
+`metadata.json` `requires` lists the model-invoked primitives each skill
+composes, so the installer copies them automatically. User-invoked
+recommendations remain the human's decision. Tool names and `allowed-tools`
+support differ between harnesses: map supported capabilities at installation,
+and do not turn a read-only declaration into permission to edit or execute.
+Workflow authorization gates still apply.
 
 ## Skill catalog
 
+<!-- generated:skill-catalog -->
 | Skill | Use it for |
 | --- | --- |
-| [azure-devops](skills/azure-devops/) | Azure DevOps work-item fields, comments, change history, related work, and PR discussion; guarded, approved writes |
-| [concise-output](skills/concise-output/) | Action-first, concise response style that preserves accuracy and safety |
-| [code-review](skills/code-review/) | Whole-codebase or subsystem review: quality, refactoring, security, evidence-backed performance (not PR/diff review — use `pr-review`) |
-| [task-planning](skills/task-planning/) | Breaking confirmed scope into tasks, dependencies, and done criteria |
-| [plan-execution](skills/plan-execution/) | Executing a confirmed plan to completion: per-task proof, review gates, subagent or inline modes |
-| [technical-writing](skills/technical-writing/) | READMEs, agent instructions, developer guides, and decision records |
-| [ste-clarity](skills/ste-clarity/) | STE-inspired rewriting, explanation, and linting for technical English |
-| [operations](skills/operations/) | CI/CD, infrastructure, rollout safety, and operational risk |
-| [codebase-onboarding](skills/codebase-onboarding/) | Repository discovery, conventions, entry points, and hotspots |
-| [spec-writing](skills/spec-writing/) | Requirements, acceptance criteria, and OpenSpec proposals |
-| [test-strategy](skills/test-strategy/) | Test strategy, coverage, E2E flows, and flaky-test reduction |
-| [discovery](skills/discovery/) | Clarifying vague problems and comparing options before commitment |
-| [incident-response](skills/incident-response/) | Mitigation-first response to live production incidents, timeline capture, and postmortem follow-ups |
-| [pr-review](skills/pr-review/) | Pull request and changeset reviews with actionable findings and a clear verdict |
-| [review-response](skills/review-response/) | Handling incoming review feedback: verify against the codebase, implement or push back with reasoning |
-| [skill-forge](skills/skill-forge/) | Creating, auditing, refactoring, validating, and packaging Agent Skills |
-| [debugging](skills/debugging/) | Root-cause diagnosis of local failures: repro-first, hypothesis ranking, and bisection |
-| [git-workflow](skills/git-workflow/) | Conventional commits, branching, rebasing, stacked PRs, and safe history recovery |
-| [gh-stack](skills/gh-stack/) | Stacked pull requests with the `gh stack` CLI: create, sync, submit, and merge dependent PR layers |
-| [git-worktrees](skills/git-worktrees/) | Isolated workspaces for implementation: detection, native tools, git worktree fallback, clean baseline |
-| [branch-integration](skills/branch-integration/) | Landing finished work: merge, PR, keep, or discard with verified tests and safe cleanup |
-| [test-driven-development](skills/test-driven-development/) | Red/green/refactor discipline: failing test first, minimal pass, refactor on green |
-| [verification-before-completion](skills/verification-before-completion/) | Evidence-before-claims gate for completion, fixed, and passing claims |
-| [pr-body](skills/pr-body/) | Pull request bodies: smallest clarifying visual, before/after evidence, merge-danger call |
-| [session-handoff](skills/session-handoff/) | Compacting a session into a portable handoff document (user-invoked) |
-| [session-retro](skills/session-retro/) | Retrospectives that improve the agent's environment: checks, standards, pointers (user-invoked) |
-| [domain-modeling](skills/domain-modeling/) | Shared project language: GLOSSARY.md terms and ADRs, updated inline as decisions land |
-| [codebase-design](skills/codebase-design/) | Deep-module vocabulary for interface, seam, and testability decisions |
-| [prototype](skills/prototype/) | Throwaway code that answers one design question, captured as a primary source |
-| [research](skills/research/) | Cited findings from primary sources, delegated to a background agent |
-| [setup-wizard](skills/setup-wizard/) | Interactive bash wizards for procedures only a human can perform |
-| [decision-mapping](skills/decision-mapping/) | Charting huge foggy efforts as decision maps, one decision per session (user-invoked) |
-| [guided-learning](skills/guided-learning/) | Teaching a topic across sessions from a stateful workspace (user-invoked) |
-| [ask-lukas](skills/ask-lukas/) | Router: which skill or flow fits your situation (user-invoked) |
+| [azure-devops](skills/azure-devops/) | Read and safely write selected Azure DevOps work items and PR artifacts with deterministic dry-run, approval, and validation gates. |
+| [concise-output](skills/concise-output/) | Deliver accurate, action-first responses with concise prose and explicit next steps. |
+| [code-review](skills/code-review/) | Improve correctness, readability, maintainability, performance, and legacy modernization with minimal mutation. |
+| [task-planning](skills/task-planning/) | Break work into atomic, shippable tasks with explicit dependencies, critical path, estimates, and definitions of done. |
+| [plan-execution](skills/plan-execution/) | Execute a confirmed plan to completion with per-task proof, review gates, and ledgered rulings. |
+| [technical-writing](skills/technical-writing/) | Create accurate technical docs, READMEs, AGENTS.md files, and developer guides with clear structure. |
+| [ste-clarity](skills/ste-clarity/) | Rewrite and lint technical English with ASD-STE100-inspired clarity rules. |
+| [operations](skills/operations/) | Plan safer delivery across CI/CD, containers, Kubernetes, reliability, threat modeling, and rollback decisions. |
+| [codebase-onboarding](skills/codebase-onboarding/) | Map repository architecture, entry points, conventions, hotspots, and onboarding artifacts for fast execution. |
+| [spec-writing](skills/spec-writing/) | Turn requests or azure-devops handoffs into structured, version-aware specs with risk tiers, acceptance criteria, policy gates, and optional OpenSpec proposal output. |
+| [test-strategy](skills/test-strategy/) | Plan resilient test coverage by selecting levels, cases, and flake-risk remedies; route test writing and behavior implementation to test-driven-development. |
+| [discovery](skills/discovery/) | Explore ambiguous problems, test assumptions, compare options, and produce decision-ready plans. |
+| [incident-response](skills/incident-response/) | Respond to live production incidents with mitigation-first triage, disciplined timelines, clear comms, and durable follow-ups. |
+| [pr-review](skills/pr-review/) | Review pull requests and changesets against the diff, deliver actionable author-facing findings, and issue a clear verdict. |
+| [review-response](skills/review-response/) | Verify review feedback against the codebase, then implement or push back with technical reasoning; gate tests on explicit authorization and report unrun verification honestly. |
+| [skill-forge](skills/skill-forge/) | Create and refactor Agent Skills with explicit static validation, behavioral evaluation, and safe packaging. |
+| [debugging](skills/debugging/) | Find and verify root causes of local development failures through deterministic reproduction and evidence. |
+| [git-workflow](skills/git-workflow/) | Plan safe, disciplined Git history, branching, commit, rebase, recovery, and stacked PR operations. |
+| [gh-stack](skills/gh-stack/) | Create, maintain, and merge stacked pull requests with the gh stack CLI extension. |
+| [git-worktrees](skills/git-worktrees/) | Establish an isolated, verified-clean workspace before starting implementation work. |
+| [branch-integration](skills/branch-integration/) | Land verified work through a user-chosen integration path with safe cleanup. |
+| [test-driven-development](skills/test-driven-development/) | Drive behavior implementation with a failing test first, then minimal passing code and refactoring; use for feature, bugfix, and behavior-change tests. |
+| [verification-before-completion](skills/verification-before-completion/) | Back every completion, fixed, or passing claim with fresh verification evidence, or an honest unverified status when execution is not authorized; use before reporting completion or success. |
+| [pr-body](skills/pr-body/) | Write PR bodies with the smallest clarifying visual, before/after evidence, and an honest call on what merging risks, including explicit verification gaps when proof is not authorized. |
+| [session-handoff](skills/session-handoff/) | Create a portable handoff document that lets a fresh agent or colleague continue work with its state, decisions, next action, and references. |
+| [session-retro](skills/session-retro/) | Turn a completed session's observed failures into improvements to the agent environment—navigation, checks, standards, tooling, and steering. |
+| [domain-modeling](skills/domain-modeling/) | Keep the project's shared language sharp; propose glossary terms and ADRs, and mutate artifacts only when explicitly requested. |
+| [codebase-design](skills/codebase-design/) | Design deep modules — small interfaces over real behavior, at clean seams, testable through the interface. |
+| [prototype](skills/prototype/) | Answer one design question with throwaway, trivially-runnable code, then record the verdict in its spec or ticket; production edits require a separate implementation scope. |
+| [research](skills/research/) | Delegate investigation to a background agent; capture cited findings from primary sources as Markdown. |
+| [setup-wizard](skills/setup-wizard/) | Turn human-only procedures into interactive bash wizards with captured values and confirmation gates. |
+| [decision-mapping](skills/decision-mapping/) | Chart a large, uncertain effort as a decision map, resolve open questions, and hand off a clear route to specification. |
+| [guided-learning](skills/guided-learning/) | Teach a topic across sessions with a stateful workspace of lessons, references, practice, and learning records. |
+| [ask-lukas](skills/ask-lukas/) | Route any situation to the right skill or flow in this catalog. |
+<!-- /generated:skill-catalog -->
 
 ## Invocation classes
 
@@ -80,9 +89,21 @@ When you can't remember which skill fits, ask the router: `ask-lukas`.
 | `scrutineer` | `pr-review` |
 | `safety-car` | `incident-response` |
 
+## Validation runners
+
+<!-- generated:readme-validation-runners -->
+Skills with `tests/run-validation.py` (15 of 34):
+
+`ask-lukas`, `azure-devops`, `code-review`, `codebase-onboarding`, `debugging`, `discovery`, `git-workflow`, `incident-response`, `operations`, `pr-review`, `skill-forge`, `spec-writing`, `task-planning`, `technical-writing`, `test-strategy`.
+
+Skills without a runner (19): `branch-integration`, `codebase-design`, `concise-output`, `decision-mapping`, `domain-modeling`, `gh-stack`, `git-worktrees`, `guided-learning`, `plan-execution`, `pr-body`, `prototype`, `research`, `review-response`, `session-handoff`, `session-retro`, `setup-wizard`, `ste-clarity`, `test-driven-development`, `verification-before-completion`.
+<!-- /generated:readme-validation-runners -->
+
+Execute a runner only when test execution is explicitly authorized. Restore, build, and packaging remain independently gated. There is no repository-wide build or test command in this tree.
+
 ## Contributing
 
-See [AGENTS.md](AGENTS.md) for the skill layout, version rules, and change workflow. Skills with `tests/run-validation.py` include their own validation runner; execute it only when test execution is explicitly authorized. Restore, build, and packaging remain independently gated. Concise Output has no validation runner. There is no repository-wide build or test command in this tree.
+See [AGENTS.md](AGENTS.md) for the skill layout, version rules, and change workflow.
 
 For authorized static checks, run
 `python skills/skill-forge/scripts/validate_skill.py skills/<name> --strict --json`.

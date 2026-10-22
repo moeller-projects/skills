@@ -1,20 +1,9 @@
 {
   "name": "ste-clarity",
   "title": "STE Clarity",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "summary": "Rewrite and lint technical English with ASD-STE100-inspired clarity rules.",
-  "type": "rule",
-  "activation": {
-    "use_when": [
-      "The user asks for STE or Simplified Technical English rewriting",
-      "The user asks to simplify or disambiguate technical prose",
-      "The user asks to lint prose with the bundled STE linter"
-    ],
-    "avoid_when": [
-      "The user requests creative, marketing, or persuasive writing",
-      "The user requires certified ASD-STE100 compliance"
-    ]
-  },
+  "invocation": "model",
   "compatibility": [
     "chatgpt",
     "codex",
@@ -22,6 +11,9 @@
     "cursor",
     "opencode"
   ],
+  "requires": [],
+  "type": "rule",
   "risk_level": "low",
-  "requires_network": false
+  "requires_network": false,
+  "maintainer": "Lukas"
 }

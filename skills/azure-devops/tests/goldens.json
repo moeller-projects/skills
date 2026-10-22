@@ -1,0 +1,178 @@
+{
+  "note": "Golden dry-run output captured before the azure-devops 2.0.0 refactor. Phase 4 compares against these to prove only intended changes.",
+  "fixtures": [
+    {
+      "name": "create-work-item",
+      "script": "create-work-item.py",
+      "argv": [
+        "--organization",
+        "contoso",
+        "--project",
+        "Contoso Project",
+        "--type",
+        "Bug",
+        "--title",
+        "Login fails",
+        "--description",
+        "Users cannot log in",
+        "--fields-json",
+        "{\"System.Tags\":\"auth\"}"
+      ],
+      "expected": {
+        "action_type": "create-work-item",
+        "dry_run": true,
+        "requires_confirmation": true,
+        "risk": "high",
+        "method": "POST",
+        "url": "https://dev.azure.com/contoso/Contoso Project/_apis/wit/workitems/$Bug?api-version=7.1",
+        "content_type": "application/json-patch+json",
+        "required_scopes": [
+          "Work Items: Read & write",
+          "OAuth: vso.work_write"
+        ],
+        "body": [
+          {
+            "op": "add",
+            "path": "/fields/System.Title",
+            "value": "Login fails"
+          },
+          {
+            "op": "add",
+            "path": "/fields/Microsoft.VSTS.TCM.ReproSteps",
+            "value": "Users cannot log in"
+          },
+          {
+            "op": "add",
+            "path": "/fields/System.Tags",
+            "value": "auth"
+          }
+        ]
+      }
+    },
+    {
+      "name": "create-work-item-comment",
+      "script": "create-work-item-comment.py",
+      "argv": [
+        "--organization",
+        "contoso",
+        "--project",
+        "Contoso Project",
+        "--work-item-id",
+        "42",
+        "--text",
+        "Investigating the failure"
+      ],
+      "expected": {
+        "action_type": "create-work-item-comment",
+        "dry_run": true,
+        "requires_confirmation": true,
+        "risk": "high",
+        "method": "POST",
+        "url": "https://dev.azure.com/contoso/Contoso Project/_apis/wit/workItems/42/comments?api-version=7.1-preview.4",
+        "content_type": "application/json",
+        "required_scopes": [
+          "Work Items: Read & write",
+          "OAuth: vso.work_write"
+        ],
+        "body": {
+          "text": "Investigating the failure"
+        }
+      }
+    },
+    {
+      "name": "create-pull-request",
+      "script": "create-pull-request.py",
+      "argv": [
+        "--organization",
+        "contoso",
+        "--project",
+        "Contoso Project",
+        "--repository-id",
+        "00000000-0000-0000-0000-000000000001",
+        "--source-branch",
+        "feature/login",
+        "--target-branch",
+        "main",
+        "--title",
+        "Fix login",
+        "--description",
+        "Fixes #42"
+      ],
+      "expected": {
+        "action_type": "create-pull-request",
+        "dry_run": true,
+        "requires_confirmation": true,
+        "risk": "high",
+        "method": "POST",
+        "url": "https://dev.azure.com/contoso/Contoso Project/_apis/git/repositories/00000000-0000-0000-0000-000000000001/pullrequests?api-version=7.1",
+        "content_type": "application/json",
+        "required_scopes": [
+          "Code: Read & write",
+          "OAuth: vso.code_write"
+        ],
+        "body": {
+          "sourceRefName": "refs/heads/feature/login",
+          "targetRefName": "refs/heads/main",
+          "title": "Fix login",
+          "description": "Fixes #42"
+        }
+      }
+    },
+    {
+      "name": "create-pr-comment",
+      "script": "create-pr-comment.py",
+      "argv": [
+        "--mode",
+        "thread",
+        "--organization",
+        "contoso",
+        "--project",
+        "Contoso Project",
+        "--repository-id",
+        "00000000-0000-0000-0000-000000000001",
+        "--pull-request-id",
+        "7",
+        "--content",
+        "Please add a test",
+        "--file-path",
+        "/src/login.ts",
+        "--line",
+        "12"
+      ],
+      "expected": {
+        "action_type": "create-pr-comment-thread",
+        "dry_run": true,
+        "requires_confirmation": true,
+        "risk": "high",
+        "method": "POST",
+        "url": "https://dev.azure.com/contoso/Contoso Project/_apis/git/repositories/00000000-0000-0000-0000-000000000001/pullRequests/7/threads?api-version=7.1",
+        "content_type": "application/json",
+        "required_scopes": [
+          "Code: Read & write",
+          "OAuth: vso.code_write"
+        ],
+        "body": {
+          "comments": [
+            {
+              "parentCommentId": 0,
+              "content": "Please add a test",
+              "commentType": 1
+            }
+          ],
+          "status": "active",
+          "threadContext": {
+            "filePath": "/src/login.ts",
+            "rightFileStart": {
+              "line": 12,
+              "offset": 1
+            },
+            "rightFileEnd": {
+              "line": 12,
+              "offset": 1
+            }
+          }
+        }
+      }
+    }
+  ]
+}
