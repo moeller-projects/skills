@@ -142,3 +142,4 @@ Request explicit approval before:
 
 - `tests/validation-checklist.md` — read when manually checking the skill; do not execute test steps unless the user explicitly requests test execution.
 - `tests/run-validation.py` — run only when the user explicitly requests test execution; dependency restore, build, and test authorization remains separate.
+- `tests/goldens.json` — read when comparing dry-run write output to the pre-refactor baseline; change only for intentional output changes.
