@@ -3,22 +3,7 @@
   "title": "Codebase Onboarding",
   "version": "1.0.5",
   "summary": "Map repository architecture, entry points, conventions, hotspots, and onboarding artifacts for fast execution.",
-  "type": "hybrid",
-  "activation": {
-    "use_when": [
-      "Onboarding into a repository or monorepo",
-      "Understanding architecture before making changes",
-      "Mapping entry points and execution flows",
-      "Extracting conventions and development hotspots",
-      "Producing agent-ready onboarding artifacts"
-    ],
-    "avoid_when": [
-      "The user already provided exact files for a small patch",
-      "Only code quality review is needed",
-      "The question is strategic rather than repository-specific",
-      "The request is to author onboarding or AGENTS.md docs"
-    ]
-  },
+  "invocation": "model",
   "compatibility": [
     "chatgpt",
     "codex",
@@ -26,6 +11,7 @@
     "cursor",
     "opencode"
   ],
+  "type": "hybrid",
   "risk_level": "medium",
   "requires_network": false,
   "maintainer": "Lukas"

@@ -3,20 +3,15 @@
   "title": "Research",
   "version": "1.0.1",
   "summary": "Delegate investigation to a background agent; capture cited findings from primary sources as Markdown.",
-  "type": "hybrid",
   "invocation": "model",
-  "activation": {
-    "use_when": [
-      "A question needs documented, citable answers — library capabilities, API behavior, version facts",
-      "Reading legwork is heavy enough to deserve a background agent"
-    ],
-    "avoid_when": [
-      "A concrete failure needs diagnosis — use debugging",
-      "The target is the local codebase — use codebase-onboarding",
-      "A quick inline answer suffices"
-    ]
-  },
-  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "type": "hybrid",
   "risk_level": "low",
   "requires_network": true,
   "maintainer": "Lukas"

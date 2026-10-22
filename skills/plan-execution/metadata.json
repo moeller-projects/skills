@@ -3,20 +3,15 @@
   "title": "Plan Execution",
   "version": "1.0.2",
   "summary": "Execute a confirmed plan to completion with per-task proof, review gates, and ledgered rulings.",
+  "invocation": "model",
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
   "type": "hybrid",
-  "activation": {
-    "use_when": [
-      "A confirmed implementation plan or task breakdown exists and the user wants it executed",
-      "The harness offers subagents and the plan has mostly independent tasks — or execution must run inline",
-      "Several independent problem domains can be worked in parallel"
-    ],
-    "avoid_when": [
-      "No confirmed plan exists — use task-planning or spec-writing",
-      "Requirements or scope are still unclear — use discovery",
-      "The work is one trivial task that needs no plan"
-    ]
-  },
-  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
   "risk_level": "high",
   "requires_network": false,
   "maintainer": "Lukas"

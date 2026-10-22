@@ -1,0 +1,209 @@
+{
+  "note": "Catalog-only fields for metadata.json. SKILL.md frontmatter is canonical for name/title/version/summary/invocation; regenerate manifests with skills/skill-forge/scripts/sync_manifests.py.",
+  "skills": {
+    "ask-lukas": {
+      "type": "router",
+      "risk_level": "low",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "azure-devops": {
+      "type": "hybrid",
+      "risk_level": "high",
+      "requires_network": true,
+      "maintainer": "Lukas"
+    },
+    "branch-integration": {
+      "type": "hybrid",
+      "risk_level": "high",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "code-review": {
+      "type": "rule",
+      "risk_level": "medium",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "codebase-design": {
+      "type": "rule",
+      "risk_level": "low",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "codebase-onboarding": {
+      "type": "hybrid",
+      "risk_level": "medium",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "concise-output": {
+      "type": "rule",
+      "risk_level": "low",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "debugging": {
+      "type": "hybrid",
+      "risk_level": "medium",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "decision-mapping": {
+      "type": "hybrid",
+      "risk_level": "medium",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "discovery": {
+      "type": "hybrid",
+      "risk_level": "medium",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "domain-modeling": {
+      "type": "hybrid",
+      "risk_level": "low",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "gh-stack": {
+      "type": "hybrid",
+      "risk_level": "high",
+      "requires_network": true,
+      "maintainer": "Lukas"
+    },
+    "git-workflow": {
+      "type": "hybrid",
+      "risk_level": "high",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "git-worktrees": {
+      "type": "hybrid",
+      "risk_level": "medium",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "guided-learning": {
+      "type": "hybrid",
+      "risk_level": "low",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "incident-response": {
+      "type": "rule",
+      "risk_level": "high",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "operations": {
+      "type": "hybrid",
+      "risk_level": "high",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "plan-execution": {
+      "type": "hybrid",
+      "risk_level": "high",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "pr-body": {
+      "type": "hybrid",
+      "risk_level": "low",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "pr-review": {
+      "type": "rule",
+      "risk_level": "low",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "prototype": {
+      "type": "hybrid",
+      "risk_level": "low",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "research": {
+      "type": "hybrid",
+      "risk_level": "low",
+      "requires_network": true,
+      "maintainer": "Lukas"
+    },
+    "review-response": {
+      "type": "hybrid",
+      "risk_level": "low",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "session-handoff": {
+      "type": "hybrid",
+      "risk_level": "low",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "session-retro": {
+      "type": "hybrid",
+      "risk_level": "low",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "setup-wizard": {
+      "type": "hybrid",
+      "risk_level": "medium",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "skill-forge": {
+      "type": "hybrid",
+      "risk_level": "medium",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "spec-writing": {
+      "type": "hybrid",
+      "risk_level": "medium",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "ste-clarity": {
+      "type": "rule",
+      "risk_level": "low",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "task-planning": {
+      "type": "hybrid",
+      "risk_level": "low",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "technical-writing": {
+      "type": "rule",
+      "risk_level": "medium",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "test-driven-development": {
+      "type": "hybrid",
+      "risk_level": "medium",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "test-strategy": {
+      "type": "rule",
+      "risk_level": "medium",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "verification-before-completion": {
+      "type": "hybrid",
+      "risk_level": "low",
+      "requires_network": false,
+      "maintainer": "Lukas"
+    }
+  }
+}

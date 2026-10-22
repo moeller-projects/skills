@@ -3,17 +3,7 @@
   "title": "Concise Output",
   "version": "1.0.4",
   "summary": "Deliver accurate, action-first responses with concise prose and explicit next steps.",
-  "activation": {
-    "use_when": [
-      "The user requests concise, direct, no-fluff, or token-efficient responses",
-      "The user invokes Concise Output or Bottom Line Up Front",
-      "The user prefers action-first, structured replies during compatible interactive coding, debugging, or operations"
-    ],
-    "avoid_when": [
-      "Compression would omit required detail, safety context, or exact commands",
-      "Another response format is explicitly required by the user"
-    ]
-  },
+  "invocation": "model",
   "compatibility": [
     "chatgpt",
     "codex",
@@ -24,6 +14,7 @@
   "allowed_tools": [
     "read_file"
   ],
+  "type": "rule",
   "risk_level": "low",
   "requires_network": false,
   "maintainer": "Lukas"

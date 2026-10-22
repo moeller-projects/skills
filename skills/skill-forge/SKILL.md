@@ -90,6 +90,9 @@ knowledge — generic instructions are the most common failure mode.
   hygiene across all skills: required catalog keys, resource links and their use
   conditions, resource-section placement, dangling skill names, duplicate prose,
   and heading spacing. Known findings live in `repo_lint_baseline.json`.
+- **`scripts/sync_manifests.py [--check]`** — run to regenerate each
+  `metadata.json` from SKILL.md frontmatter plus the `catalog.json` block, or
+  with `--check` to fail on drift.
 - **`tests/run-validation.py [--include-packaging]`** — run only with explicit
   test authorization to exercise malformed contracts and resource discovery;
   `--include-packaging` also requires explicit packaging authorization and checks

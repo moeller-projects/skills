@@ -4,17 +4,14 @@
   "version": "1.0.2",
   "summary": "Chart a large, uncertain effort as a decision map, resolve open questions, and hand off a clear route to specification.",
   "invocation": "user",
-  "activation": {
-    "use_when": [
-      "The effort is too large or uncertain for one planning session — greenfield, big migration, multi-week feature",
-      "The way from here to the destination is not yet visible"
-    ],
-    "avoid_when": [
-      "The scope is clear enough for a normal breakdown — use discovery then task-planning",
-      "The plan is already decided — use plan-execution"
-    ]
-  },
-  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "type": "hybrid",
   "risk_level": "medium",
   "requires_network": false,
   "maintainer": "Lukas"

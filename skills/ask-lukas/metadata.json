@@ -3,17 +3,15 @@
   "title": "Ask Lukas",
   "version": "1.0.2",
   "summary": "Route any situation to the right skill or flow in this catalog.",
-  "type": "router",
   "invocation": "user",
-  "activation": {
-    "use_when": [
-      "The user knows what they want to achieve but not which skill to reach for"
-    ],
-    "avoid_when": [
-      "The task clearly belongs to one skill — go there directly"
-    ]
-  },
-  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "type": "router",
   "risk_level": "low",
   "requires_network": false,
   "maintainer": "Lukas"

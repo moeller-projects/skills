@@ -3,21 +3,7 @@
   "title": "Operations",
   "version": "1.0.6",
   "summary": "Plan safer delivery across CI/CD, containers, Kubernetes, reliability, threat modeling, and rollback decisions.",
-  "type": "hybrid",
-  "activation": {
-    "use_when": [
-      "Creating or reviewing CI/CD workflows",
-      "Working with Docker, containers, or Kubernetes",
-      "Threat modeling a service or deployment path",
-      "Designing resilience, rollback, or release safety plans",
-      "Analyzing operational or deployment risk"
-    ],
-    "avoid_when": [
-      "The task is pure application refactoring",
-      "The task is pure documentation",
-      "Security review of application or library code is needed — that belongs to `code-review`; operations covers infrastructure, deployment, and cluster security only."
-    ]
-  },
+  "invocation": "model",
   "compatibility": [
     "chatgpt",
     "codex",
@@ -25,6 +11,7 @@
     "cursor",
     "opencode"
   ],
+  "type": "hybrid",
   "risk_level": "high",
   "requires_network": false,
   "maintainer": "Lukas"

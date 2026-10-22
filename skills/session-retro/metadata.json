@@ -2,20 +2,16 @@
   "name": "session-retro",
   "title": "Session Retro",
   "version": "1.0.2",
-  "summary": "Turn a completed session's observed failures into improvements to the agent environment—navigation, checks, standards, tooling, and steering.",
+  "summary": "Turn a completed session's observed failures into improvements to the agent environment\u2014navigation, checks, standards, tooling, and steering.",
   "invocation": "user",
-  "activation": {
-    "use_when": [
-      "A session ended, especially one that went sideways, stalled, or repeated itself",
-      "The user asks what would have prevented a mistake or slowdown"
-    ],
-    "avoid_when": [
-      "The code itself needs fixing — use debugging or code-review",
-      "A production incident needs a postmortem — use incident-response",
-      "Work continues in another session — use session-handoff"
-    ]
-  },
-  "compatibility": ["chatgpt", "codex", "claude-code", "cursor", "opencode"],
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "type": "hybrid",
   "risk_level": "low",
   "requires_network": false,
   "maintainer": "Lukas"
