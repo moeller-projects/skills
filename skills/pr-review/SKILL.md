@@ -80,7 +80,6 @@ Apply the operating rules above when finalizing every review. For the detailed c
 - Run `scripts/validate-output.py` when checking a generated review against the output contract.
 - Read `references/workflow.md` when the review needs detailed step-by-step workflow guidance.
 - Read `references/examples.md` when sample reviews beyond the templates are needed.
-- Read `rules/_sections.md` when checking the required output sections.
 - Read `rules/diff-first.md` when applying detailed diff-scope guidance.
 - Read `rules/verdict-discipline.md` when resolving verdict consistency.
 - Read `rules/comment-quality.md` when drafting or revising findings.

@@ -113,7 +113,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when organizing spec sections.
 - `rules/requirement-quality.md` — read when checking requirement testability.
 - `rules/acceptance-criteria.md` — read when writing GIVEN/WHEN/THEN criteria.
 - `rules/diff-versioning.md` — read when evolving an existing authored spec.

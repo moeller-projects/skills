@@ -80,7 +80,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when structuring skill sections.
 - `rules/behavior-over-implementation.md` — read when choosing behavior-level assertions over implementation details.
 - `rules/meaningful-coverage.md` — read when assessing whether coverage is meaningful.
 - `rules/edge-cases.md` — read when identifying boundary and invalid-input cases.

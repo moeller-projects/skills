@@ -81,7 +81,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when structuring the standard response sections.
 - `rules/assumption-audit.md` — read before generating options to separate facts, assumptions, and unknowns.
 - `rules/option-generation.md` — read when multiple strategy paths need comparison.
 - `rules/decision-readiness.md` — read when preparing the recommendation and next steps.

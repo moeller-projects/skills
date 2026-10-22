@@ -118,7 +118,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when organizing document sections.
 - `rules/audience-first.md` — read when identifying audience and purpose.
 - `rules/command-accuracy.md` — read when documenting commands or paths.
 - `rules/structure-over-prose.md` — read when designing document structure.

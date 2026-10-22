@@ -78,7 +78,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when structuring rule content.
 - `rules/correctness-first.md` — read when assessing correctness.
 - `rules/minimal-mutation.md` — read when selecting the smallest safe patch.
 - `rules/complexity-reduction.md` — read when evaluating complexity.

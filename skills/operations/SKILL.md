@@ -87,7 +87,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when structuring rule content.
 - `rules/deployment-safety.md` — read when planning deployment safeguards.
 - `rules/ci-cd-reproducibility.md` — read when reviewing reproducibility.
 - `rules/kubernetes-safety.md` — read when changing Kubernetes resources.

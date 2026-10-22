@@ -80,7 +80,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when structuring rule content.
 - `rules/architecture-map.md` — read when mapping architecture.
 - `rules/entrypoint-detection.md` — read when detecting entry points.
 - `rules/convention-extraction.md` — read when extracting conventions.

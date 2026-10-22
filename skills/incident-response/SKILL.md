@@ -106,7 +106,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when structuring incident response content.
 - `rules/mitigate-first.md` — read during the mitigation phase.
 - `rules/timeline-capture.md` — read while capturing the timeline.
 - `rules/comms-discipline.md` — read during incident communications.

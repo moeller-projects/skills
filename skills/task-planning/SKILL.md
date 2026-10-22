@@ -103,7 +103,6 @@ See `tests/validation-checklist.md` for the full checklist.
 
 ## Rules
 
-- `rules/_sections.md` — read when organizing task-plan sections.
 - `rules/vertical-slicing.md` — read when ensuring tasks are independently shippable.
 - `rules/unknown-exposure.md` — read when surfacing blockers and unknowns.
 - `rules/estimate-integrity.md` — read when assigning estimates.
