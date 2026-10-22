@@ -532,6 +532,10 @@ def main() -> int:
     new = [f for f in report.findings if f["status"] == "new"]
     new_errors = [f for f in new if f.get("severity", "error") == "error"]
     known_count = len(report.findings) - len(new)
+    # A baseline entry with no matching finding means the defect was fixed but
+    # the whitelist was not shrunk. Fail so it is removed, not left to linger.
+    current_keys = {f["key"] for f in report.findings}
+    stale = sorted(set(known) - current_keys) if not args.no_baseline else []
 
     if args.json:
         print(json.dumps({
@@ -539,7 +543,9 @@ def main() -> int:
             "root": posix(root),
             "baseline": None if args.no_baseline else posix(args.baseline),
             "summary": {"new": len(new_errors), "new_warnings": len(new) - len(new_errors),
-                        "known": known_count, "total": len(report.findings)},
+                        "known": known_count, "stale": len(stale),
+                        "total": len(report.findings)},
+            "stale": stale,
             "findings": report.findings,
         }, indent=2))
     else:
@@ -550,12 +556,17 @@ def main() -> int:
             if finding["line"]:
                 location += f":{finding['line']}"
             print(f"{marker} {severity.upper():7} [{finding['check']}] {location}: {finding['message']}")
+        for key in stale:
+            print(f"STALE   [baseline] {key}: whitelisted finding no longer occurs")
         print(f"{len(new_errors)} new error(s), {len(new) - len(new_errors)} new warning(s), "
-              f"{known_count} known finding(s)")
+              f"{known_count} known, {len(stale)} stale baseline entry(s)")
         if new_errors:
             print("repo lint failed: fix the new findings or update the baseline",
                   file=sys.stderr)
-    return 1 if new_errors else 0
+        if stale:
+            print("repo lint failed: remove stale baseline entries with --update-baseline",
+                  file=sys.stderr)
+    return 1 if new_errors or stale else 0
 
 
 if __name__ == "__main__":
