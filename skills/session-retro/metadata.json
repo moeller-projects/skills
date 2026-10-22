@@ -1,7 +1,7 @@
 {
   "name": "session-retro",
   "title": "Session Retro",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "summary": "Turn a completed session's observed failures into improvements to the agent environment\u2014navigation, checks, standards, tooling, and steering.",
   "invocation": "user",
   "compatibility": [

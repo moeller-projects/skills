@@ -1,7 +1,7 @@
 {
   "name": "decision-mapping",
   "title": "Decision Mapping",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "summary": "Chart a large, uncertain effort as a decision map, resolve open questions, and hand off a clear route to specification.",
   "invocation": "user",
   "compatibility": [

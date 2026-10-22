@@ -1,7 +1,7 @@
 {
   "name": "guided-learning",
   "title": "Guided Learning",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "summary": "Teach a topic across sessions with a stateful workspace of lessons, references, practice, and learning records.",
   "invocation": "user",
   "compatibility": [

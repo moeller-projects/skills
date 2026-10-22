@@ -1,7 +1,7 @@
 {
   "name": "ask-lukas",
   "title": "Ask Lukas",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "summary": "Route any situation to the right skill or flow in this catalog.",
   "invocation": "user",
   "compatibility": [

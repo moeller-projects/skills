@@ -1,11 +1,11 @@
 ---
 name: decision-mapping
-description: Chart a large, uncertain effort as a decision map, resolve its open questions, and hand off a clear route to specification.
+description: User-invoked only: Chart a large, uncertain effort as a decision map, resolve its open questions, and hand off a clear route to specification.
 license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Decision Mapping
-  version: "1.0.2"
+  version: "1.0.3"
   summary: Chart a large, uncertain effort as a decision map, resolve open questions, and hand off a clear route to specification.
   invocation: user
 ---
