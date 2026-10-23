@@ -40,7 +40,7 @@ import validate_skill  # noqa: E402  (same directory)
 DEFAULT_COMPATIBILITY = ["chatgpt", "codex", "claude-code", "cursor", "opencode"]
 CATALOG_FIELDS = ("type", "risk_level", "requires_network", "maintainer")
 TOKEN_RE = re.compile(r"^[a-z][a-z0-9-]*$")
-KEBAB_RE = re.compile(r"`([a-z][a-z0-9]*(?:-[a-z0-9]+)+)`")
+KEBAB_RE = re.compile(r"`([a-z][a-z0-9]*(?:-[a-z0-9]+)*)`")
 # Composition verbs mark a primitive a skill depends on, as opposed to a
 # handoff to a neighbouring skill. Only composed primitives go into `requires`.
 COMPOSE_RE = re.compile(
