@@ -38,3 +38,4 @@ Always include:
 - `source.work_item_id` and `work_item.id` are both integer values when known, otherwise `null`.
 - `source.pull_request_id` is an integer when known, otherwise `null`.
 - Scripts must not emit stringified numeric identifiers in the handoff contract.
+- `source.project` and `source.repository_id` accept decoded names containing spaces and Unicode, as well as escaped names from PR URLs. Slashes, backslashes, and whitespace other than ordinary spaces remain invalid. URL builders, not handoff producers, own path-segment encoding.

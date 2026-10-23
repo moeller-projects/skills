@@ -64,11 +64,11 @@
         },
         "project": {
           "type": "string",
-          "pattern": "^[^/\\\\\\s]+$"
+          "pattern": "^(?:[^/\\\\\\s]| )+$"
         },
         "repository_id": {
           "type": "string",
-          "pattern": "^(?:$|[^/\\\\\\s]+)$"
+          "pattern": "^(?:[^/\\\\\\s]| )*$"
         },
         "pull_request_id": {
           "type": [

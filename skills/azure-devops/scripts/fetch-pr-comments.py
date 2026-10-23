@@ -12,7 +12,7 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
-from urllib.parse import quote
+from urllib.parse import quote, unquote
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _ado_lib as lib
@@ -180,7 +180,11 @@ def main(argv: list[str]) -> int:
         pr_id = int(pull_request_id)
     except (TypeError, ValueError):
         lib.emit_blocker("MISSING_INPUT", ["pull_request_id"], "Provide a valid Azure DevOps pull request URL or explicit identifiers.")
-    base = f"https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repository_id}/pullRequests/{pr_id}"
+    # Remote parsing returns decoded names; PR URL parsing preserves escapes.
+    org_path = quote(unquote(organization), safe="")
+    project_path = quote(unquote(project), safe="")
+    repo_path = quote(unquote(repository_id), safe="")
+    base = f"https://dev.azure.com/{org_path}/{project_path}/_apis/git/repositories/{repo_path}/pullRequests/{pr_id}"
     threads_response = _fetch(base + f"/threads?api-version={lib.API_VERSION}", "PR threads", f"Failed to fetch PR threads for pull request {pr_id} in {organization}/{project}/{repository_id} after bounded retries.")
     pr_response = _fetch(base + f"?api-version={lib.API_VERSION}", "pull request details", f"Failed to fetch pull request details for {pr_id} in {organization}/{project}/{repository_id} after bounded retries.")
     links_response = _fetch(base + f"/workitems?api-version={lib.API_VERSION}", "linked pull request work items", f"Failed to fetch linked pull request work items for {pr_id} in {organization}/{project}/{repository_id} after bounded retries.")
@@ -190,7 +194,7 @@ def main(argv: list[str]) -> int:
     details = []
     for offset in range(0, len(ids), 100):
         csv = ",".join(str(item) for item in ids[offset:offset + 100])
-        url = f"https://dev.azure.com/{organization}/{project}/_apis/wit/workitems?ids={quote(csv, safe='')}&fields=System.Title,System.WorkItemType,System.State&api-version={lib.API_VERSION}"
+        url = f"https://dev.azure.com/{org_path}/{project_path}/_apis/wit/workitems?ids={quote(csv, safe='')}&fields=System.Title,System.WorkItemType,System.State&api-version={lib.API_VERSION}"
         batch = _fetch(url, "linked work item details", f"Failed to fetch linked work item details for {pr_id} in {organization}/{project}/{repository_id} after bounded retries.")
         if isinstance(batch, dict): details.extend(batch.get("value") or [])
     threads = threads_response.get("value", []) if isinstance(threads_response, dict) else []

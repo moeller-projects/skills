@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Azure DevOps
-  version: "1.2.0"
+  version: "1.2.1"
   summary: Read and safely write selected Azure DevOps work items and PR artifacts, and locate a branch's active PR, with deterministic dry-run, approval, and validation gates.
 ---
 

@@ -899,6 +899,85 @@ def main() -> None:
         fetch_module = importlib.util.module_from_spec(fetch_spec)
         assert fetch_spec.loader is not None
         fetch_spec.loader.exec_module(fetch_module)
+        remote = run_script(
+            "parse-git-remote.py",
+            stdin_text="https://dev.azure.com/contoso/My%20Project/_git/r%C3%A9po%20one",
+        )
+        expect_ok(remote, "remote parser rejected encoded project/repository names")
+        identifiers = json.loads(remote.stdout)
+        fetch_args = [
+            "--organization", identifiers["organization"],
+            "--project", identifiers["project"],
+            "--repository-id", identifiers["repository_id"],
+            "--pull-request-id", "5",
+        ]
+        api_base = "https://dev.azure.com/contoso/My%20Project/_apis/git/repositories/r%C3%A9po%20one/pullRequests/5"
+        responses_by_url = {
+            api_base + "/threads?api-version=7.1": {"value": [{
+                "id": 11, "status": "active", "comments": [{
+                    "id": 12, "commentType": "text",
+                    "author": {"id": "reviewer-id"},
+                    "content": "Handle empty input",
+                }],
+            }]},
+            api_base + "?api-version=7.1": {
+                "pullRequestId": 5,
+                "sourceRefName": "refs/heads/feature/x",
+                "targetRefName": "refs/heads/main",
+            },
+            api_base + "/workitems?api-version=7.1": {"value": [{"id": 7}]},
+            "https://dev.azure.com/contoso/My%20Project/_apis/wit/workitems?ids=7&fields=System.Title,System.WorkItemType,System.State&api-version=7.1": {
+                "value": [{"id": 7, "fields": {"System.Title": "Linked item"}}],
+            },
+        }
+        class _CommentResponse:
+            def __init__(self, payload):
+                self.payload = payload
+            def __enter__(self): return self
+            def __exit__(self, *_): return False
+            def read(self): return json.dumps(self.payload).encode("utf-8")
+        class _CommentOpener:
+            def open(self, request, timeout):
+                if request.method != "GET" or request.full_url not in responses_by_url:
+                    fail(f"comment fetch requested an incorrect endpoint: {request.method} {request.full_url}")
+                return _CommentResponse(responses_by_url[request.full_url])
+        old_opener = fetch_module.lib._HTTP_OPENER
+        old_require = fetch_module.lib.require_pat
+        fetch_module.lib._HTTP_OPENER = _CommentOpener()
+        fetch_module.lib.require_pat = lambda: "encoding-regression-pat"
+        try:
+            for args in (
+                fetch_args,
+                ["--pull-request-url", "https://dev.azure.com/contoso/My%20Project/_git/r%C3%A9po%20one/pullrequest/5"],
+            ):
+                captured = io.StringIO()
+                with contextlib.redirect_stdout(captured):
+                    if fetch_module.main(args) != 0:
+                        fail("comment fetch failed for encoded project/repository names")
+                fetched = json.loads(captured.getvalue())
+                if fetched["comments"][0]["content"] != "Handle empty input":
+                    fail("remote-to-comment fetch lost reviewer feedback")
+                if fetched["linked_work_items"][0]["title"] != "Linked item":
+                    fail("remote-to-comment fetch lost linked work-item details")
+                comments_file = tmp_dir / "encoded-pr-comments.json"
+                comments_file.write_text(captured.getvalue(), encoding="utf-8")
+                handoff = run_script(
+                    "emit-handoff.py",
+                    "--mode", "pr-comments",
+                    "--organization", fetched["organization"],
+                    "--project", fetched["project"],
+                    "--repository-id", fetched["repository_id"],
+                    "--pull-request-id", "5",
+                    "--work-item-id", "null",
+                    "--pr-comments-file", str(comments_file),
+                )
+                expect_ok(handoff, "fetched project/repository names failed handoff validation")
+                if json.loads(handoff.stdout)["normalization"]["status"] != "pass":
+                    fail("remote-to-comment handoff was unexpectedly partial")
+        finally:
+            fetch_module.lib._HTTP_OPENER = old_opener
+            fetch_module.lib.require_pat = old_require
+        passed("decoded remote identifiers and encoded PR URLs produce complete comment handoffs")
         flattened = fetch_module._flatten(
             [{"id": 11, "status": "active", "comments": [{
                 "id": 12,

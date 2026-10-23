@@ -22,6 +22,12 @@
 - The normalized handoff has no reliable status-transition timestamp. Do not claim a reviewer comment occurred after resolution unless the payload proves that order.
 - Outdated diff anchors alone are not a skip reason.
 
+## Posting freshness gate
+
+Keep the meaningful comments used for triage, including their IDs, authors, content, update timestamps, and deletion flags, plus thread status and deletion state. After Checkpoint C approval, immediately before each reply POST, re-fetch that thread through `azure-devops` and compare it with this snapshot. An unavailable or partial refresh blocks that reply.
+
+If meaningful comments were added, edited, or deleted, or thread status/deletion changed, invalidate the affected reply's approval. Re-triage using the current conversation, skip it if the thread now qualifies for skipping, or redraft and repeat Checkpoints B and C. Do not post the old approved body merely because its dry-run is unchanged. Unchanged independent threads retain approval, but each still needs its own pre-post refresh.
+
 ## Grouping and batching
 
 - Threads with one root cause may share one commit naming all included thread IDs; each thread still gets its own reply.

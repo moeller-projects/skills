@@ -19,6 +19,8 @@
 5. Search active PRs with `scripts/find-pull-request.py` using that local branch. Show every candidate. Ask which PR to use if several match; confirm a single inferred candidate before fetching it. If none match, search completed PRs with `--status completed --top 3` for context only, report those results, and ask for a PR URL or ID.
 6. For an ID, combine it only with the confirmed organization, project, and repository. Do not infer a PR from the ID alone.
 
+The remote parser returns decoded identifiers. Pass them directly to the comment fetcher or `generate-handoff.py`; comment fetching encodes URL path segments at the request boundary and also accepts identifiers already escaped in a PR URL without double-encoding them.
+
 Run scripts using Python 3.9+ and its standard library: `python scripts/<name>.py`.
 
 ## Write Flow

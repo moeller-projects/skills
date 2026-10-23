@@ -25,6 +25,7 @@
 - [ ] Branch PR search sends a GET with encoded local branch, bounds `$top`, and sorts candidates.
 - [ ] Comment type, commenter identities, PR creator identity, and draft flag survive flattening.
 - [ ] Optional PR fields validate when present, and legacy handoffs without them still validate.
+- [ ] Decoded remote identifiers with spaces/Unicode fetch PR comments and linked work-item details; encoded PR URLs still work without double-encoding.
 
 ## Edge Cases
 

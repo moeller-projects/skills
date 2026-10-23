@@ -1,7 +1,7 @@
 {
   "name": "respond-to-pr-comments",
   "title": "Respond to PR Comments",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "summary": "Triage reviewer threads on your Azure DevOps PR, apply approved fixes as commits, and post replies that cite pushed commits, with approval before changes, pushes, and posts.",
   "invocation": "user",
   "compatibility": [
