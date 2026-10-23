@@ -41,7 +41,13 @@
     "target_branch": "refs/heads/main",
     "status": "active",
     "creation_date": "2026-04-28T08:00:00Z",
-    "closed_date": null
+    "closed_date": null,
+    "created_by": {
+      "id": "author-id",
+      "display_name": "PR Author",
+      "unique_name": "author@example.com"
+    },
+    "is_draft": false
   },
   "linked_work_items": [
     {
@@ -58,6 +64,9 @@
       "comment_id": 501,
       "parent_comment_id": 0,
       "author": "Reviewer",
+      "author_id": "reviewer-id",
+      "author_unique_name": "reviewer@example.com",
+      "comment_type": "text",
       "content": "Please extract this validation to a helper.",
       "file_path": "/src/order.ts",
       "side": "right",

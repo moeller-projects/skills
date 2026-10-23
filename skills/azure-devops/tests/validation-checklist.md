@@ -4,6 +4,7 @@
 
 - [x] Frontmatter clearly triggers on Azure DevOps work item retrieval, PR comment retrieval, PR URL parsing, and supported write actions.
 - [x] Frontmatter clearly rejects destructive writes, PR completion/approval, GitHub review tasks, and OpenSpec authoring.
+- [ ] Frontmatter also triggers on locating a PR from the current local branch.
 
 ## Logic Validation
 
@@ -19,6 +20,11 @@
 - [x] Work-item comments follow continuation tokens and retain all pages.
 - [x] Combined mode preserves a successful source when the other source has a recoverable failure and marks the handoff partial; blockers remain fatal.
 - [x] Schema string patterns reject unsafe repository identifiers and traversal paths.
+- [ ] Credential-bearing remotes are piped to the parser, never passed in argv, and never echoed.
+- [ ] Supported HTTPS, shorthand, SSH, and legacy remote shapes parse to decoded identifiers.
+- [ ] Branch PR search sends a GET with encoded local branch, bounds `$top`, and sorts candidates.
+- [ ] Comment type, commenter identities, PR creator identity, and draft flag survive flattening.
+- [ ] Optional PR fields validate when present, and legacy handoffs without them still validate.
 
 ## Edge Cases
 

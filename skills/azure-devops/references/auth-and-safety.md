@@ -1,5 +1,6 @@
 # Auth and Safety
 
+- Git remote URLs can embed credentials. Pipe a remote URL directly to `parse-git-remote.py`; never place it in command arguments, logs, or output.
 - Read `AZURE_DEVOPS_PAT` from the environment. Never echo it, place it in generated artifacts, or persist it in examples. Redact the literal current PAT and supported bearer/plain PAT forms recursively from every emitted field and write response.
 - Read flows use GET requests only; GET retries are bounded.
 - Write flows are limited to dedicated Python scripts for work items, work item comments, pull requests, and PR comments. A transport/server failure on a write is never replayed because its outcome is unknown; check Azure DevOps before retrying.

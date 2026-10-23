@@ -66,12 +66,15 @@ def _flatten(threads: list, organization: str, project: str, repository_id: str,
         for comment in (thread.get("comments") or []):
             if not isinstance(comment, dict):
                 continue
-            author = comment.get("author") or {}
+            author = comment.get("author") if isinstance(comment.get("author"), dict) else {}
             comments.append(lib.redact_value({
                 "thread_id": thread.get("id"),
                 "comment_id": comment.get("id"),
                 "parent_comment_id": comment.get("parentCommentId"),
-                "author": author.get("displayName") if isinstance(author, dict) else None,
+                "author": author.get("displayName"),
+                "author_id": author.get("id"),
+                "author_unique_name": author.get("uniqueName"),
+                "comment_type": comment.get("commentType"),
                 "content": comment.get("content"),
                 "file_path": file_path,
                 "side": side,
@@ -98,6 +101,7 @@ def _flatten(threads: list, organization: str, project: str, repository_id: str,
             "url": item.get("url"),
         }))
     pull = pr if isinstance(pr, dict) else {}
+    created = pull.get("createdBy") if isinstance(pull.get("createdBy"), dict) else {}
     result = {
         "organization": organization,
         "project": project,
@@ -111,6 +115,12 @@ def _flatten(threads: list, organization: str, project: str, repository_id: str,
             "status": pull.get("status") if pull.get("status") is not None else None,
             "creation_date": pull.get("creationDate") if pull.get("creationDate") is not None else None,
             "closed_date": pull.get("closedDate") if pull.get("closedDate") is not None else None,
+            "created_by": {
+                "id": created.get("id"),
+                "display_name": created.get("displayName"),
+                "unique_name": created.get("uniqueName"),
+            },
+            "is_draft": pull.get("isDraft") if isinstance(pull.get("isDraft"), bool) else None,
         }),
         "linked_work_items": linked,
         "thread_count": len(threads),

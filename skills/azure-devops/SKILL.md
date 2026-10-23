@@ -1,12 +1,12 @@
 ---
 name: azure-devops
-description: Use when fetching, parsing, normalizing, or narrowly creating approved Azure DevOps work items and pull request artifacts. Do not use when the task targets GitHub PR review, destructive Azure DevOps actions, or OpenSpec authoring.
+description: Use when fetching, parsing, normalizing, or narrowly creating approved Azure DevOps work items and pull request artifacts, or when locating the active pull request for a git branch. Do not use when the task targets GitHub PR review, destructive Azure DevOps actions, or OpenSpec authoring.
 license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Azure DevOps
-  version: "1.1.5"
-  summary: Read and safely write selected Azure DevOps work items and PR artifacts with deterministic dry-run, approval, and validation gates.
+  version: "1.2.0"
+  summary: Read and safely write selected Azure DevOps work items and PR artifacts, and locate a branch's active PR, with deterministic dry-run, approval, and validation gates.
 ---
 
 # Azure DevOps
@@ -19,9 +19,9 @@ Fetch Azure DevOps work item and pull request discussion data through read-only 
 ## Read Workflow
 
 1. Identify the source mode: `work-item`, `pr-comments`, or `work-item-plus-pr-comments`.
-2. Validate required identifiers and authentication. Accept either explicit Azure DevOps identifiers or a pull request URL.
-3. Fetch Azure DevOps data with GET-only scripts, including work-item comments, update history, current related-work links, and PR threads.
-4. Normalize work-item fields, comments, changed-field history, related-work links, PR threads, line anchors, and missing values into the shared contract.
+2. When identifiers are missing, follow `references/workflow.md` to resolve a PR from the current local branch or remote; approve inferred organization, project, and repository values before requesting ADO data.
+3. Validate required identifiers and authentication. Accept explicit identifiers, a PR URL, or a confirmed PR ID plus repository identifiers.
+4. Fetch and normalize Azure DevOps data with GET-only scripts, including work-item comments, update history, related-work links, and PR threads.
 5. Emit contract JSON and stop. Do not draft specs or take write actions.
 
 ## Write Workflow
@@ -74,7 +74,7 @@ Read operations return only the shared handoff envelope. Write dry-runs return o
 
 ```text
 BLOCKER:
-code: <MISSING_INPUT|MISSING_AUTH|INVALID_PR_URL|WRITE_CONFIRMATION_REQUIRED>
+code: <MISSING_INPUT|MISSING_AUTH|INVALID_PR_URL|INVALID_REMOTE_URL|WRITE_CONFIRMATION_REQUIRED>
 required_input:
 - ...
 next_question: ...
@@ -118,9 +118,11 @@ Request explicit approval before:
 
 - `scripts/generate-handoff.py` — run for normal end-to-end reads.
 - `scripts/fetch-work-item.py` and `scripts/fetch-pr-comments.py` — run as GET-only primitive fetches in a staged workflow.
-- `scripts/parse-pr-url.py` — run when parsing a PR URL without fetching.
 - `scripts/normalize-work-item.py` — run when normalizing a fetched work-item payload.
 - `scripts/emit-handoff.py` — run when assembling and validating already-fetched/normalized inputs.
+- `scripts/parse-pr-url.py` — run when parsing a PR URL without fetching.
+- `scripts/parse-git-remote.py` — read a remote URL from stdin when mapping an Azure DevOps checkout; never pass a credential-bearing URL as an argument.
+- `scripts/find-pull-request.py` — list PRs whose source branch matches the current local branch (GET only).
 - `scripts/validate-handoff.py` — run when validating a handoff JSON contract.
 - `scripts/ensure-env.py` — run before a network operation to check PAT availability.
 - `scripts/format-work-item-mention.py` and `scripts/resolve-ado-user.py` — run when formatting a mention or resolving an Azure DevOps identity.

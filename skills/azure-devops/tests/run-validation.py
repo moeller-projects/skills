@@ -93,6 +93,8 @@ def main() -> None:
     for script in [
         "ensure-env.py",
         "parse-pr-url.py",
+        "parse-git-remote.py",
+        "find-pull-request.py",
         "normalize-work-item.py",
         "emit-handoff.py",
         "validate-handoff.py",
@@ -429,6 +431,9 @@ def main() -> None:
                     "comment_id": 1,
                     "parent_comment_id": 0,
                     "author": "Reviewer",
+                    "author_id": "reviewer-id",
+                    "author_unique_name": "reviewer@example.com",
+                    "comment_type": "text",
                     "content": "Looks good",
                     "file_path": "/src/order.ts",
                     "side": "right",
@@ -451,6 +456,12 @@ def main() -> None:
                 "status": "active",
                 "creation_date": "2026-04-29T08:00:00Z",
                 "closed_date": None,
+                "created_by": {
+                    "id": "author-id",
+                    "display_name": "Author",
+                    "unique_name": "author@example.com",
+                },
+                "is_draft": False,
             },
             "linked_work_items": [
                 {
@@ -478,6 +489,16 @@ def main() -> None:
         pr_handoff_json = json.loads(pr_handoff.stdout)
         validated_pr = run_validator(pr_handoff.stdout)
         expect_ok(validated_pr, "emitted pr-comments handoff failed schema validation")
+        legacy_handoff = json.loads(pr_handoff.stdout)
+        for key in ("author_id", "author_unique_name", "comment_type"):
+            legacy_handoff["pr_comments"][0].pop(key)
+        legacy_handoff["pull_request"].pop("created_by")
+        legacy_handoff["pull_request"].pop("is_draft")
+        expect_ok(run_validator(json.dumps(legacy_handoff)), "legacy PR handoff without optional metadata was rejected")
+        if pr_handoff_json["pr_comments"][0]["author_id"] != "reviewer-id" or pr_handoff_json["pr_comments"][0]["comment_type"] != "text":
+            fail("handoff omitted optional PR comment metadata")
+        if pr_handoff_json["pull_request"]["created_by"]["id"] != "author-id" or pr_handoff_json["pull_request"]["is_draft"] is not False:
+            fail("handoff omitted optional PR creator or draft metadata")
         if pr_handoff_json["pull_request"]["source_branch"] != "refs/heads/feature/demo":
             fail("handoff missing pull_request.source_branch")
         if pr_handoff_json["pull_request"]["target_branch"] != "refs/heads/main":
@@ -750,6 +771,154 @@ def main() -> None:
         finally:
             gen_module.subprocess.run = old_run
         passed("mocked generator keeps authentication blockers fatal")
+
+
+        remote_cases = [
+            ("https://dev.azure.com/contoso/My%20Project/_git/my-repo", ("contoso", "My Project", "my-repo", "https", False)),
+            ("https://user@dev.azure.com/contoso/proj/_git/repo", ("contoso", "proj", "repo", "https", False)),
+            ("https://dev.azure.com/contoso/_git/repo", ("contoso", "repo", "repo", "https-org-shorthand", True)),
+            ("git@ssh.dev.azure.com:v3/contoso/proj/repo", ("contoso", "proj", "repo", "ssh", False)),
+            ("ssh://git@ssh.dev.azure.com/v3/contoso/proj/repo", ("contoso", "proj", "repo", "ssh", False)),
+            ("https://contoso.visualstudio.com/DefaultCollection/proj/_git/repo", ("contoso", "proj", "repo", "legacy-https", False)),
+            ("https://contoso.visualstudio.com/proj/_git/repo", ("contoso", "proj", "repo", "legacy-https", False)),
+            ("https://contoso.visualstudio.com/_git/repo", ("contoso", "repo", "repo", "legacy-https-org-shorthand", True)),
+            ("contoso@vs-ssh.visualstudio.com:v3/contoso/proj/repo", ("contoso", "proj", "repo", "legacy-ssh", False)),
+        ]
+        for remote, expected in remote_cases:
+            parsed_result = run_script("parse-git-remote.py", stdin_text=remote)
+            expect_ok(parsed_result, "remote parser rejected a supported Azure DevOps remote")
+            parsed_remote = json.loads(parsed_result.stdout)
+            actual = (
+                parsed_remote["organization"],
+                parsed_remote["project"],
+                parsed_remote["repository_id"],
+                parsed_remote["remote_url_kind"],
+                parsed_remote["inferred_project"],
+            )
+            if actual != expected:
+                fail(f"remote parser mismatch: {actual}")
+        for invalid_remote in (
+            "https://github.com/o/r",
+            "git@github.com:o/r.git",
+            "file:///tmp/repo",
+            "https://dev.azure.com/contoso",
+            "",
+        ):
+            rejected_remote = run_script("parse-git-remote.py", stdin_text=invalid_remote)
+            expect_fail_with(rejected_remote, "INVALID_REMOTE_URL", "unsupported remote was not rejected")
+        secret_remote = run_script(
+            "parse-git-remote.py",
+            stdin_text="https://user:CREDENTIAL_SENTINEL_FOR_TEST@github.com/o/r",
+        )
+        expect_fail_with(secret_remote, "INVALID_REMOTE_URL", "non-ADO remote was not rejected")
+        if "CREDENTIAL_SENTINEL_FOR_TEST" in secret_remote.stdout or "CREDENTIAL_SENTINEL_FOR_TEST" in secret_remote.stderr:
+            fail("remote parser disclosed credential-bearing URL input")
+        ado_credential_remote = run_script(
+            "parse-git-remote.py",
+            stdin_text="https://user:CREDENTIAL_SENTINEL_FOR_TEST@dev.azure.com/contoso/proj/_git/repo",
+        )
+        expect_ok(ado_credential_remote, "credential-bearing Azure DevOps remote was rejected")
+        if "CREDENTIAL_SENTINEL_FOR_TEST" in ado_credential_remote.stdout or "CREDENTIAL_SENTINEL_FOR_TEST" in ado_credential_remote.stderr:
+            fail("remote parser echoed an embedded credential")
+        passed("Azure DevOps remote forms parse without credential disclosure")
+
+        find_spec = importlib.util.spec_from_file_location("find_pull_request_regression", SCRIPTS_DIR / "find-pull-request.py")
+        find_module = importlib.util.module_from_spec(find_spec)
+        assert find_spec.loader is not None
+        find_spec.loader.exec_module(find_module)
+        old_search = find_module.lib.http_get_json
+        requested_urls = []
+        find_module.lib.http_get_json = lambda url, **kwargs: (
+            requested_urls.append(url)
+            or {"value": [
+                {"pullRequestId": 9, "title": "late", "status": "active", "sourceRefName": "refs/heads/feature/x", "targetRefName": "refs/heads/main"},
+                {"pullRequestId": 4, "title": "FAKE_TEST_PAT_SENTINEL", "status": "active", "sourceRefName": "refs/heads/feature/x", "targetRefName": "refs/heads/main"},
+            ]}
+        )
+        captured = io.StringIO()
+        old_pat = os.environ.get("AZURE_DEVOPS_PAT")
+        os.environ["AZURE_DEVOPS_PAT"] = "FAKE_TEST_PAT_SENTINEL"
+        old_argv = sys.argv
+        try:
+            sys.argv = ["find-pull-request.py"]
+            with contextlib.redirect_stdout(captured):
+                find_module.main(["--organization", "org", "--project", "My Project", "--repository-id", "repo", "--source-branch", "feature/x"])
+        finally:
+            sys.argv = old_argv
+            find_module.lib.http_get_json = old_search
+            if old_pat is None:
+                os.environ.pop("AZURE_DEVOPS_PAT", None)
+            else:
+                os.environ["AZURE_DEVOPS_PAT"] = old_pat
+        search_result = json.loads(captured.getvalue())
+        if [candidate["pull_request_id"] for candidate in search_result["candidates"]] != [4, 9]:
+            fail("pull request candidates were not sorted by id")
+        if search_result["candidates"][0]["title"] != "[REDACTED]":
+            fail("pull request search did not redact the current PAT from a title")
+        if "refs%2Fheads%2Ffeature%2Fx" not in requested_urls[0] or "My%20Project" not in requested_urls[0]:
+            fail("pull request search URL did not encode branch or project")
+        passed("mocked branch-to-pull-request lookup encodes and sorts candidates")
+        old_search = find_module.lib.http_get_json
+        find_module.lib.http_get_json = lambda url, **kwargs: requested_urls.append(url) or {"value": []}
+        empty_output = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(empty_output):
+                find_module.main(["--organization", "org", "--project", "My Project", "--repository-id", "repo", "--source-branch", "refs/heads/feature/x", "--status", "completed", "--top", "500"])
+        finally:
+            find_module.lib.http_get_json = old_search
+        empty_result = json.loads(empty_output.getvalue())
+        if empty_result["candidate_count"] != 0 or empty_result["candidates"] != []:
+            fail("empty pull request search did not return an empty envelope")
+        if "searchCriteria.status=completed" not in requested_urls[-1] or "$top=100" not in requested_urls[-1]:
+            fail("status filter or top clamp was not applied")
+        if requested_urls[0] != requested_urls[-1].replace("searchCriteria.status=completed", "searchCriteria.status=active").replace("$top=100", "$top=20"):
+            fail("refs/heads branch prefix changed the search reference")
+        passed("empty lookup, branch normalization, status filter, and top clamp")
+        for branch in ("HEAD", "", "feature/\nnew"):
+            invalid_branch = run_script(
+                "find-pull-request.py",
+                "--organization", "org",
+                "--project", "project",
+                "--repository-id", "repo",
+                "--source-branch", branch,
+            )
+            expect_fail_with(invalid_branch, "code: MISSING_INPUT", "invalid branch was not rejected")
+        for flag, value in (("--organization", ".."), ("--organization", "a#b"), ("--project", "a/b"), ("--project", "a%2Fb"), ("--repository-id", "a?b")):
+            invalid_segment = run_script(
+                "find-pull-request.py",
+                "--organization", "org",
+                "--project", "project",
+                "--repository-id", "repo",
+                "--source-branch", "feature/x",
+                flag,
+                value,
+            )
+            expect_fail_with(invalid_segment, "code: MISSING_INPUT", "unsafe URL path segment was not rejected")
+
+        fetch_spec = importlib.util.spec_from_file_location("fetch_pr_comments_additions", SCRIPTS_DIR / "fetch-pr-comments.py")
+        fetch_module = importlib.util.module_from_spec(fetch_spec)
+        assert fetch_spec.loader is not None
+        fetch_spec.loader.exec_module(fetch_module)
+        flattened = fetch_module._flatten(
+            [{"id": 11, "status": "active", "comments": [{
+                "id": 12,
+                "commentType": "system",
+                "author": {"id": "reviewer-id", "displayName": "Reviewer", "uniqueName": "reviewer@example.com"},
+            }]}],
+            "org",
+            "project",
+            "repo",
+            5,
+            {"pullRequestId": 5, "createdBy": {"id": "author-id", "displayName": "Author", "uniqueName": "author@example.com"}, "isDraft": True},
+            [],
+            False,
+        )
+        comment = flattened["comments"][0]
+        if comment["comment_type"] != "system" or comment["author_id"] != "reviewer-id":
+            fail("flattened PR comment omitted type or stable commenter identity")
+        if flattened["pull_request"]["created_by"]["id"] != "author-id" or flattened["pull_request"]["is_draft"] is not True:
+            fail("flattened PR metadata omitted creator identity or draft state")
+        passed("flattened PR comments expose type and stable author identities")
 
 
 if __name__ == "__main__":
