@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Ask Lukas
-  version: "1.0.3"
+  version: "1.1.0"
   summary: Route any situation to the right skill or flow in this catalog.
   invocation: user
 ---
@@ -24,7 +24,7 @@ Before stating what a skill does or recommending a step be skipped, read that sk
 4. **Plan approved, ready to build** → `plan-execution` (inline or subagent modes), which pulls in `git-worktrees` for isolation, `test-driven-development` per task, and `debugging` when things fail.
 5. **About to claim it works** → `verification-before-completion` (evidence before claims).
 6. **Work is green and needs landing** → `branch-integration` (merge / PR / keep), then `pr-body` for the pull request write-up.
-7. **Code needs review** → `pr-review` (changesets) or `code-review` (deeper quality/security). **Received review feedback** → `review-response`.
+7. **Code needs review** → `pr-review` (changesets) or `code-review` (deeper quality/security). **Received review feedback** → `review-response`. For feedback on your own Azure DevOps PR, recommend the user-invoked `respond-to-pr-comments` flow; the human starts it.
 8. **Session went sideways or just ended** → `session-retro` (improve the agent's environment, not the code).
 
 ## On-ramps
@@ -33,6 +33,7 @@ Before stating what a skill does or recommending a step be skipped, read that sk
 - **Something's broken locally** → `debugging` (tight feedback loop first, root cause before fix).
 - **New or unfamiliar repository** → `codebase-onboarding` (conventions, entry points, hotspots).
 - **Azure DevOps work items or PRs** → `azure-devops` (guarded reads and writes).
+- **Reviewer comments on your own Azure DevOps PR** → `respond-to-pr-comments` (user-invoked; triage, fix, reply).
 - **Huge foggy effort, bigger than one session** → `decision-mapping` (chart decisions until the way is clear, then rejoin at `spec-writing`).
 - **Git surgery** (rebase, conflicts, stacked PRs, recovery) → `git-workflow`; **`gh stack` CLI stacks** → `gh-stack`.
 - **Switching sessions, harnesses, or collaborators mid-work** → `session-handoff`.

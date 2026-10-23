@@ -139,6 +139,12 @@
       "requires_network": false,
       "maintainer": "Lukas"
     },
+    "respond-to-pr-comments": {
+      "type": "hybrid",
+      "risk_level": "high",
+      "requires_network": true,
+      "maintainer": "Lukas"
+    },
     "session-handoff": {
       "type": "hybrid",
       "risk_level": "low",
