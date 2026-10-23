@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Review Response
-  version: "1.0.3"
+  version: "1.1.0"
   summary: Verify review feedback against the codebase, then implement or push back with technical reasoning; gate tests on explicit authorization and report unrun verification honestly.
 ---
 
@@ -22,7 +22,7 @@ Turn review feedback into verified, correctly-scoped changes. Technical correctn
 2. Restate each item as a technical requirement in your own words. If any item is unclear, stop and ask about it before implementing anything — items may be related, and partial understanding produces wrong implementations.
 3. Verify each item against codebase reality: is it technically correct for this codebase, does it break existing behavior, is there a reason the code is as it is, does it hold across supported platforms and versions?
 4. Evaluate scope: if a suggestion proposes "proper" infrastructure, check actual usage first — unused endpoints and unrequested features are YAGNI candidates to raise, not build.
-5. Respond per item: implement what is correct, ask about what is unclear, push back with technical reasoning on what is wrong.
+5. Respond per item: implement what is correct, answer questions directly, ask about what is unclear, push back with technical reasoning on what is wrong.
 6. Implement accepted items one at a time, in order: blocking issues (breaks, security) first, then simple fixes, then complex refactoring. Run an individual test for each fix and check for regressions only when the user explicitly authorizes that covered operation; otherwise apply the fix, record that tests were not run because authorization is missing, and hand off the completion claim to `verification-before-completion`.
 7. When replying to inline review threads on a forge, reply inside the comment thread, not as a new top-level comment.
 
@@ -33,9 +33,9 @@ Return exactly these fields:
 ```text
 feedback_items:
 - item: <the review point, restated as a technical requirement>
-  verdict: accepted|clarification-needed|declined
+  verdict: accepted|clarification-needed|declined|answered
   evidence: <codebase observation or question supporting the verdict>
-  action: <fix applied with observed test result when authorized, or fix applied with tests not run and the precise authorization gap; question asked, or pushback reasoning>
+  action: <fix applied with observed test result when authorized, or fix applied with tests not run and the precise authorization gap; evidence-backed direct answer for questions; question asked; or pushback reasoning>
 regressions:
 - <checks run across the touched area, or "none">
 open_risks:
@@ -43,6 +43,7 @@ open_risks:
 ```
 
 Every item MUST have a verdict; `accepted` requires an applied change and an action that records either an observed test result from explicitly authorized execution or that tests were not run because authorization was not provided. An unrun test MUST NOT be presented as verified. Never report an item accepted without the applied fix and an honest test status.
+An `answered` item MUST cite evidence and MUST NOT claim a code change.
 
 ## Handoffs
 
@@ -66,4 +67,5 @@ Every item MUST have a verdict; `accepted` requires an applied change and an act
 - [ ] No response contains performative agreement or gratitude phrases.
 - [ ] Pushback cites technical reasoning: what breaks, what context is missing, or what usage check failed.
 - [ ] Fixes were applied one at a time; each was individually tested when explicitly authorized, or explicitly marked tests not run with the authorization gap.
+- [ ] Reviewer questions received an evidence-backed answer and the `answered` verdict, with no code change claimed.
 - [ ] Unclear batched items blocked implementation until clarified.
