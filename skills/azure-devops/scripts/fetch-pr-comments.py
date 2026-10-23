@@ -12,7 +12,7 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
-from urllib.parse import quote
+from urllib.parse import quote, unquote
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _ado_lib as lib
@@ -66,12 +66,15 @@ def _flatten(threads: list, organization: str, project: str, repository_id: str,
         for comment in (thread.get("comments") or []):
             if not isinstance(comment, dict):
                 continue
-            author = comment.get("author") or {}
+            author = comment.get("author") if isinstance(comment.get("author"), dict) else {}
             comments.append(lib.redact_value({
                 "thread_id": thread.get("id"),
                 "comment_id": comment.get("id"),
                 "parent_comment_id": comment.get("parentCommentId"),
-                "author": author.get("displayName") if isinstance(author, dict) else None,
+                "author": author.get("displayName"),
+                "author_id": author.get("id"),
+                "author_unique_name": author.get("uniqueName"),
+                "comment_type": comment.get("commentType"),
                 "content": comment.get("content"),
                 "file_path": file_path,
                 "side": side,
@@ -98,6 +101,7 @@ def _flatten(threads: list, organization: str, project: str, repository_id: str,
             "url": item.get("url"),
         }))
     pull = pr if isinstance(pr, dict) else {}
+    created = pull.get("createdBy") if isinstance(pull.get("createdBy"), dict) else {}
     result = {
         "organization": organization,
         "project": project,
@@ -111,6 +115,12 @@ def _flatten(threads: list, organization: str, project: str, repository_id: str,
             "status": pull.get("status") if pull.get("status") is not None else None,
             "creation_date": pull.get("creationDate") if pull.get("creationDate") is not None else None,
             "closed_date": pull.get("closedDate") if pull.get("closedDate") is not None else None,
+            "created_by": {
+                "id": created.get("id"),
+                "display_name": created.get("displayName"),
+                "unique_name": created.get("uniqueName"),
+            },
+            "is_draft": pull.get("isDraft") if isinstance(pull.get("isDraft"), bool) else None,
         }),
         "linked_work_items": linked,
         "thread_count": len(threads),
@@ -170,7 +180,11 @@ def main(argv: list[str]) -> int:
         pr_id = int(pull_request_id)
     except (TypeError, ValueError):
         lib.emit_blocker("MISSING_INPUT", ["pull_request_id"], "Provide a valid Azure DevOps pull request URL or explicit identifiers.")
-    base = f"https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repository_id}/pullRequests/{pr_id}"
+    # Remote parsing returns decoded names; PR URL parsing preserves escapes.
+    org_path = quote(unquote(organization), safe="")
+    project_path = quote(unquote(project), safe="")
+    repo_path = quote(unquote(repository_id), safe="")
+    base = f"https://dev.azure.com/{org_path}/{project_path}/_apis/git/repositories/{repo_path}/pullRequests/{pr_id}"
     threads_response = _fetch(base + f"/threads?api-version={lib.API_VERSION}", "PR threads", f"Failed to fetch PR threads for pull request {pr_id} in {organization}/{project}/{repository_id} after bounded retries.")
     pr_response = _fetch(base + f"?api-version={lib.API_VERSION}", "pull request details", f"Failed to fetch pull request details for {pr_id} in {organization}/{project}/{repository_id} after bounded retries.")
     links_response = _fetch(base + f"/workitems?api-version={lib.API_VERSION}", "linked pull request work items", f"Failed to fetch linked pull request work items for {pr_id} in {organization}/{project}/{repository_id} after bounded retries.")
@@ -180,7 +194,7 @@ def main(argv: list[str]) -> int:
     details = []
     for offset in range(0, len(ids), 100):
         csv = ",".join(str(item) for item in ids[offset:offset + 100])
-        url = f"https://dev.azure.com/{organization}/{project}/_apis/wit/workitems?ids={quote(csv, safe='')}&fields=System.Title,System.WorkItemType,System.State&api-version={lib.API_VERSION}"
+        url = f"https://dev.azure.com/{org_path}/{project_path}/_apis/wit/workitems?ids={quote(csv, safe='')}&fields=System.Title,System.WorkItemType,System.State&api-version={lib.API_VERSION}"
         batch = _fetch(url, "linked work item details", f"Failed to fetch linked work item details for {pr_id} in {organization}/{project}/{repository_id} after bounded retries.")
         if isinstance(batch, dict): details.extend(batch.get("value") or [])
     threads = threads_response.get("value", []) if isinstance(threads_response, dict) else []

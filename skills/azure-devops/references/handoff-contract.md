@@ -29,9 +29,13 @@ Always include:
 - `work_item.history` is an array of update records with `update_id`, `revision`, `revised_by`, `revised_date`, and `changed_fields`; each changed field has a `reference_name` and only the old/new values Azure DevOps supplied.
 - `work_item.related_work` is an array of current `System.LinkTypes.Related` links with relation type, target URL, and relation attributes. Other relation types are excluded.
 - `pr_comments[*].file_path` normalized to repo-root-relative format starting with `/` when present.
+- `pr_comments[*].author_id`, `author_unique_name`, and `comment_type` are optional; absent values remain valid for older handoffs.
+- `pull_request.created_by` and `pull_request.is_draft` are optional; `created_by` carries the ADO creator ID, display name, and unique name when available.
+- Consumer logic that distinguishes PR-author comments MUST compare stable identity IDs when both are available, not display names alone.
 
 ## Identifier Types
 
 - `source.work_item_id` and `work_item.id` are both integer values when known, otherwise `null`.
 - `source.pull_request_id` is an integer when known, otherwise `null`.
 - Scripts must not emit stringified numeric identifiers in the handoff contract.
+- `source.project` and `source.repository_id` accept decoded names containing spaces and Unicode, as well as escaped names from PR URLs. Slashes, backslashes, and whitespace other than ordinary spaces remain invalid. URL builders, not handoff producers, own path-segment encoding.

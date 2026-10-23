@@ -27,7 +27,7 @@ Workflow authorization gates still apply.
 <!-- generated:skill-catalog -->
 | Skill | Use it for |
 | --- | --- |
-| [azure-devops](skills/azure-devops/) | Read and safely write selected Azure DevOps work items and PR artifacts with deterministic dry-run, approval, and validation gates. |
+| [azure-devops](skills/azure-devops/) | Read and safely write selected Azure DevOps work items and PR artifacts, and locate a branch's active PR, with deterministic dry-run, approval, and validation gates. |
 | [concise-output](skills/concise-output/) | Deliver accurate, action-first responses with concise prose and explicit next steps. |
 | [code-review](skills/code-review/) | Improve correctness, readability, maintainability, performance, and legacy modernization with minimal mutation. |
 | [task-planning](skills/task-planning/) | Break work into atomic, shippable tasks with explicit dependencies, critical path, estimates, and definitions of done. |
@@ -42,6 +42,7 @@ Workflow authorization gates still apply.
 | [incident-response](skills/incident-response/) | Respond to live production incidents with mitigation-first triage, disciplined timelines, clear comms, and durable follow-ups. |
 | [pr-review](skills/pr-review/) | Review pull requests and changesets against the diff, deliver actionable author-facing findings, and issue a clear verdict. |
 | [review-response](skills/review-response/) | Verify review feedback against the codebase, then implement or push back with technical reasoning; gate tests on explicit authorization and report unrun verification honestly. |
+| [respond-to-pr-comments](skills/respond-to-pr-comments/) | Triage reviewer threads on your Azure DevOps PR, apply approved fixes as commits, and post replies that cite pushed commits, with approval before changes, pushes, and posts. |
 | [skill-forge](skills/skill-forge/) | Create and refactor Agent Skills with explicit static validation, behavioral evaluation, and safe packaging. |
 | [debugging](skills/debugging/) | Find and verify root causes of local development failures through deterministic reproduction and evidence. |
 | [git-workflow](skills/git-workflow/) | Plan safe, disciplined Git history, branching, commit, rebase, recovery, and stacked PR operations. |
@@ -68,7 +69,7 @@ Workflow authorization gates still apply.
 Skills come in two classes, recorded as `invocation` in each skill's `metadata`:
 
 - **Model-invoked** (the default) — the agent reaches for them autonomously when the task fits. Their descriptions carry the triggering burden.
-- **User-invoked** — orchestrators that fire only when you name them: `ask-lukas`, `session-handoff`, `session-retro`, `decision-mapping`, `guided-learning`. User-invoked skills compose model-invoked ones, never each other.
+- **User-invoked** — orchestrators that fire only when you name them: `ask-lukas`, `respond-to-pr-comments`, `session-handoff`, `session-retro`, `decision-mapping`, `guided-learning`. User-invoked skills compose model-invoked ones, never each other.
 
 When you can't remember which skill fits, ask the router: `ask-lukas`.
 
@@ -92,11 +93,11 @@ When you can't remember which skill fits, ask the router: `ask-lukas`.
 ## Validation runners
 
 <!-- generated:readme-validation-runners -->
-Skills with `tests/run-validation.py` (15 of 34):
+Skills with `tests/run-validation.py` (15 of 35):
 
 `ask-lukas`, `azure-devops`, `code-review`, `codebase-onboarding`, `debugging`, `discovery`, `git-workflow`, `incident-response`, `operations`, `pr-review`, `skill-forge`, `spec-writing`, `task-planning`, `technical-writing`, `test-strategy`.
 
-Skills without a runner (19): `branch-integration`, `codebase-design`, `concise-output`, `decision-mapping`, `domain-modeling`, `gh-stack`, `git-worktrees`, `guided-learning`, `plan-execution`, `pr-body`, `prototype`, `research`, `review-response`, `session-handoff`, `session-retro`, `setup-wizard`, `ste-clarity`, `test-driven-development`, `verification-before-completion`.
+Skills without a runner (20): `branch-integration`, `codebase-design`, `concise-output`, `decision-mapping`, `domain-modeling`, `gh-stack`, `git-worktrees`, `guided-learning`, `plan-execution`, `pr-body`, `prototype`, `research`, `respond-to-pr-comments`, `review-response`, `session-handoff`, `session-retro`, `setup-wizard`, `ste-clarity`, `test-driven-development`, `verification-before-completion`.
 <!-- /generated:readme-validation-runners -->
 
 Execute a runner only when test execution is explicitly authorized. Restore, build, and packaging remain independently gated. There is no repository-wide build or test command in this tree.

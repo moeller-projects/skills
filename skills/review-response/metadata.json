@@ -1,7 +1,7 @@
 {
   "name": "review-response",
   "title": "Review Response",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "summary": "Verify review feedback against the codebase, then implement or push back with technical reasoning; gate tests on explicit authorization and report unrun verification honestly.",
   "invocation": "model",
   "compatibility": [

@@ -46,7 +46,13 @@
     "target_branch": "<refs/heads/target_or_empty>",
     "status": null,
     "creation_date": null,
-    "closed_date": null
+    "closed_date": null,
+    "created_by": {
+      "id": null,
+      "display_name": null,
+      "unique_name": null
+    },
+    "is_draft": null
   },
   "linked_work_items": []
 }

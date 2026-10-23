@@ -91,6 +91,24 @@ def require_pat() -> str:
         )
     return pat
 
+def quote_segment(value: str, *, name: str) -> str:
+    """Validate and percent-encode one Azure DevOps URL path segment."""
+    text = value if isinstance(value, str) else ""
+    forbidden = set("/\\?#%")
+    invalid = (
+        not text.strip()
+        or len(text) > 256
+        or text in (".", "..")
+        or any(ord(ch) < 32 or ord(ch) == 127 or ch in forbidden for ch in text)
+    )
+    if invalid:
+        emit_blocker(
+            "MISSING_INPUT",
+            [f"valid {name}"],
+            f"Provide a valid Azure DevOps {name} (no slashes, query characters, percent signs, or control characters).",
+        )
+    return urllib.parse.quote(text, safe="")
+
 
 def redact_text(text: str | None) -> str | None:
     """Redact bearer tokens, supported PAT forms, and the current PAT recursively."""

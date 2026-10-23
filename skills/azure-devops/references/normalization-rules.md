@@ -15,6 +15,7 @@
 - Flatten thread comments into individual comment records.
 - Preserve `thread_id`, `comment_id`, author, content, file path, side, line range, and timestamps.
 - Normalize `file_path` to a repository-root-relative path that always starts with `/`.
+- Preserve each comment's optional `author_id`, `author_unique_name`, and `comment_type`; older payloads may omit them.
 - Mark deleted comments with `comment_is_deleted: true`; do not drop them silently.
 
 ## PR Metadata Fields
