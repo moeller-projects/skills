@@ -62,6 +62,7 @@ Workflow authorization gates still apply.
 | [decision-mapping](skills/decision-mapping/) | Chart a large, uncertain effort as a decision map, resolve open questions, and hand off a clear route to specification. |
 | [guided-learning](skills/guided-learning/) | Teach a topic across sessions with a stateful workspace of lessons, references, practice, and learning records. |
 | [ask-lukas](skills/ask-lukas/) | Route any situation to the right skill or flow in this catalog. |
+| [implement-workitem](skills/implement-workitem/) | Implement an Azure DevOps work item through approved spec and plan checkpoints, an isolated branch, small Conventional Commits, and an approved push and draft PR into its recorded base. |
 <!-- /generated:skill-catalog -->
 
 ## Invocation classes
@@ -69,7 +70,7 @@ Workflow authorization gates still apply.
 Skills come in two classes, recorded as `invocation` in each skill's `metadata`:
 
 - **Model-invoked** (the default) — the agent reaches for them autonomously when the task fits. Their descriptions carry the triggering burden.
-- **User-invoked** — orchestrators that fire only when you name them: `ask-lukas`, `respond-to-pr-comments`, `session-handoff`, `session-retro`, `decision-mapping`, `guided-learning`. User-invoked skills compose model-invoked ones, never each other.
+- **User-invoked** — orchestrators that fire only when you name them: `ask-lukas`, `implement-workitem`, `respond-to-pr-comments`, `session-handoff`, `session-retro`, `decision-mapping`, `guided-learning`. User-invoked skills compose model-invoked ones, never each other.
 
 When you can't remember which skill fits, ask the router: `ask-lukas`.
 
@@ -93,11 +94,11 @@ When you can't remember which skill fits, ask the router: `ask-lukas`.
 ## Validation runners
 
 <!-- generated:readme-validation-runners -->
-Skills with `tests/run-validation.py` (15 of 35):
+Skills with `tests/run-validation.py` (15 of 36):
 
 `ask-lukas`, `azure-devops`, `code-review`, `codebase-onboarding`, `debugging`, `discovery`, `git-workflow`, `incident-response`, `operations`, `pr-review`, `skill-forge`, `spec-writing`, `task-planning`, `technical-writing`, `test-strategy`.
 
-Skills without a runner (20): `branch-integration`, `codebase-design`, `concise-output`, `decision-mapping`, `domain-modeling`, `gh-stack`, `git-worktrees`, `guided-learning`, `plan-execution`, `pr-body`, `prototype`, `research`, `respond-to-pr-comments`, `review-response`, `session-handoff`, `session-retro`, `setup-wizard`, `ste-clarity`, `test-driven-development`, `verification-before-completion`.
+Skills without a runner (21): `branch-integration`, `codebase-design`, `concise-output`, `decision-mapping`, `domain-modeling`, `gh-stack`, `git-worktrees`, `guided-learning`, `implement-workitem`, `plan-execution`, `pr-body`, `prototype`, `research`, `respond-to-pr-comments`, `review-response`, `session-handoff`, `session-retro`, `setup-wizard`, `ste-clarity`, `test-driven-development`, `verification-before-completion`.
 <!-- /generated:readme-validation-runners -->
 
 Execute a runner only when test execution is explicitly authorized. Restore, build, and packaging remain independently gated. There is no repository-wide build or test command in this tree.

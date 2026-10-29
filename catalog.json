@@ -97,6 +97,12 @@
       "requires_network": false,
       "maintainer": "Lukas"
     },
+    "implement-workitem": {
+      "type": "hybrid",
+      "risk_level": "high",
+      "requires_network": true,
+      "maintainer": "Lukas"
+    },
     "operations": {
       "type": "hybrid",
       "risk_level": "high",
