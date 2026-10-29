@@ -128,7 +128,7 @@ def main(argv: list[str]) -> int:
       "normalization":{"status":status, "missing_fields":missing, "warnings":warnings, "html_stripped":True, "secret_redactions_applied":True},
       "work_item":work_item, "pr_comments":pr_comments, "pull_request":pull_request, "linked_work_items":linked_work_items}
     validator = Path(__file__).with_name("validate-handoff.py")
-    result = subprocess.run([sys.executable, str(validator)], input=json.dumps(contract), text=True, capture_output=True)
+    result = subprocess.run([sys.executable, str(validator)], input=json.dumps(contract), text=True, capture_output=True, shell=False)
     if result.stdout: sys.stdout.write(result.stdout)
     if result.stderr: sys.stderr.write(result.stderr)
     return result.returncode

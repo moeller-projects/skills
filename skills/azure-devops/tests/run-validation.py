@@ -20,6 +20,7 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+sys.dont_write_bytecode = True
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
 SCRIPTS_DIR = SKILL_DIR / "scripts"
@@ -27,7 +28,11 @@ EXAMPLES_DIR = SKILL_DIR / "assets" / "examples"
 GOLDENS_PATH = SKILL_DIR / "tests" / "goldens.json"
 sys.path.insert(0, str(SCRIPTS_DIR))
 
-NO_PAT_ENV = {k: v for k, v in os.environ.items() if k != "AZURE_DEVOPS_PAT"}
+NO_PAT_ENV = {
+    key: os.environ[key]
+    for key in ("PATH", "SYSTEMROOT", "WINDIR", "TEMP", "TMP", "TMPDIR")
+    if key in os.environ
+}
 
 SCRIPT_TIMEOUT_SECONDS = 30
 
@@ -48,12 +53,13 @@ def run_script(
     env: dict | None = None,
 ) -> subprocess.CompletedProcess:
     return subprocess.run(
-        [sys.executable, str(SCRIPTS_DIR / name), *args],
+        [sys.executable, "-B", str(SCRIPTS_DIR / name), *args],
         input=stdin_text,
         capture_output=True,
         text=True,
-        env=env,
+        env=NO_PAT_ENV if env is None else env,
         timeout=SCRIPT_TIMEOUT_SECONDS,
+        shell=False,
     )
 
 
@@ -550,7 +556,7 @@ def main() -> None:
 
         traversal = run_script(
             "create-pr-comment.py", *base_comment_args,
-            "--file-path", "/src/../secrets.txt", "--line", "1",
+            "--file-path", "/src/../payload.txt", "--line", "1",
         )
         expect_fail_with(
             traversal,
@@ -670,14 +676,18 @@ def main() -> None:
             {"comments": [{"id": 1, "text": "first"}], "continuationToken": "next"},
             {"comments": [{"id": 2, "text": "second"}]},
         ])
+        requested_urls = []
         old_fetch = fetch_module.lib.http_get_json
         old_require = fetch_module.lib.require_pat
-        fetch_module.lib.http_get_json = lambda *args, **kwargs: next(responses)
+        def mock_work_item_get(url, *args, **kwargs):
+            requested_urls.append(url)
+            return next(responses)
+        fetch_module.lib.http_get_json = mock_work_item_get
         fetch_module.lib.require_pat = lambda: "test"
         captured = io.StringIO()
         old_argv = sys.argv
         try:
-            sys.argv = ["fetch-work-item.py", "org", "project", "7"]
+            sys.argv = ["fetch-work-item.py", "org", "project name", "7"]
             with contextlib.redirect_stdout(captured):
                 fetch_module.main()
         finally:
@@ -687,7 +697,9 @@ def main() -> None:
         fetched = json.loads(captured.getvalue())
         if [item["id"] for item in fetched["comments"]] != [1, 2]:
             fail("work-item comment continuation pagination regression")
-        passed("mocked work-item fetch preserves two comment pages")
+        if not requested_urls or any("/org/project%20name/" not in url for url in requested_urls):
+            fail("work-item organization/project path segments were not safely encoded")
+        passed("mocked work-item fetch preserves comment pagination and encodes path segments")
         malformed = iter([{"id": 7, "fields": {}}, {"value": []}, {}])
         fetch_module.lib.http_get_json = lambda *args, **kwargs: next(malformed)
         try:

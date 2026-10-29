@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import html
 import json
+import os
 import sys
 from pathlib import Path
 from urllib.parse import quote
@@ -22,7 +23,7 @@ def main() -> None:
     if "--help" in sys.argv[1:]:
         print("usage: resolve-ado-user.py [--organization ORG] --email EMAIL")
         return
-    organization = __import__("os").environ.get("ADO_ORGANIZATION", "")
+    organization = os.environ.get("ADO_ORGANIZATION", "")
     email = ""
     args = sys.argv[1:]
     i = 0

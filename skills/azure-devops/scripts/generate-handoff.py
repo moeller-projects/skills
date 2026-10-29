@@ -85,13 +85,13 @@ def main(argv: list[str]) -> int:
             fetch = script_dir / "fetch-work-item.py"
             normalize = script_dir / "normalize-work-item.py"
             with raw_file.open("w", encoding="utf-8") as out:
-                result = subprocess.run([sys.executable, str(fetch), organization, project, work_item_id], stdout=out, stderr=subprocess.PIPE, text=True)
+                result = subprocess.run([sys.executable, str(fetch), organization, project, work_item_id], stdout=out, stderr=subprocess.PIPE, text=True, shell=False)
             if result.returncode and "BLOCKER:" in result.stderr:
                 sys.stderr.write(result.stderr)
                 return result.returncode
             if result.returncode == 0:
                 with normalized_file.open("w", encoding="utf-8") as out, raw_file.open("r", encoding="utf-8") as inp:
-                    result = subprocess.run([sys.executable, str(normalize)], stdin=inp, stdout=out, stderr=subprocess.PIPE, text=True)
+                    result = subprocess.run([sys.executable, str(normalize)], stdin=inp, stdout=out, stderr=subprocess.PIPE, text=True, shell=False)
                 if result.returncode:
                     if mode == "work-item":
                         if result.stderr:
@@ -120,7 +120,7 @@ def main(argv: list[str]) -> int:
             comments_file = tmp_dir / "pr-comments.json"
             fetch = script_dir / "fetch-pr-comments.py"
             with comments_file.open("w", encoding="utf-8") as out:
-                result = subprocess.run([sys.executable, str(fetch), "--organization", organization, "--project", project, "--repository-id", repository_id, "--pull-request-id", str(pull_request_id)], stdout=out, stderr=subprocess.PIPE, text=True)
+                result = subprocess.run([sys.executable, str(fetch), "--organization", organization, "--project", project, "--repository-id", repository_id, "--pull-request-id", str(pull_request_id)], stdout=out, stderr=subprocess.PIPE, text=True, shell=False)
             if result.returncode and "BLOCKER:" in result.stderr:
                 sys.stderr.write(result.stderr)
                 return result.returncode
@@ -151,7 +151,7 @@ def main(argv: list[str]) -> int:
                 "No requested Azure DevOps source could be fetched.",
                 "Resolve the source fetch failure and retry; no partial handoff was emitted.",
             )
-        result = subprocess.run(args)
+        result = subprocess.run(args, shell=False)
         return result.returncode
 
 

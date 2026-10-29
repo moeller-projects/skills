@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import json
 import sys
-from urllib.parse import quote
+from urllib.parse import quote, unquote
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -26,10 +26,14 @@ def main() -> None:
         missing = ["org", "project", "work item id"][len(args):]
         lib.emit_blocker("MISSING_INPUT", missing, "Provide organization, project, and work item ID before fetching.")
     org, project, work_item_id = args[:3]
+    org_path = lib.quote_segment(unquote(org), name="organization")
+    project_path = lib.quote_segment(unquote(project), name="project")
+    if not work_item_id.isdecimal():
+        lib.emit_blocker("MISSING_INPUT", ["numeric work item id"], "Provide a numeric Azure DevOps work item ID.")
     base_url = args[3] if len(args) > 3 else "https://dev.azure.com"
     pat = lib.require_pat()
     del pat
-    url = f"{base_url}/{org}/{project}/_apis/wit/workitems/{work_item_id}?%24expand=Relations&api-version={lib.API_VERSION}"
+    url = f"{base_url}/{org_path}/{project_path}/_apis/wit/workitems/{work_item_id}?%24expand=Relations&api-version={lib.API_VERSION}"
     payload = lib.http_get_json(
         url,
         label=f"work item {work_item_id} from {org}/{project}",
@@ -42,8 +46,7 @@ def main() -> None:
     skip = 0
     while True:
         updates_url = (
-            f"{base_url}/{org}/{project}/_apis/wit/workitems/{work_item_id}/updates"
-            f"?%24top={page_size}&%24skip={skip}&api-version={lib.API_VERSION}"
+            f"{base_url}/{org_path}/{project_path}/_apis/wit/workitems/{work_item_id}/updates"
         )
         updates_payload = lib.http_get_json(
             updates_url,
@@ -69,7 +72,7 @@ def main() -> None:
     continuation: str | None = None
     while True:
         suffix = "&$top=200" + (f"&continuationToken={quote(continuation, safe='')}" if continuation else "")
-        comments_url = f"{base_url}/{org}/{project}/_apis/wit/workItems/{work_item_id}/comments?api-version=7.1-preview.4{suffix}"
+        comments_url = f"{base_url}/{org_path}/{project_path}/_apis/wit/workItems/{work_item_id}/comments?api-version=7.1-preview.4{suffix}"
         comments_payload = lib.http_get_json(
             comments_url,
             label=f"comments for work item {work_item_id} from {org}/{project}",
