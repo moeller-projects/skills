@@ -5,6 +5,7 @@ import importlib.util
 import sys
 import unittest
 from pathlib import Path
+sys.dont_write_bytecode = True
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "validate-evaluations.py"
 spec = importlib.util.spec_from_file_location("evaluation_validator", SCRIPT)

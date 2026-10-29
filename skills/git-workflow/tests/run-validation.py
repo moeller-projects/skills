@@ -4,14 +4,20 @@
 Run only when test execution is explicitly authorized.
 """
 
+import importlib.util
 import sys
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
-namespace = {"__name__": "validator"}
-source = (SKILL_DIR / "scripts" / "validate-output.py").read_text(encoding="utf-8")
-exec(compile(source, str(SKILL_DIR / "scripts" / "validate-output.py"), "exec"), namespace)
-validate = namespace["validate"]
+sys.dont_write_bytecode = True
+spec = importlib.util.spec_from_file_location(
+    "git_workflow_validator", SKILL_DIR / "scripts" / "validate-output.py"
+)
+if spec is None or spec.loader is None:
+    raise RuntimeError("could not load Git Workflow validator")
+validator = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(validator)
+validate = validator.validate
 
 VALID = """context:
 - goal: split parser work

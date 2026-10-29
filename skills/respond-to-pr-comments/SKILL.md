@@ -1,6 +1,6 @@
 ---
 name: respond-to-pr-comments
-description: User-invoked flow for triaging reviewer feedback on your own Azure DevOps pull request, applying approved fixes as commits, and posting approved thread replies. Use `review-response` directly for pasted feedback, another forge, or review of someone else's PR.
+description: User-invoked flow for triaging reviewer threads on your own Azure DevOps PR, applying approved fixes as commits, and posting approved thread replies. Use `review-response` directly for pasted feedback, another forge, or review of someone else's PR.
 license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:

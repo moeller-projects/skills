@@ -17,4 +17,4 @@ Commands, paths, flags, and workflow steps must match the repository or system r
 
 ## Anti-Pattern
 
-Copying stale commands or guessed paths into docs without verification.
+Treating stale commands or guessed paths as current guidance.

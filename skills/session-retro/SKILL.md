@@ -1,6 +1,6 @@
 ---
 name: session-retro
-description: User-invoked only: Turn a completed session's observed failures into improvements to the agent environment—navigation, checks, standards, tooling, and steering.
+description: "User-invoked only: Turn a completed session's observed failures into improvements to the agent environment—navigation, checks, standards, tooling, and steering."
 license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:

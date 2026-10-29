@@ -13,6 +13,8 @@ import importlib.util
 import sys
 from pathlib import Path
 
+sys.dont_write_bytecode = True
+
 SKILL_DIR = Path(__file__).resolve().parents[1]
 _validator_spec = importlib.util.spec_from_file_location(
     "validate_output", SKILL_DIR / "scripts" / "validate-output.py"

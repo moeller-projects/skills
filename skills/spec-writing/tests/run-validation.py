@@ -9,13 +9,22 @@ Side effects: None.
 Requires Python 3.9+, standard library only. Run with: python tests/run-validation.py
 """
 
+import importlib.util
 import sys
 from pathlib import Path
 
+sys.dont_write_bytecode = True
+
 SKILL_DIR = Path(__file__).resolve().parents[1]
 SCRIPTS_DIR = SKILL_DIR / "scripts"
-validate_output = {"__name__": "validate_output"}
-exec((SCRIPTS_DIR / "validate-output.py").read_text(encoding="utf-8"), validate_output)
+_validator_spec = importlib.util.spec_from_file_location(
+    "spec_writing_validator", SCRIPTS_DIR / "validate-output.py"
+)
+if _validator_spec is None or _validator_spec.loader is None:
+    raise ImportError("unable to load validate-output.py")
+_validator_module = importlib.util.module_from_spec(_validator_spec)
+_validator_spec.loader.exec_module(_validator_module)
+validate = _validator_module.validate
 
 
 def passed(message: str) -> None:
@@ -28,7 +37,7 @@ def fail(message: str) -> None:
 
 
 def check(text: str, expected: bool, message: str) -> None:
-    actual = not validate_output["validate"](text)
+    actual = not validate(text)
     if actual != expected:
         fail(message)
 

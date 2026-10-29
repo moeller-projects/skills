@@ -644,13 +644,13 @@ RULE_IDS = {rule_id for rule_id, *_ in RULES} | {
 
 
 def _rule_list(value):
-    rules = {r for r in value.split(",") if r}
-    unknown = rules - RULE_IDS
+    selected_rule_ids = {rule_id for rule_id in value.split(",") if rule_id}
+    unknown = selected_rule_ids - RULE_IDS
     if unknown:
         raise argparse.ArgumentTypeError(
             f"unknown rule(s): {', '.join(sorted(unknown))}. "
             f"Known rules: {', '.join(sorted(RULE_IDS))}")
-    return rules
+    return selected_rule_ids
 
 
 def _non_negative_int(value):

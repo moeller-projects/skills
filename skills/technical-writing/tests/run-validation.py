@@ -8,15 +8,21 @@ Side effects: None.
 
 Requires Python 3.9+, standard library only. Run with: python tests/run-validation.py
 """
+import importlib.util
 import tempfile
 import sys
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
-validator_source = (SKILL_DIR / "scripts" / "validate-output.py").read_text(encoding="utf-8")
-validator_namespace: dict[str, object] = {"__file__": str(SKILL_DIR / "scripts" / "validate-output.py")}
-exec(compile(validator_source, str(SKILL_DIR / "scripts" / "validate-output.py"), "exec"), validator_namespace)
-validate = validator_namespace["validate"]
+sys.dont_write_bytecode = True
+spec = importlib.util.spec_from_file_location(
+    "technical_writing_validator", SKILL_DIR / "scripts" / "validate-output.py"
+)
+if spec is None or spec.loader is None:
+    raise RuntimeError("could not load Technical Writing validator")
+validator = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(validator)
+validate = validator.validate
 
 
 def passed(message: str) -> None:
@@ -136,7 +142,7 @@ gaps:
         artifact_contract = html_doc.replace("weekly-engineering-update.html", str(valid_path))
         if validate(artifact_contract, str(valid_path)):
             fail("valid supplied HTML artifact rejected")
-        passed("validator accepts actual full HTML with attributes, style, and print rules")
+        passed("validator accepts actual full HTML with attributes and print-specific styles")
         mismatch_errors = validate(artifact_contract, str(invalid_path))
         if not any("does not match declared" in error for error in mismatch_errors):
             fail("artifact path mismatch was not rejected")

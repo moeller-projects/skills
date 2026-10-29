@@ -20,4 +20,4 @@ Untrusted input MUST NEVER reach an interpreter — SQL/NoSQL engine, OS shell, 
 
 ## Anti-Pattern
 
-`db.query("SELECT * FROM users WHERE id = " + req.params.id)` — input concatenated into SQL. `subprocess.run(f"convert {filename}", shell=True)` — input interpolated into a shell command.
+Avoid examples that execute interpolated shell command strings. For example, passing a filename inside a command string to a shell lets shell syntax in the filename alter the command; pass arguments as a list with shell execution disabled instead.

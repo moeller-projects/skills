@@ -45,7 +45,7 @@ Note: full sentences inside steps, compression only in framing prose.
 
 > `npm run build` — fails at `src/db/client.ts:12`.
 > Cause: `@prisma/client` 6.x, schema generated for 5.x.
-> Fix: `npm install @prisma/client@5 && npx prisma generate`
+Fix: `npm install @prisma/client@5 && npx prisma@5 generate`
 > Verify: `npm run build` — expect exit 0.
 
 ## Question

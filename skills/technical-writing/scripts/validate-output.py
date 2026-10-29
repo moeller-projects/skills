@@ -80,7 +80,7 @@ def _validate_html_artifact(path: str) -> list[str]:
     if "lang" not in html_attrs:
         errors.append("html artifact <html> must declare lang")
     if not any("@" in style and "print" in style.lower() for style in parser.styles):
-        errors.append("html artifact style must include print rules")
+        errors.append("html artifact style must include print-specific styles")
     if parser.external:
         errors.append("html artifact must be self-contained; external resource found")
     styles = "\n".join(parser.styles)

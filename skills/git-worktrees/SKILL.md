@@ -26,7 +26,7 @@ git rev-parse --show-superproject-working-tree 2>/dev/null   # submodule guard
 ```
 
    If `GIT_DIR != GIT_COMMON` and not inside a submodule, you are already in a linked worktree — do not create another; report the path and branch and skip to step 4. A submodule checkout is a normal repo, not isolation.
-2. If not isolated, get consent before creating anything — unless the user already declared a worktree preference, in which case honor it without asking. If declined, work in place.
+2. If not isolated, create a worktree only when the user explicitly requested one or consented to its creation. A location preference alone is not consent; ask before creating. If declined, work in place.
 3. Create the workspace, in this order of preference:
    - Native harness tool first (an `EnterWorktree`-style tool, a `/worktree` command, or a `--worktree` flag). Native tools own placement, branching, and cleanup; bypassing them creates phantom state the harness cannot see or manage.
    - Only with no native tool available, `git worktree add`. Directory choice: explicit user preference beats an existing project-local `.worktrees/` (preferred) or `worktrees/`, which beats the `.worktrees/` default at project root. For a project-local location, verify the directory is ignored (`git check-ignore`). If it is not ignored, request separate explicit consent before modifying the current checkout's `.gitignore`; do not commit that change without explicit consent. An external location is not subject to the repository's ignore rules and needs no ignore check or `.gitignore` consent.
@@ -81,7 +81,7 @@ notes:
 - [ ] Isolation was detected with the git-dir checks, not assumed.
 - [ ] The submodule guard ran before concluding "already in a worktree".
 - [ ] An existing isolated workspace was reused, not duplicated.
-- [ ] Consent was obtained, or a declared preference was honored without asking.
+- [ ] The user explicitly requested a worktree or consented to its creation; a location preference alone was not treated as consent.
 - [ ] A native harness tool was preferred over manual `git worktree add`.
 - [ ] Dependency installation/restores, builds, and baseline tests were each run only with explicit authorization, or reported not run.
 - [ ] A red baseline was escalated to the user, not silently overridden.

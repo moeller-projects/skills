@@ -112,7 +112,7 @@ See `tests/validation-checklist.md` for the full checklist.
 - `tests/run-validation.py` — run only when test execution is explicitly authorized to validate skill output.
 - `tests/validation-checklist.md` — read when reviewing the skill's validation requirements.
 - `assets/examples/html-report.md` — read when producing a standalone HTML artifact.
-- `assets/templates/html-document.html` — read when selecting HTML output; escape substituted title/header text as HTML text, and use the template's inline style/print rules for self-containment.
+- `assets/templates/html-document.html` — read when selecting HTML output; escape substituted title/header text as HTML text, and use the template's inline styles for screen and print rendering.
 
 ## References
 

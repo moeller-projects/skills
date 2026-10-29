@@ -8,8 +8,11 @@ Side effects: None.
 Requires Python 3.9+, standard library only. Run with: python tests/run-validation.py
 """
 
+import importlib.util
 import sys
 from pathlib import Path
+
+sys.dont_write_bytecode = True
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
 
@@ -47,9 +50,12 @@ def main() -> None:
         require_file(required)
     passed("discovery required files exist")
 
-    namespace: dict[str, object] = {"__name__": "validate_output", "__file__": str(validator_path)}
-    exec(validator_path.read_text(encoding="utf-8"), namespace)
-    validate_text = namespace["validate_text"]
+    spec = importlib.util.spec_from_file_location("validate_output", validator_path)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"cannot load validator at {validator_path}")
+    validator = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(validator)
+    validate_text = validator.validate_text
     valid_output = """problem:
 - Need a rollout plan for adding real-time notifications.
 

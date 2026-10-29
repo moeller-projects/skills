@@ -40,6 +40,7 @@ def main() -> None:
             encoding="utf-8",
             capture_output=True,
             check=False,
+            shell=False,
         )
 
     valid_output = """risk:
@@ -81,15 +82,15 @@ security:
     result = run_validator(invalid_output)
     validation = json.loads(result.stdout)
     if result.returncode == 0 or validation["valid"] or not validation["errors"] or result.stderr:
-        fail("production step without its own approval was accepted")
-    passed("validator rejects production steps without approval")
+        fail("production step missing its required authorization was accepted")
+    passed("validator rejects production steps missing authorization")
     destructive_without_gate = valid_output.replace(
         "1. Apply the ingress manifest in staging.",
-        "1. Delete the staging deployment without human approval."
+        "1. Delete the staging deployment before the human authorizes the operation."
     )
     result = run_validator(destructive_without_gate)
     if result.returncode == 0 or json.loads(result.stdout)["valid"]:
-        fail("destructive step without its own approval was accepted")
+        fail("destructive step missing its required authorization was accepted")
     passed("destructive approval is checked per step")
     missing_rollback = valid_output.replace(
         "1. Apply the ingress manifest in staging.",

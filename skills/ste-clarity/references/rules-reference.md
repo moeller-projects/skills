@@ -20,7 +20,7 @@ ASD-STE100 is a controlled natural language, first released in 1986 by what is
 now ASD (the AeroSpace and Defense Industries Association of Europe). European
 airlines — mostly staffed by non-native English speakers — asked for
 maintenance documentation that could not be misread, because a misread
-instruction on an aircraft can kill people. The standard is maintained by the
+instruction on an aircraft can lead to a fatal maintenance error. The standard is maintained by the
 Simplified Technical English Maintenance Group (STEMG), has been free to
 download since Issue 6 (2013), and is now at Issue 9 (January 2025).
 

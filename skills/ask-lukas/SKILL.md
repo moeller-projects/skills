@@ -1,6 +1,6 @@
 ---
 name: ask-lukas
-description: User-invoked only: Ask which skill or flow fits your situation. A router over the skills in this catalog — it helps you choose the right route when you know what you want to achieve but not which skill to reach for.
+description: "User-invoked only: Ask which skill or flow fits your situation. A router over the skills in this catalog — it helps you choose the right route when you know what you want to achieve but not which skill to reach for."
 license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:

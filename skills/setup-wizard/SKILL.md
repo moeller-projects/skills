@@ -40,7 +40,7 @@ wizard:
   values:
   - name: <variable or secret name>
     source: <where the human gets it>
-    target: <.env key | CI secret | none>
+    target: <environment-file key | CI secret | none>
     secret: true|false
 verification: <bash -n / shellcheck result and the static trace outcome>
 run: <exact command the user runs>

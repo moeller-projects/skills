@@ -1,6 +1,6 @@
 ---
 name: session-handoff
-description: User-invoked only: Create a portable handoff document that lets a fresh agent or colleague continue work with its state, decisions, next action, and references.
+description: "User-invoked only: Create a portable handoff document that lets a fresh agent or colleague continue work with its state, decisions, next action, and references."
 license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:

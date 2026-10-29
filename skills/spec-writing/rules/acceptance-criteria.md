@@ -20,7 +20,7 @@ Write acceptance criteria that prove the requirement is complete, observable, an
 
 ## Anti-Pattern
 
-Using acceptance criteria as a restatement of the requirement with no verification detail, or writing prose criteria with no GIVEN/WHEN/THEN structure so there is no clear state, trigger, or checkable outcome.
+Using acceptance criteria that repeat the requirement without enough verification detail, or writing prose criteria without GIVEN/WHEN/THEN structure so the starting condition, trigger, or checkable outcome is unclear.
 
 Example:
 

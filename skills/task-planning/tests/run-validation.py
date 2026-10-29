@@ -9,14 +9,20 @@ Side effects: None.
 Requires Python 3.9+, standard library only. Run with: python tests/run-validation.py
 """
 
+import importlib.util
 import sys
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parents[1]
-validator_source = (SKILL_DIR / "scripts" / "validate-output.py").read_text(encoding="utf-8")
-validator_namespace: dict[str, object] = {"__name__": "delivery_validator"}
-exec(compile(validator_source, str(SKILL_DIR / "scripts" / "validate-output.py"), "exec"), validator_namespace)
-validate = validator_namespace["validate"]
+sys.dont_write_bytecode = True
+spec = importlib.util.spec_from_file_location(
+    "delivery_validator", SKILL_DIR / "scripts" / "validate-output.py"
+)
+if spec is None or spec.loader is None:
+    raise RuntimeError("could not load Task Planning validator")
+validator = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(validator)
+validate = validator.validate
 
 
 def passed(message: str) -> None:

@@ -34,6 +34,7 @@ def run_validator(validator: Path, input_text: str) -> subprocess.CompletedProce
         encoding="utf-8",
         capture_output=True,
         check=False,
+        shell=False,
     )
 
 
