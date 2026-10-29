@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Ask Lukas
-  version: "1.1.0"
+  version: "1.2.0"
   summary: Route any situation to the right skill or flow in this catalog.
   invocation: user
 ---
@@ -33,6 +33,7 @@ Before stating what a skill does or recommending a step be skipped, read that sk
 - **Something's broken locally** → `debugging` (tight feedback loop first, root cause before fix).
 - **New or unfamiliar repository** → `codebase-onboarding` (conventions, entry points, hotspots).
 - **Azure DevOps work items or PRs** → `azure-devops` (guarded reads and writes).
+- **Implement one Azure DevOps work item end to end** → `implement-workitem` (user-invoked; approved spec/plan, isolated branch, small commits, push, and draft PR into its recorded base). Recommend it; the human starts it.
 - **Reviewer comments on your own Azure DevOps PR** → `respond-to-pr-comments` (user-invoked; triage, fix, reply).
 - **Huge foggy effort, bigger than one session** → `decision-mapping` (chart decisions until the way is clear, then rejoin at `spec-writing`).
 - **Git surgery** (rebase, conflicts, stacked PRs, recovery) → `git-workflow`; **`gh stack` CLI stacks** → `gh-stack`.
