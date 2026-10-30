@@ -1,0 +1,19 @@
+{
+  "name": "toggl-track",
+  "title": "Toggl Track",
+  "version": "0.1.0",
+  "summary": "Manage Toggl Track data, reports, and webhook subscriptions through its APIs.",
+  "invocation": "model",
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "requires": [],
+  "type": "hybrid",
+  "risk_level": "high",
+  "requires_network": true,
+  "maintainer": "Lukas"
+}
