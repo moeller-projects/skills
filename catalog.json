@@ -43,6 +43,12 @@
       "requires_network": false,
       "maintainer": "Lukas"
     },
+    "daily-work-review": {
+      "type": "hybrid",
+      "risk_level": "high",
+      "requires_network": true,
+      "maintainer": "Lukas"
+    },
     "debugging": {
       "type": "hybrid",
       "risk_level": "medium",
@@ -139,6 +145,12 @@
       "requires_network": true,
       "maintainer": "Lukas"
     },
+    "review-pr-branch": {
+      "type": "hybrid",
+      "risk_level": "high",
+      "requires_network": true,
+      "maintainer": "Lukas"
+    },
     "review-response": {
       "type": "hybrid",
       "risk_level": "low",
@@ -209,6 +221,12 @@
       "type": "rule",
       "risk_level": "medium",
       "requires_network": false,
+      "maintainer": "Lukas"
+    },
+    "toggl-track": {
+      "type": "hybrid",
+      "risk_level": "high",
+      "requires_network": true,
       "maintainer": "Lukas"
     },
     "verification-before-completion": {
