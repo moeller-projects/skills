@@ -1,0 +1,19 @@
+{
+  "name": "daily-work-review",
+  "title": "Daily Work Review",
+  "version": "1.0.0",
+  "summary": "Review a selected Toggl/Azure activity window and safely propose updates to existing Toggl descriptions.",
+  "invocation": "user",
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "requires": [],
+  "type": "hybrid",
+  "risk_level": "high",
+  "requires_network": true,
+  "maintainer": "Lukas"
+}

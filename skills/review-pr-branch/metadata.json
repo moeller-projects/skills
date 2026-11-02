@@ -1,0 +1,23 @@
+{
+  "name": "review-pr-branch",
+  "title": "Review PR Branch",
+  "version": "1.0.0",
+  "summary": "Review an Azure DevOps PR or pre-PR branch with verified diff scope, ADO context, and unposted comment drafts.",
+  "invocation": "user",
+  "compatibility": [
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "cursor",
+    "opencode"
+  ],
+  "requires": [
+    "azure-devops",
+    "concise-output",
+    "pr-review"
+  ],
+  "type": "hybrid",
+  "risk_level": "high",
+  "requires_network": true,
+  "maintainer": "Lukas"
+}

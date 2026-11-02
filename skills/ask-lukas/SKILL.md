@@ -5,7 +5,7 @@ license: MIT
 compatibility: chatgpt, codex, claude-code, cursor, opencode
 metadata:
   title: Ask Lukas
-  version: "1.2.0"
+  version: "1.3.0"
   summary: Route any situation to the right skill or flow in this catalog.
   invocation: user
 ---
@@ -43,6 +43,7 @@ Before stating what a skill does or recommending a step be skipped, read that sk
 
 - **Throwaway code to answer a design question** → `prototype`.
 - **Reading legwork against primary sources** → `research` (background agent, cited Markdown).
+- **Toggl time entries, projects, reports, or webhooks** → `toggl-track` (API-backed management; confirm scope before writes).
 - **Steps only a human can perform** (credentials, dashboards, cutovers) → `setup-wizard`.
 - **Docs, READMEs, decision records** → `technical-writing`; **domain vocabulary or ADRs** → `domain-modeling`.
 - **Module shape and interface design** → `codebase-design` (deep-module vocabulary, used by `code-review`).
