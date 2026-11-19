@@ -62,7 +62,7 @@ Workflow authorization gates still apply.
 | [decision-mapping](skills/decision-mapping/) | Chart a large, uncertain effort as a decision map, resolve open questions, and hand off a clear route to specification. |
 | [guided-learning](skills/guided-learning/) | Teach a topic across sessions with a stateful workspace of lessons, references, practice, and learning records. |
 | [ask-lukas](skills/ask-lukas/) | Route any situation to the right skill or flow in this catalog. |
-| [implement-workitem](skills/implement-workitem/) | Implement an Azure DevOps work item through approved spec and plan checkpoints, an isolated branch, small Conventional Commits, and an approved push and draft PR into its recorded base. |
+| [implement-workitem](skills/implement-workitem/) | Implement an Azure DevOps work item through approved spec and plan checkpoints, isolated commits, and an approved draft PR; default to available OpenSpec and archive created changes at the end. |
 | [daily-work-review](skills/daily-work-review/) | Review a selected Toggl/Azure activity window and safely propose updates to existing Toggl descriptions. |
 | [review-pr-branch](skills/review-pr-branch/) | Review an Azure DevOps PR or pre-PR branch with verified diff scope, ADO context, and unposted comment drafts. |
 | [toggl-track](skills/toggl-track/) | Manage Toggl Track data, reports, and webhook subscriptions through its APIs. |

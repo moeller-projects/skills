@@ -22,6 +22,7 @@ Record these fields as they become known:
 
 - Work-item ID, confirmed ADO organization/project/repository, optional PR context, fetch timestamp, normalization status, and approved handling of missing data.
 - Current phase; spec/graph paths and revisions; chosen direction; approved IN/OUT scope and unresolved questions.
+- Output-mode selection and availability evidence; exact OpenSpec change names, selected store/planning root, resolved paths, and whether each change was created by this run or pre-existing. Record verification, sync/archive decisions, resulting archive paths, finalization commits, and publication evidence.
 - Base repository, remote/ref, start SHA, PR target repository/ref, working branch, and explicit push remote/destination.
 - Complete workspace provenance from `git-worktrees`, including origin, owner, creation time, absolute path, branch, and base.
 - Separate test, restore, and build authorization decisions with conversation context; commands run and their observed results. Do not collapse them into one verification permission.
@@ -33,13 +34,34 @@ The todo list is a live projection of task progress, not an independent plan or 
 
 ## OpenSpec mode
 
-Inspect the target repository's `openspec/specs/` and active changes before authoring behavior changes. Select an existing change explicitly when more than one is active; otherwise choose a focused kebab-case name including the work-item ID where the local convention permits it.
+### Selection and initialization
 
-Use `spec-writing` only for authoring/serialization. When available, inspect `openspec list --json`, then `openspec status --change <name> --json` and `openspec instructions <artifact> --change <name> --json` for the selected initialized change. The resolved schema/template paths are authoritative; do not handcraft artifacts that contradict them. Require repository-required lifecycle initialization before issuing commands that need an existing change.
+Resolve the mode before authoring. OpenSpec is available when the CLI is usable and the selected repository or explicitly selected store has an initialized planning root. Read the installed official OpenSpec skill before lifecycle operations when available; otherwise inspect the installed CLI's help for supported commands. Use the project/store checks (`openspec list --json` and the returned `root`); keep selected-root flags such as `--store <id>` on all applicable subsequent commands. CLI installation or an installed skill alone does not establish project availability.
+
+Default to OpenSpec whenever those checks succeed. Honor explicit freeform output unless repository policy requires OpenSpec. If no CLI/root is available and OpenSpec was neither explicitly requested nor required, use freeform and record the reason. An explicit OpenSpec request or repository requirement instead needs a user decision on setup, store selection, or an allowed fallback. Malformed configuration, unresolved declared stores, and ambiguous roots are blockers, not permission to silently fall back. Never install the CLI, run `openspec init`, or create a root as a side effect without consent.
+
+Inspect existing specs and active changes in the resolved planning root. Create a focused kebab-case change including the work-item ID where convention permits, using official `openspec-new-change` or the supported `openspec new change <name>` command. Reuse a pre-existing change only with explicit selection and association to this work item; multiple active changes require disambiguation, never bulk adoption. Record ownership before writing artifacts.
+
+Use `spec-writing` only for authoring/serialization. Inspect `openspec status --change <name> --json` and `openspec instructions <artifact> --change <name> --json` for the selected initialized change. Resolved planning-home, change-root, artifact, schema, and template paths are authoritative; do not assume repo-local paths or handcraft artifacts that contradict them. Preserve the official workflow's stop points and this controller's approval checkpoints.
 
 The task graph remains the source for task definitions. Derive `tasks.md` one-way using stable task IDs; this is a real task checklist after planning, not an implementation stub. Apply progress may be reflected in checklist markers without making them a second task-definition source. Preserve completed markers only when commits/evidence support them, and leave unexecuted verification unchecked. Scope changes update the graph first, then regenerate the checklist and obtain affected approvals. Never regenerate away externally recorded apply progress without reconciling it.
 
-Lifecycle work belongs to official OpenSpec workflows. Follow target-repository requirements for apply/verify; if a lifecycle step requires a separate human invocation, stop at that boundary and recommend the exact named change/step rather than silently invoking another user-invoked orchestrator. Validate the active change using the installed CLI's supported change-validation syntax before completion. Do not sync or archive automatically.
+### Finalization: verify and archive last
+
+Lifecycle work belongs to official OpenSpec workflows. Follow target-repository requirements for apply/verify. If a lifecycle step requires separate human invocation, stop at that boundary and recommend the exact named change/step rather than chaining another user-invoked orchestrator.
+
+After all approved implementation slices, final review, and the publication outcome, finalize every change created by this run, using the recorded names and planning roots. Never archive unrelated or pre-existing changes without separate explicit approval. No created changes means archival is not applicable; blocked or interrupted implementation must leave its changes active.
+
+Choose verification and archive paths independently before executing the steps below. Prefer each official skill when available; its CLI fallback is an alternative, not an additional lifecycle action. Never run both archive paths for the same change.
+
+1. Run the installed CLI's supported change-validation command for the exact change. Use official `openspec-verify-change` for semantic implementation verification when available. If that skill is unavailable, record `semantic verification unavailable`; CLI validation does not prove implementation correctness. Show that gap and obtain explicit approval acknowledging it before archival, unless repository policy requires semantic verification, in which case stop. Respect test/build/restore permissions; do not turn unrun checks into passing evidence or mark unchecked tasks complete. Resolve critical findings and validation failures; disclose warnings and verification gaps.
+2. Execute exactly one archive path:
+   - **Official skill available:** Use `openspec-archive-change`, including its sync assessment, prompts, completion checks, and collision handling. If it calls for sync, use official `openspec-sync-specs` synchronously and wait for its verification before archival. If that required sync workflow is unavailable, stop before archival; do not switch archive paths to bypass the blocker. Do not copy those procedures into this controller or bypass their confirmations.
+   - **Archive skill unavailable:** Inspect installed `openspec --help` and `openspec archive --help`, then use the supported official `openspec archive <name>` command and its checks/prompts. Do not invent flags, force completion, suppress validation, or replace the lifecycle with an ad-hoc move/delete. If no supported path is available, report finalization blocked.
+3. Verify the resolved archive destination and active-change state, and record sync outcome and warnings in the ledger. On timeout or uncertain outcome, inspect both before retrying. Resume from the actual lifecycle state; never archive twice.
+4. Review resulting main-spec/archive diffs and commit owned repository changes following `git-workflow`. If already published, show the finalization commits, renew push approval for the new HEAD, push normally, and read back the final remote tip and PR; renew PR-update approval if its body or metadata changes. Never leave archival only in an unpublished working tree while claiming the published branch is final. For keep-local, retain the reviewed local commits. If the planning root is an external store, follow its separately approved commit/publication policy; an implementation-repository push does not publish store changes.
+
+Finalization is the last substantive phase, not permission to merge the PR or close the work item. Before archival succeeds, report a declined, blocked, or policy-deferred archive as pending and preserve the active change. After archival succeeds, preserve the verified archive and record any outstanding commit/publication operation separately; resume that operation without archiving again. For an uncertain archive outcome, reconcile active and archive state before choosing either recovery path. Report the exact next action and do not claim the end-to-end workflow is complete while finalization remains pending.
 
 ## Resume and invalidation
 
