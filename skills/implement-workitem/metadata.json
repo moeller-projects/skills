@@ -1,8 +1,8 @@
 {
   "name": "implement-workitem",
   "title": "Implement Work Item",
-  "version": "1.0.0",
-  "summary": "Implement an Azure DevOps work item through approved spec and plan checkpoints, an isolated branch, small Conventional Commits, and an approved push and draft PR into its recorded base.",
+  "version": "2.0.0",
+  "summary": "Implement an Azure DevOps work item through approved spec and plan checkpoints, isolated commits, and an approved draft PR; default to available OpenSpec and archive created changes at the end.",
   "invocation": "user",
   "compatibility": [
     "chatgpt",
